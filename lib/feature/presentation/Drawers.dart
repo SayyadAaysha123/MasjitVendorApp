@@ -47,7 +47,7 @@ class _DrawersState extends State<Drawers> {
 
         title: const Text('Drawer Demo'),
         leading: IconButton(
-          icon: Icon(Icons.accessible),
+          icon: const Icon(Icons.accessible),
           onPressed: () => Scaffold.of(context).openDrawer()
         ),
 

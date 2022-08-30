@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/feature/presentation/Notice.dart';
-import 'package:masjit_vendor_app/feature/presentation/privacy_policy.dart';
-import 'package:masjit_vendor_app/feature/presentation/weekly_namaz_timing.dart';
 
 import '../../localclass/masjit_vendor_colors.dart';
 import '../../localclass/masjit_vendor_size_config.dart';
 import 'Trustee.dart';
-import 'eid_counting.dart';
 
 
 class TrusteeRegister extends StatefulWidget {
@@ -27,7 +23,7 @@ class _TrusteeRegisterState extends State<TrusteeRegister> {
             children: [
               Container(
                 height: SizeConfig.screenHeight * 0.12,
-                decoration:  BoxDecoration(
+                decoration:  const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
@@ -41,7 +37,7 @@ class _TrusteeRegisterState extends State<TrusteeRegister> {
                 child: getAddMainHeadingLayout(
                     SizeConfig.screenHeight, SizeConfig.screenWidth),
               ),
-              Container(
+              SizedBox(
                 height: SizeConfig.screenHeight * 0.88,
                 child: ListView(
                   children: [
@@ -456,7 +452,7 @@ class _TrusteeRegisterState extends State<TrusteeRegister> {
     return GestureDetector(
       onTap: (){
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Trustee()));
+            MaterialPageRoute(builder: (context) => const Trustee()));
       },
       child: Padding(
         padding:  EdgeInsets.only(top: parentHeight*0.05,left: parentWidth*0.1,right: parentWidth*0.1),
@@ -465,7 +461,7 @@ height: parentHeight*0.06,
 
 
           decoration:  BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [CommonColor.LEFT_COLOR, CommonColor.RIGHT_COLOR]),

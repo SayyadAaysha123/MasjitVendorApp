@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/feature/presentation/Trustee.dart';
 import 'package:masjit_vendor_app/feature/presentation/privacy_policy.dart';
@@ -13,7 +12,7 @@ import 'eid_counting.dart';
 import 'masjit_vendor_registration_from.dart';
 
 class ShareSendGalleryImage extends StatefulWidget {
-  ShareSendGalleryImage({Key? key}) : super(key: key);
+  const ShareSendGalleryImage({Key? key}) : super(key: key);
 
   @override
   _ShareSendGalleryImageState createState() => _ShareSendGalleryImageState();
@@ -63,15 +62,17 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WeeklyNamazTiming()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const WeeklyNamazTiming()));
             },
             onDoubleTap: () {},
             child: Padding(
               padding: EdgeInsets.only(
                   right: SizeConfig.screenWidth * 0.02,
                   top: SizeConfig.screenHeight * 0.02),
-              child: Container(
+              child: SizedBox(
                 width: SizeConfig.screenWidth * .15,
                 child: Image.asset(
                   'assets/images/appBarIcon.png',
@@ -81,7 +82,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
           )
         ],
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -90,28 +91,25 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
         ),
       ),
       body: ListView(
-        shrinkWrap: true,
-      padding: EdgeInsets.only(bottom: SizeConfig.screenHeight*0.03),
-      children: [
-        getAddFazarLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
-        getAddzoharLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
-        getAddAsarLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
-        getAddMagribLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
-        getAddFazarSecoundLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
-        getAddIshaLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
-        getAddJumaLayout(SizeConfig.screenHeight, SizeConfig.screenWidth)
-
-
-
-      ]),
-
+          shrinkWrap: true,
+          padding: EdgeInsets.only(bottom: SizeConfig.screenHeight * 0.03),
+          children: [
+            getAddFazarLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
+            getAddzoharLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
+            getAddAsarLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
+            getAddMagribLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
+            getAddFazarSecoundLayout(
+                SizeConfig.screenHeight, SizeConfig.screenWidth),
+            getAddIshaLayout(SizeConfig.screenHeight, SizeConfig.screenWidth),
+            getAddJumaLayout(SizeConfig.screenHeight, SizeConfig.screenWidth)
+          ]),
       drawer: Padding(
-        padding: EdgeInsets.only(top:SizeConfig.screenHeight*0.06),
-        child: Container(
+        padding: EdgeInsets.only(top: SizeConfig.screenHeight * 0.06),
+        child: SizedBox(
           height: SizeConfig.screenHeight * .98,
           width: SizeConfig.screenHeight * .4,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(30),
               bottomRight: Radius.circular(30.0),
             ),
@@ -119,7 +117,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 110,
                     child: DrawerHeader(
                       decoration: BoxDecoration(
@@ -147,7 +145,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ListTile(
                     onTap: () {
                       Navigator.pop(context);
-                     /* Navigator.push(
+                      /* Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ShareSendGalleryImage(),
@@ -156,7 +154,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Weekley Namaz Time",
@@ -169,11 +167,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                   ),
                   ListTile(
-                    onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SahrIftar() ));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SahrIftar()));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "SAR / IFTAR",
@@ -186,12 +187,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                   ),
                   ListTile(
-    onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EidCounting()));
-    },
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EidCounting()));
+                    },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Eid",
@@ -206,12 +209,13 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Notice()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Notice()));
                     },
 
-
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Notice",
@@ -223,7 +227,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                       ),
                     ),
                   ),
-                  ListTile(
+                  const ListTile(
                     // leading: Icon(Icons.message),
                     title: Padding(
                       padding: EdgeInsets.only(left: 8),
@@ -240,11 +244,13 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Trustee()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Trustee()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Trustee",
@@ -256,15 +262,16 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                       ),
                     ),
                   ),
-
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PrivacyPolicy()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Privacy Policy",
@@ -279,11 +286,13 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => TermsAndCondition()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TermsAndCondition()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Terms & Condition",
@@ -298,11 +307,13 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => registration()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const registration()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Logout",
@@ -323,142 +334,126 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
     );
   }
 
-
   Widget getAddFazarLayout(double parentHeight, double parentWidth) {
     return Padding(
-        padding: EdgeInsets.only(top: parentHeight * 0.03),
-        child: Container(
-          height: parentHeight * 0.16,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: Colors.grey.shade300,
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(0, 5),
-              ),
-              BoxShadow(
-                color: Colors.grey.shade50,
-                offset: Offset(-5, 0),
-              ),
-              BoxShadow(
-                color: Colors.grey.shade50,
-                offset: Offset(5, 0),
-              )
-            ],
-          ),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10)),
-                child: Container(
-                  height: parentHeight * 0.04,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                        CommonColor.LEFT_COLOR,
-                        CommonColor.RIGHT_COLOR
-                      ])),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "FAJR",
-                        style: TextStyle(
-                          fontSize:
-                              SizeConfig.blockSizeHorizontal * 4.3,
-                          fontFamily: 'Roboto_Bold',
-                          fontWeight: FontWeight.w600,
-                          color: CommonColor.WHITE_COLOR,
-                        ),
+      padding: EdgeInsets.only(top: parentHeight * 0.03),
+      child: Container(
+        height: parentHeight * 0.16,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey.shade300,
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 5),
+            ),
+            BoxShadow(
+              color: Colors.grey.shade50,
+              offset: const Offset(-5, 0),
+            ),
+            BoxShadow(
+              color: Colors.grey.shade50,
+              offset: const Offset(5, 0),
+            )
+          ],
+        ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+              child: Container(
+                height: parentHeight * 0.04,
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "FAJR",
+                      style: TextStyle(
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
+                        fontFamily: 'Roboto_Bold',
+                        fontWeight: FontWeight.w600,
+                        color: CommonColor.WHITE_COLOR,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: parentWidth * 0.1,
-                            top: parentHeight * 0.02),
-                        child: Text("AZAN",
-                            style: TextStyle(
-                              fontSize:
-                                  SizeConfig.blockSizeHorizontal *
-                                      4.3,
-                              fontFamily: 'Roboto_Bold',
-                              fontWeight: FontWeight.w600,
-                              color: CommonColor.BLACK_COLOR,
-                            )),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: parentWidth * 0.1,
-                            top: parentHeight * 0.02),
-                        child: Text("05:00",
-                            style: TextStyle(
-                              fontSize:
-                                  SizeConfig.blockSizeHorizontal *
-                                      4.3,
-                              fontFamily: 'Roboto_Bold',
-                              fontWeight: FontWeight.w600,
-                              color: CommonColor.BLACK_COLOR,
-                            )),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: parentHeight * 0.05,
-                            top: parentHeight * 0.03),
-                        child: Text("JAMA’AT",
-                            style: TextStyle(
-                              fontSize:
-                                  SizeConfig.blockSizeHorizontal *
-                                      4.3,
-                              fontFamily: 'Roboto_Bold',
-                              fontWeight: FontWeight.w600,
-                              color: CommonColor.BLACK_COLOR,
-                            )),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: parentWidth * 0.1,
-                            top: parentHeight * 0.02),
-                        child: Text("05:30",
-                            style: TextStyle(
-                              fontSize:
-                                  SizeConfig.blockSizeHorizontal *
-                                      4.3,
-                              fontFamily: 'Roboto_Bold',
-                              fontWeight: FontWeight.w600,
-                              color: CommonColor.BLACK_COLOR,
-                            )),
-                      )
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
+            ),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
+                      child: Text("AZAN",
+                          style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
+                            fontFamily: 'Roboto_Bold',
+                            fontWeight: FontWeight.w600,
+                            color: CommonColor.BLACK_COLOR,
+                          )),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
+                      child: Text("05:00",
+                          style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
+                            fontFamily: 'Roboto_Bold',
+                            fontWeight: FontWeight.w600,
+                            color: CommonColor.BLACK_COLOR,
+                          )),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
+                      child: Text("JAMA’AT",
+                          style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
+                            fontFamily: 'Roboto_Bold',
+                            fontWeight: FontWeight.w600,
+                            color: CommonColor.BLACK_COLOR,
+                          )),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
+                      child: Text("05:30",
+                          style: TextStyle(
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
+                            fontFamily: 'Roboto_Bold',
+                            fontWeight: FontWeight.w600,
+                            color: CommonColor.BLACK_COLOR,
+                          )),
+                    )
+                  ],
+                )
+              ],
+            )
+          ],
         ),
-      );
+      ),
+    );
   }
+
   Widget getAddzoharLayout(double parentHeight, double parentWidth) {
     return Padding(
       padding: EdgeInsets.only(top: parentHeight * 0.03),
@@ -472,42 +467,40 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               color: Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(-5, 0),
+              offset: const Offset(-5, 0),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(5, 0),
+              offset: const Offset(5, 0),
             )
           ],
         ),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
               child: Container(
                 height: parentHeight * 0.04,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          CommonColor.LEFT_COLOR,
-                          CommonColor.RIGHT_COLOR
-                        ])),
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "ZUHAR",
                       style: TextStyle(
-                        fontSize:
-                        SizeConfig.blockSizeHorizontal * 4.3,
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                         fontFamily: 'Roboto_Bold',
                         fontWeight: FontWeight.w600,
                         color: CommonColor.WHITE_COLOR,
@@ -520,18 +513,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
             Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("AZAN",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -539,13 +528,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("01:00",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -554,18 +540,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentHeight * 0.05,
-                          top: parentHeight * 0.03),
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
                       child: Text("JAMA’AT",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -573,13 +555,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("01:30",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -594,6 +573,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
       ),
     );
   }
+
   Widget getAddAsarLayout(double parentHeight, double parentWidth) {
     return Padding(
       padding: EdgeInsets.only(top: parentHeight * 0.03),
@@ -607,42 +587,40 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               color: Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(-5, 0),
+              offset: const Offset(-5, 0),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(5, 0),
+              offset: const Offset(5, 0),
             )
           ],
         ),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
               child: Container(
                 height: parentHeight * 0.04,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          CommonColor.LEFT_COLOR,
-                          CommonColor.RIGHT_COLOR
-                        ])),
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "ASR",
                       style: TextStyle(
-                        fontSize:
-                        SizeConfig.blockSizeHorizontal * 4.3,
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                         fontFamily: 'Roboto_Bold',
                         fontWeight: FontWeight.w600,
                         color: CommonColor.WHITE_COLOR,
@@ -655,18 +633,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
             Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("AZAN",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -674,13 +648,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("05:00",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -689,18 +660,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentHeight * 0.05,
-                          top: parentHeight * 0.03),
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
                       child: Text("JAMA’AT",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -708,13 +675,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("05:30",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -729,6 +693,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
       ),
     );
   }
+
   Widget getAddMagribLayout(double parentHeight, double parentWidth) {
     return Padding(
       padding: EdgeInsets.only(top: parentHeight * 0.03),
@@ -742,42 +707,40 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               color: Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(-5, 0),
+              offset: const Offset(-5, 0),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(5, 0),
+              offset: const Offset(5, 0),
             )
           ],
         ),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
               child: Container(
                 height: parentHeight * 0.04,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          CommonColor.LEFT_COLOR,
-                          CommonColor.RIGHT_COLOR
-                        ])),
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "MAGHRIB",
                       style: TextStyle(
-                        fontSize:
-                        SizeConfig.blockSizeHorizontal * 4.3,
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                         fontFamily: 'Roboto_Bold',
                         fontWeight: FontWeight.w600,
                         color: CommonColor.WHITE_COLOR,
@@ -790,18 +753,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
             Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("AZAN",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -809,13 +768,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("06:30",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -824,18 +780,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentHeight * 0.05,
-                          top: parentHeight * 0.03),
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
                       child: Text("JAMA’AT",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -843,13 +795,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("06:35",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -864,6 +813,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
       ),
     );
   }
+
   Widget getAddFazarSecoundLayout(double parentHeight, double parentWidth) {
     return Padding(
       padding: EdgeInsets.only(top: parentHeight * 0.03),
@@ -877,42 +827,40 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               color: Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(-5, 0),
+              offset: const Offset(-5, 0),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(5, 0),
+              offset: const Offset(5, 0),
             )
           ],
         ),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
               child: Container(
                 height: parentHeight * 0.04,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          CommonColor.LEFT_COLOR,
-                          CommonColor.RIGHT_COLOR
-                        ])),
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "FAJR",
                       style: TextStyle(
-                        fontSize:
-                        SizeConfig.blockSizeHorizontal * 4.3,
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                         fontFamily: 'Roboto_Bold',
                         fontWeight: FontWeight.w600,
                         color: CommonColor.WHITE_COLOR,
@@ -925,18 +873,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
             Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("AZAN",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -944,13 +888,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("05:00",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -959,18 +900,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentHeight * 0.05,
-                          top: parentHeight * 0.03),
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
                       child: Text("JAMA’AT",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -978,13 +915,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("05:30",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -999,6 +933,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
       ),
     );
   }
+
   Widget getAddIshaLayout(double parentHeight, double parentWidth) {
     return Padding(
       padding: EdgeInsets.only(top: parentHeight * 0.03),
@@ -1012,42 +947,40 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               color: Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(-5, 0),
+              offset: const Offset(-5, 0),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(5, 0),
+              offset: const Offset(5, 0),
             )
           ],
         ),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
               child: Container(
                 height: parentHeight * 0.04,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          CommonColor.LEFT_COLOR,
-                          CommonColor.RIGHT_COLOR
-                        ])),
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "ISHA",
                       style: TextStyle(
-                        fontSize:
-                        SizeConfig.blockSizeHorizontal * 4.3,
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                         fontFamily: 'Roboto_Bold',
                         fontWeight: FontWeight.w600,
                         color: CommonColor.WHITE_COLOR,
@@ -1060,18 +993,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
             Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("AZAN",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1079,13 +1008,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("08:30",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1094,18 +1020,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentHeight * 0.05,
-                          top: parentHeight * 0.03),
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
                       child: Text("JAMA’AT",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1113,13 +1035,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("08:45",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1134,6 +1053,7 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
       ),
     );
   }
+
   Widget getAddJumaLayout(double parentHeight, double parentWidth) {
     return Padding(
       padding: EdgeInsets.only(top: parentHeight * 0.03),
@@ -1147,42 +1067,40 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
               color: Colors.grey.shade300,
               spreadRadius: 1,
               blurRadius: 5,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(-5, 0),
+              offset: const Offset(-5, 0),
             ),
             BoxShadow(
               color: Colors.grey.shade50,
-              offset: Offset(5, 0),
+              offset: const Offset(5, 0),
             )
           ],
         ),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10)),
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10), topLeft: Radius.circular(10)),
               child: Container(
                 height: parentHeight * 0.04,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-                          CommonColor.LEFT_COLOR,
-                          CommonColor.RIGHT_COLOR
-                        ])),
+                      CommonColor.LEFT_COLOR,
+                      CommonColor.RIGHT_COLOR
+                    ])),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "JUMA",
                       style: TextStyle(
-                        fontSize:
-                        SizeConfig.blockSizeHorizontal * 4.3,
+                        fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                         fontFamily: 'Roboto_Bold',
                         fontWeight: FontWeight.w600,
                         color: CommonColor.WHITE_COLOR,
@@ -1195,18 +1113,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
             Column(
               children: [
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          left: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("JAMA’AT 1",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1214,13 +1128,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("01:45",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1229,18 +1140,14 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                          left: parentHeight * 0.05,
-                          top: parentHeight * 0.03),
+                          left: parentHeight * 0.05, top: parentHeight * 0.03),
                       child: Text("JAMA’AT 2",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,
@@ -1248,13 +1155,10 @@ class _ShareSendGalleryImageState extends State<ShareSendGalleryImage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: parentWidth * 0.1,
-                          top: parentHeight * 0.02),
+                          right: parentWidth * 0.1, top: parentHeight * 0.02),
                       child: Text("02:30",
                           style: TextStyle(
-                            fontSize:
-                            SizeConfig.blockSizeHorizontal *
-                                4.3,
+                            fontSize: SizeConfig.blockSizeHorizontal * 4.3,
                             fontFamily: 'Roboto_Bold',
                             fontWeight: FontWeight.w600,
                             color: CommonColor.BLACK_COLOR,

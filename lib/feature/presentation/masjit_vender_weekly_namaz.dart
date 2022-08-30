@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/feature/presentation/weekly_namaz_timing.dart';
 
@@ -23,7 +22,7 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
 
             Container(
               height: SizeConfig.screenHeight * .1,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
@@ -35,7 +34,7 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
                   SizeConfig.screenHeight, SizeConfig.screenWidth),
             ),
 
-            Container(
+            SizedBox(
                 height: SizeConfig.screenHeight*0.90,
                 child: ListView(
                   shrinkWrap: true,
@@ -69,7 +68,7 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
           left: parentWidth * .05,
           right: parentWidth * .05,
           top: parentHeight * .04),
-      child: new Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
@@ -81,14 +80,14 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
               },
               onDoubleTap: () {},
               child: Container(
-                  padding: EdgeInsets.all(2.0),
+                  padding: const EdgeInsets.all(2.0),
                   color: Colors.transparent,
-                  child: new Icon(
+                  child: Icon(
                     Icons.arrow_back_ios,
                     color: CommonColor.WHITE_COLOR,
                     size: parentHeight * .03,
                   ))),
-          new Text(
+          Text(
             "Weekly Namaz",
             // StringEn.GENERAL_LANGUAGE,
             //  ApplicationLocalizations.of(context)!.translate("language")!,
@@ -106,13 +105,13 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
     onTap: () {
     Navigator.push(context,
 
-    MaterialPageRoute(builder: (context) => WeeklyNamazTiming()));
+    MaterialPageRoute(builder: (context) => const WeeklyNamazTiming()));
     },
     onDoubleTap: () {},
             child: Container(
-                padding: EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(2.0),
                 color: Colors.transparent,
-                child: new Icon(
+                child: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.transparent,
                   size: parentHeight * .03,
@@ -131,13 +130,13 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
 
             height: parentHeight * 0.12,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [CommonColor.GET_STARTED_LEFT_COLOR, CommonColor.GET_STARTED_RIGHT_COLOR]),
 
 
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
 
               boxShadow: <BoxShadow>[
                 BoxShadow(
@@ -170,7 +169,7 @@ class _WeeklyNamazState extends State<WeeklyNamaz> {
                 decoration: BoxDecoration(
 
 
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
 
                   boxShadow: <BoxShadow>[
                     BoxShadow(

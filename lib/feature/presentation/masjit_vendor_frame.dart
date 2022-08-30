@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/localclass/masjit_vendor_colors.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../../localclass/masjit_vendor_size_config.dart';
 import 'masjit_vendor_registration_from.dart';
@@ -37,7 +36,7 @@ class _MasjitVendorFrameState extends State<MasjitVendorFrame> {
       child: Scaffold(
         body: Column(
           children: [
-            Container(
+            SizedBox(
                 // height: SizeConfig.screenHeight*.74,
                 width: SizeConfig.screenWidth,
                 child: /* PageView.builder(
@@ -104,7 +103,7 @@ class _MasjitVendorFrameState extends State<MasjitVendorFrame> {
                   Container(
                     width: 7,
                     height: 7,
-                    margin: EdgeInsets.all(2),
+                    margin: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: currentIndex == i
                           ? Colors.green
@@ -125,7 +124,7 @@ class _MasjitVendorFrameState extends State<MasjitVendorFrame> {
 
   Widget getFirstImageFrame(double parentHeight, double parentWidth) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: parentWidth,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

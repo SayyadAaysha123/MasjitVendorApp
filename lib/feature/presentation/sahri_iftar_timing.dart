@@ -1,6 +1,5 @@
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
@@ -42,7 +41,7 @@ class _ShariIftarTimingState extends State<ShariIftarTiming> with SingleTickerPr
             children: [
               Container(
                 height: SizeConfig.screenHeight * 0.12,
-                decoration:  BoxDecoration(
+                decoration:  const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
@@ -56,7 +55,7 @@ class _ShariIftarTimingState extends State<ShariIftarTiming> with SingleTickerPr
                 child: getAddMainHeadingLayout(
                     SizeConfig.screenHeight, SizeConfig.screenWidth),
               ),
-              Container(
+              SizedBox(
                   height: SizeConfig.screenHeight * 0.88,
                   child:Column(
                     children: [getAddtimePiker(
@@ -132,14 +131,14 @@ class _ShariIftarTimingState extends State<ShariIftarTiming> with SingleTickerPr
       padding: EdgeInsets.only(
           top: parentHeight*0.08
       ),
-      child: new Column(
+      child: Column(
         children: <Widget>[
            hourMinute12H(),
           //hourMinute15Interval(),
             //hourMinuteSecond(),
             //hourMinute12HCustomStyle(),
-          new Container(
-            margin: EdgeInsets.symmetric(
+          Container(
+            margin: const EdgeInsets.symmetric(
                 vertical: 28
             ),
             /* child: new Text(
@@ -157,9 +156,9 @@ class _ShariIftarTimingState extends State<ShariIftarTiming> with SingleTickerPr
     );
   }
   Widget hourMinute12H(){
-    return new TimePickerSpinner(
-      highlightedTextStyle: TextStyle(fontSize: 30, color: CommonColor.FRAME_NAME,fontWeight: FontWeight.w700,fontFamily: "Roboto_Bold", ),
-normalTextStyle:  TextStyle(fontSize: 30, color: Colors.grey,fontWeight: FontWeight.w700,fontFamily: "Roboto_Bold",),
+    return TimePickerSpinner(
+      highlightedTextStyle: const TextStyle(fontSize: 30, color: CommonColor.FRAME_NAME,fontWeight: FontWeight.w700,fontFamily: "Roboto_Bold", ),
+normalTextStyle:  const TextStyle(fontSize: 30, color: Colors.grey,fontWeight: FontWeight.w700,fontFamily: "Roboto_Bold",),
       is24HourMode: false,
       onTimeChange: (time) {
         setState(() {
@@ -1291,12 +1290,12 @@ normalTextStyle:  TextStyle(fontSize: 30, color: Colors.grey,fontWeight: FontWei
         Padding(
           padding:EdgeInsets.only(left: parentWidth*0.0,top: parentHeight*0.05),
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(10),
               topLeft: Radius.circular(10.0),),
             child: Container(
               height: parentHeight * 0.40,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
@@ -1350,7 +1349,7 @@ normalTextStyle:  TextStyle(fontSize: 30, color: Colors.grey,fontWeight: FontWei
                                 Padding(
                                   padding:  EdgeInsets.only(top: parentHeight*0.1,left: parentWidth*0.03),
                                   child:
-                                  Image(image: AssetImage("assets/images/editor.png"),height: parentHeight*0.03,),)
+                                  Image(image: const AssetImage("assets/images/editor.png"),height: parentHeight*0.03,),)
                                 // Icon(Icons.edit),
                               ],
                             )
@@ -1386,7 +1385,7 @@ normalTextStyle:  TextStyle(fontSize: 30, color: Colors.grey,fontWeight: FontWei
                                 Padding(
                                   padding:  EdgeInsets.only(top: parentHeight*0.03,left: parentWidth*0.03),
                                   child:
-                                  Image(image: AssetImage("assets/images/editor.png"),height: parentHeight*0.03,),)
+                                  Image(image: const AssetImage("assets/images/editor.png"),height: parentHeight*0.03,),)
                                 // Icon(Icons.edit),
                               ],
                             )
@@ -1407,12 +1406,12 @@ normalTextStyle:  TextStyle(fontSize: 30, color: Colors.grey,fontWeight: FontWei
               left: parentWidth * 0.0,
               right: parentWidth * 0.0),
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(10),
               topLeft: Radius.circular(10.0),),
             child: Container(
               height: parentHeight*0.1,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: CommonColor.WHITE_COLOR
               ),
 

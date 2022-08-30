@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/feature/presentation/slider.dart';
 import 'package:masjit_vendor_app/feature/presentation/truestee_register.dart';
@@ -9,8 +8,6 @@ import '../../localclass/masjit_vendor_size_config.dart';
 import 'eid_counting.dart';
 import 'masjit_vendor_registration_from.dart';
 import 'Notice.dart';
-import 'Trustee.dart';
-import 'package:masjit_vendor_app/feature/presentation/Trustee.dart';
 import 'package:masjit_vendor_app/feature/presentation/privacy_policy.dart';
 import 'package:masjit_vendor_app/feature/presentation/sahr_iftar.dart';
 import 'package:masjit_vendor_app/feature/presentation/terms_and_condition.dart';
@@ -67,11 +64,11 @@ class _TrusteeState extends State<Trustee> {
         actions: [
           GestureDetector(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>TrusteeRegister() ));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>const TrusteeRegister() ));
             },
             child: Padding(
               padding:  EdgeInsets.only(right: SizeConfig.screenWidth*0.01,top: SizeConfig.screenHeight*0.02),
-              child: Container(
+              child: SizedBox(
                 width: SizeConfig.screenWidth*.14,
 
                 child: Image.asset(
@@ -93,17 +90,17 @@ class _TrusteeState extends State<Trustee> {
 
 
       ),
-      body: Container(
+      body: SizedBox(
           height: SizeConfig.screenHeight * 0.90,
           child: getAddEmailLayout(
               SizeConfig.screenHeight, SizeConfig.screenWidth)),
       drawer: Padding(
         padding: EdgeInsets.only(top:SizeConfig.screenHeight*0.06),
-        child: Container(
+        child: SizedBox(
           height: SizeConfig.screenHeight * .98,
           width: SizeConfig.screenHeight * .4,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(30),
               bottomRight: Radius.circular(30.0),
             ),
@@ -111,7 +108,7 @@ class _TrusteeState extends State<Trustee> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 110,
                     child: DrawerHeader(
                       decoration: BoxDecoration(
@@ -138,7 +135,7 @@ class _TrusteeState extends State<Trustee> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ShareSendGalleryImage() ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const ShareSendGalleryImage() ));
                       /* Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -148,7 +145,7 @@ class _TrusteeState extends State<Trustee> {
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Weekley Namaz Time",
@@ -162,10 +159,10 @@ class _TrusteeState extends State<Trustee> {
                   ),
                   ListTile(
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SahrIftar() ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const SahrIftar() ));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "SAR / IFTAR",
@@ -180,10 +177,10 @@ class _TrusteeState extends State<Trustee> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => EidCounting()));
+                          context, MaterialPageRoute(builder: (context) => const EidCounting()));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Eid",
@@ -198,12 +195,12 @@ class _TrusteeState extends State<Trustee> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Notice()));
+                          context, MaterialPageRoute(builder: (context) => const Notice()));
                     },
 
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Notice",
@@ -215,7 +212,7 @@ class _TrusteeState extends State<Trustee> {
                       ),
                     ),
                   ),
-                  ListTile(
+                  const ListTile(
                     // leading: Icon(Icons.message),
                     title: Padding(
                       padding: EdgeInsets.only(left: 8),
@@ -236,7 +233,7 @@ class _TrusteeState extends State<Trustee> {
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Trustee",
@@ -252,11 +249,11 @@ class _TrusteeState extends State<Trustee> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+                          context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Privacy Policy",
@@ -271,11 +268,11 @@ class _TrusteeState extends State<Trustee> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => TermsAndCondition()));
+                          context, MaterialPageRoute(builder: (context) => const TermsAndCondition()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Terms & Condition",
@@ -290,11 +287,11 @@ class _TrusteeState extends State<Trustee> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => registration()));
+                          context, MaterialPageRoute(builder: (context) => const registration()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Logout",
@@ -321,7 +318,7 @@ class _TrusteeState extends State<Trustee> {
         Padding(
           padding: EdgeInsets.only(
               top: parentHeight * 0.0),
-          child: Container(
+          child: SizedBox(
             height: parentHeight,
             child: ListView.builder(
             itemCount: 4,
@@ -357,7 +354,7 @@ class _TrusteeState extends State<Trustee> {
                 child: Column(
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+                      borderRadius: const BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
                       child: Container(
                         height: parentHeight*0.06,
                         decoration: const BoxDecoration(

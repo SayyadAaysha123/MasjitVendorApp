@@ -3,11 +3,8 @@ import 'package:masjit_vendor_app/feature/presentation/privacy_policy.dart';
 import 'package:masjit_vendor_app/feature/presentation/sahri_iftar_timing.dart';
 
 import 'package:masjit_vendor_app/feature/presentation/Trustee.dart';
-import 'package:masjit_vendor_app/feature/presentation/privacy_policy.dart';
-import 'package:masjit_vendor_app/feature/presentation/sahr_iftar.dart';
 import 'package:masjit_vendor_app/feature/presentation/slider.dart';
 import 'package:masjit_vendor_app/feature/presentation/terms_and_condition.dart';
-import 'package:masjit_vendor_app/feature/presentation/weekly_namaz_timing.dart';
 import '../../localclass/masjit_vendor_colors.dart';
 import '../../localclass/masjit_vendor_size_config.dart';
 import 'Notice.dart';
@@ -67,11 +64,11 @@ class _SahrIftarState extends State<SahrIftar> {
         actions: [
           GestureDetector(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ShariIftarTiming() ));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ShariIftarTiming() ));
             },
             child: Padding(
               padding:  EdgeInsets.only(right: SizeConfig.screenWidth*0.01,top: SizeConfig.screenHeight*0.02),
-              child: Container(
+              child: SizedBox(
                 width: SizeConfig.screenWidth*.14,
 
                 child: Image.asset(
@@ -93,7 +90,7 @@ class _SahrIftarState extends State<SahrIftar> {
 
 
       ),
-      body: Container(
+      body: SizedBox(
         height: SizeConfig.screenHeight * 0.90,
         child:ListView(
             shrinkWrap: true,
@@ -105,11 +102,11 @@ class _SahrIftarState extends State<SahrIftar> {
       ),
       drawer: Padding(
         padding: EdgeInsets.only(top:SizeConfig.screenHeight*0.06),
-        child: Container(
+        child: SizedBox(
           height: SizeConfig.screenHeight * .98,
           width: SizeConfig.screenHeight * .4,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(30),
               bottomRight: Radius.circular(30.0),
             ),
@@ -117,7 +114,7 @@ class _SahrIftarState extends State<SahrIftar> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 110,
                     child: DrawerHeader(
                       decoration: BoxDecoration(
@@ -144,7 +141,7 @@ class _SahrIftarState extends State<SahrIftar> {
                   ),
                   ListTile(
                     onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ShareSendGalleryImage() ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const ShareSendGalleryImage() ));
                       /* Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -154,7 +151,7 @@ class _SahrIftarState extends State<SahrIftar> {
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Weekley Namaz Time",
@@ -169,10 +166,10 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: (){
                       Navigator.pop(context);
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SahrIftar() ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const SahrIftar() ));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "SAR / IFTAR",
@@ -187,10 +184,10 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => EidCounting()));
+                          context, MaterialPageRoute(builder: (context) => const EidCounting()));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Eid",
@@ -205,12 +202,12 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Notice()));
+                          context, MaterialPageRoute(builder: (context) => const Notice()));
                     },
 
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Notice",
@@ -222,7 +219,7 @@ class _SahrIftarState extends State<SahrIftar> {
                       ),
                     ),
                   ),
-                  ListTile(
+                  const ListTile(
                     // leading: Icon(Icons.message),
                     title: Padding(
                       padding: EdgeInsets.only(left: 8),
@@ -239,11 +236,11 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Trustee()));
+                          context, MaterialPageRoute(builder: (context) => const Trustee()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Trustee",
@@ -259,11 +256,11 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+                          context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Privacy Policy",
@@ -278,11 +275,11 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => TermsAndCondition()));
+                          context, MaterialPageRoute(builder: (context) => const TermsAndCondition()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Terms & Condition",
@@ -297,11 +294,11 @@ class _SahrIftarState extends State<SahrIftar> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => registration()));
+                          context, MaterialPageRoute(builder: (context) => const registration()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Logout",

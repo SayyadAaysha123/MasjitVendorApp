@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:masjit_vendor_app/feature/presentation/slider.dart';
 
 import '../../localclass/masjit_vendor_colors.dart';
@@ -25,8 +23,8 @@ var itemsCity = [
   'watermelon',
   'Pineapple'
 ];
-String? theArea = null;
-String? theCity = null;
+String? theArea;
+String? theCity;
 
 class _registrationState extends State<registration> {
   @override
@@ -53,7 +51,7 @@ class _registrationState extends State<registration> {
                 child: MainHeading(
                     SizeConfig.screenHeight, SizeConfig.screenWidth),
               ),
-              Container(
+              SizedBox(
                 height: SizeConfig.screenHeight * 0.9,
                 child: ListView(
                   children: [
@@ -175,7 +173,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.only(
                       left: parentWidth * 0.03, top: parentHeight * 0.009),
-                  child: Text("Email Id"),
+                  child: const Text("Email Id"),
                 ),
               ],
             ),
@@ -268,7 +266,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.only(
                       left: parentWidth * 0.03, top: parentHeight * 0.009),
-                  child: Text("Password"),
+                  child: const Text("Password"),
                 ),
               ],
             ),
@@ -392,7 +390,7 @@ class _registrationState extends State<registration> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: parentWidth * 0.03),
-                          child: Text("+91"),
+                          child: const Text("+91"),
                         ),
                       ],
                     ),
@@ -489,7 +487,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.only(
                       left: parentWidth * 0.03, top: parentHeight * 0.009),
-                  child: Text("Masjit Name"),
+                  child: const Text("Masjit Name"),
                 ),
               ],
             ),
@@ -581,7 +579,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.only(
                       left: parentWidth * 0.03, top: parentHeight * 0.009),
-                  child: Text("Imam Name"),
+                  child: const Text("Imam Name"),
                 ),
               ],
             ),
@@ -673,7 +671,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.only(
                       left: parentWidth * 0.03, top: parentHeight * 0.009),
-                  child: Text("Imam Number"),
+                  child: const Text("Imam Number"),
                 ),
               ],
             ),
@@ -765,7 +763,7 @@ class _registrationState extends State<registration> {
                 Padding(
                   padding: EdgeInsets.only(
                       left: parentWidth * 0.03, top: parentHeight * 0.009),
-                  child: Text("Address"),
+                  child: const Text("Address"),
                 ),
               ],
             ),
@@ -863,7 +861,7 @@ class _registrationState extends State<registration> {
                   Padding(
                     padding: EdgeInsets.only(
                         left: parentWidth * 0.03, top: parentHeight * 0.009),
-                    child: Text("Area"),
+                    child: const Text("Area"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: parentHeight * 0.009, left: parentWidth * 0.025,
@@ -877,7 +875,7 @@ class _registrationState extends State<registration> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
                           value: theArea,
-                          icon: Icon(Icons.keyboard_arrow_down),
+                          icon: const Icon(Icons.keyboard_arrow_down),
                           items: <String>[
                             'pune',
                             'mumbai',
@@ -920,7 +918,7 @@ class _registrationState extends State<registration> {
                     padding: EdgeInsets.only(
                         left: parentWidth * 0.03,
                         top: parentHeight * 0.009),
-                    child: Text("City"),
+                    child: const Text("City"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -940,7 +938,7 @@ class _registrationState extends State<registration> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             value: theCity,
-                            icon: Icon(Icons.keyboard_arrow_down),
+                            icon: const Icon(Icons.keyboard_arrow_down),
                             items: <String>[
                               'pune',
                               'mumbai',
@@ -1018,7 +1016,7 @@ class _registrationState extends State<registration> {
                   Padding(
                     padding: EdgeInsets.only(
                         left: parentWidth * 0.03, top: parentHeight * 0.009),
-                    child: Text("State"),
+                    child: const Text("State"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: parentHeight * 0.009, left: parentWidth * 0.025,
@@ -1032,7 +1030,7 @@ class _registrationState extends State<registration> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton(
                           value: theArea,
-                          icon: Icon(Icons.keyboard_arrow_down),
+                          icon: const Icon(Icons.keyboard_arrow_down),
                           items: <String>[
                             'pune',
                             'mumbai',
@@ -1075,7 +1073,7 @@ class _registrationState extends State<registration> {
                     padding: EdgeInsets.only(
                         left: parentWidth * 0.03,
                         top: parentHeight * 0.009),
-                    child: Text("Country"),
+                    child: const Text("Country"),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -1095,7 +1093,7 @@ class _registrationState extends State<registration> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                             value: theCity,
-                            icon: Icon(Icons.keyboard_arrow_down),
+                            icon: const Icon(Icons.keyboard_arrow_down),
                             items: <String>[
                               'pune',
                               'mumbai',
@@ -1165,7 +1163,7 @@ class _registrationState extends State<registration> {
 
                 decoration: BoxDecoration(
 
-                    image: DecorationImage(
+                    image: const DecorationImage(
                       image:  AssetImage("assets/images/logo.png"),
                       fit: BoxFit.cover,
 
@@ -1180,7 +1178,7 @@ class _registrationState extends State<registration> {
 
               decoration: BoxDecoration(
 
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image:  AssetImage("assets/images/logo.png"),
                     fit: BoxFit.cover,
 
@@ -1194,7 +1192,7 @@ class _registrationState extends State<registration> {
 
               decoration: BoxDecoration(
 
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image:  AssetImage("assets/images/logo.png"),
                     fit: BoxFit.cover,
 
@@ -1205,7 +1203,7 @@ class _registrationState extends State<registration> {
           Padding(
               padding:  EdgeInsets.only(right: parentWidth*0.1),
               child: Container(
-                child: Image(image: AssetImage("assets/images/plusicon.png"),),
+                child: const Image(image: AssetImage("assets/images/plusicon.png"),),
               ))
         ],
 
@@ -1220,7 +1218,7 @@ class _registrationState extends State<registration> {
     return GestureDetector(
       onTap: (){
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ShareSendGalleryImage()));
+            MaterialPageRoute(builder: (context) => const ShareSendGalleryImage()));
       },
       child: Padding(
         padding:  EdgeInsets.only(top: parentHeight*0.09,left: parentWidth*0.1,right: parentWidth*0.1),
@@ -1229,7 +1227,7 @@ class _registrationState extends State<registration> {
 
 
             decoration:  BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [CommonColor.LEFT_COLOR, CommonColor.RIGHT_COLOR]),
@@ -1253,7 +1251,7 @@ class _registrationState extends State<registration> {
     return GestureDetector(
       onTap: (){
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EidCounting()));
+            MaterialPageRoute(builder: (context) => const EidCounting()));
       },
       child: Padding(
         padding:  EdgeInsets.only(top: parentHeight*0.09,left: parentWidth*0.1,right: parentWidth*0.1),

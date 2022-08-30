@@ -19,7 +19,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
             children: [
               Container(
                 height: SizeConfig.screenHeight * 0.12,
-                decoration:  BoxDecoration(
+                decoration:  const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
@@ -33,7 +33,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 child: getAddMainHeadingLayout(
                     SizeConfig.screenHeight, SizeConfig.screenWidth),
               ),
-              Container(
+              SizedBox(
                 height: SizeConfig.screenHeight * 0.88,
                 child: ListView(
                   children: [

@@ -4,11 +4,9 @@ import 'package:masjit_vendor_app/feature/presentation/slider.dart';
 import 'package:masjit_vendor_app/feature/presentation/weekly_namaz_timing.dart';
 import 'eid_counting.dart';
 import 'masjit_vendor_registration_from.dart';
-import 'Notice.dart';
 import 'Trustee.dart';
 import 'package:masjit_vendor_app/feature/presentation/Trustee.dart';
 import 'package:masjit_vendor_app/feature/presentation/privacy_policy.dart';
-import 'package:masjit_vendor_app/feature/presentation/sahr_iftar.dart';
 import 'package:masjit_vendor_app/feature/presentation/terms_and_condition.dart';
 
 import '../../localclass/masjit_vendor_colors.dart';
@@ -75,7 +73,7 @@ class _NoticeState extends State<Notice> {
             ),
           )],*/
         flexibleSpace: Container(
-          decoration:  BoxDecoration(
+          decoration:  const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -86,17 +84,17 @@ class _NoticeState extends State<Notice> {
 
 
       ),
-      body: Container(
+      body: SizedBox(
           height: SizeConfig.screenHeight * 0.90,
           child: getAddEmailLayout(
               SizeConfig.screenHeight, SizeConfig.screenWidth)),
       drawer: Padding(
         padding: EdgeInsets.only(top:SizeConfig.screenHeight*0.06),
-        child: Container(
+        child: SizedBox(
           height: SizeConfig.screenHeight * .98,
           width: SizeConfig.screenHeight * .4,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(30),
               bottomRight: Radius.circular(30.0),
             ),
@@ -104,7 +102,7 @@ class _NoticeState extends State<Notice> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 110,
                     child: DrawerHeader(
                       decoration: BoxDecoration(
@@ -132,7 +130,7 @@ class _NoticeState extends State<Notice> {
                   ListTile(
                     onTap: () {
 
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ShareSendGalleryImage() ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const ShareSendGalleryImage() ));
 
                       /* Navigator.push(
                         context,
@@ -143,7 +141,7 @@ class _NoticeState extends State<Notice> {
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Weekley Namaz Time",
@@ -157,10 +155,10 @@ class _NoticeState extends State<Notice> {
                   ),
                   ListTile(
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SahrIftar() ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const SahrIftar() ));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "SAR / IFTAR",
@@ -175,10 +173,10 @@ class _NoticeState extends State<Notice> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => EidCounting()));
+                          context, MaterialPageRoute(builder: (context) => const EidCounting()));
                     },
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Eid",
@@ -198,7 +196,7 @@ class _NoticeState extends State<Notice> {
 
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Notice",
@@ -210,7 +208,7 @@ class _NoticeState extends State<Notice> {
                       ),
                     ),
                   ),
-                  ListTile(
+                  const ListTile(
                     // leading: Icon(Icons.message),
                     title: Padding(
                       padding: EdgeInsets.only(left: 8),
@@ -227,11 +225,11 @@ class _NoticeState extends State<Notice> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Trustee()));
+                          context, MaterialPageRoute(builder: (context) => const Trustee()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Trustee",
@@ -247,11 +245,11 @@ class _NoticeState extends State<Notice> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+                          context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Privacy Policy",
@@ -266,11 +264,11 @@ class _NoticeState extends State<Notice> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => TermsAndCondition()));
+                          context, MaterialPageRoute(builder: (context) => const TermsAndCondition()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Terms & Condition",
@@ -285,11 +283,11 @@ class _NoticeState extends State<Notice> {
                   ListTile(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => registration()));
+                          context, MaterialPageRoute(builder: (context) => const registration()));
                     },
 
                     // leading: Icon(Icons.message),
-                    title: Padding(
+                    title: const Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
                         "Logout",
@@ -317,7 +315,7 @@ class _NoticeState extends State<Notice> {
         GestureDetector(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WeeklyNamazTiming()));
+                MaterialPageRoute(builder: (context) => const WeeklyNamazTiming()));
 
           },
           onDoubleTap: () {},
