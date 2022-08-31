@@ -1,11 +1,11 @@
-class WeeklyNamaz {
+class NamazTime {
   String? day;
   String? azan;
   String? jammt;
 
-  WeeklyNamaz({this.day, this.azan, this.jammt});
+  NamazTime({this.day, this.azan, this.jammt});
 
-  WeeklyNamaz.fromJson(Map<String, dynamic> json) {
+  NamazTime.fromJson(Map<String, dynamic> json) {
     day = json['day'];
     azan = json['azan'];
     jammt = json['jammt'];

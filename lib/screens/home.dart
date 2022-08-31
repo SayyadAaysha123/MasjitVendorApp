@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/screens/sahr.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
-import 'package:masjit_vendor_app/screens/namaz_time.dart';
+import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/trustee.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String _title = 'Weekly Namaz';
   final int _page = 0;
-  Widget _widget = const NamazTime();
+  Widget _widget = ManageTime();
   List<Widget> _actions = <Widget>[];
 
   @override
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
     switch (page) {
       case 0:
         _title = 'Weekley Namaz Time';
-        _widget = const NamazTime();
+        _widget = ManageTime();
         _actions = [];
         break;
       case 1:
@@ -60,10 +60,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     builder: (context) {
-                      return FractionallySizedBox(
-                        heightFactor: 0.7,
-                        child: EditTrustee(),
-                      );
+                      return EditTrustee();
                     });
               },
               icon: const Icon(Icons.add_circle))

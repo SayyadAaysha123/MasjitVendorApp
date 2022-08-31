@@ -9,17 +9,15 @@ class Sahr extends StatefulWidget {
 }
 
 class _SahrState extends State<Sahr> {
+  String _sahr = '5:30 AM';
+  String _iftar = '5:30 AM';
+
   @override
   Widget build(BuildContext context) {
     TextStyle? _textStyle = Theme.of(context).textTheme.subtitle2;
-    int _index = 0;
-    String _sahr = '5:30 AM';
-    String _iftar = '5:30 AM';
-    String _time = '';
 
     _showBottomSheet(int i) {
-      _index = i;
-      showModalBottomSheet(
+      Future<String?> result = showModalBottomSheet<String>(
           context: context,
           isScrollControlled: true,
           shape: const RoundedRectangleBorder(
@@ -29,35 +27,36 @@ class _SahrState extends State<Sahr> {
             ),
           ),
           builder: (context) {
-            return FractionallySizedBox(
-              heightFactor: 0.3,
-              child: Column(children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * .2,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.time,
-                    onDateTimeChanged: (DateTime newTime) {
-                      setState(() {
-                        _time = '''${newTime.hour}:${newTime.minute}''';
-                      });
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_index == 0) {
-                      _sahr = _time;
-                    } else {
-                      _iftar = _time;
-                    }
-
-                    setState(() {});
+            String? _time;
+            return Column(mainAxisSize: MainAxisSize.min, children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .2,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  onDateTimeChanged: (DateTime newTime) {
+                    _time = '''${newTime.hour}:${newTime.minute}''';
+                    print(_time);
                   },
-                  child: const Text('save'),
-                )
-              ]),
-            );
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  print(_time);
+                  Navigator.of(context).pop(_time);
+                },
+                child: const Text('save'),
+              )
+            ]);
           });
+
+      result.then((value) => setState(() {
+            print('this is $value');
+            if (i == 0) {
+              _sahr = value ?? '';
+            } else {
+              _iftar = value ?? '';
+            }
+          }));
     }
 
     return Column(
