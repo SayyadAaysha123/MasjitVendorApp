@@ -4,7 +4,7 @@ import 'package:masjit_vendor_app/model/trustee.dart';
 class EditTrustee extends StatelessWidget {
   EditTrustee({Key? key, this.trustee}) : super(key: key);
 
-  Trustee? trustee;
+  final Trustee? trustee;
 
   final _nameEditController = TextEditingController();
   final _designationEditController = TextEditingController();
@@ -12,6 +12,10 @@ class EditTrustee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _nameEditController.text = trustee?.name ?? '';
+    _designationEditController.text = trustee?.designation ?? '';
+    _contactEditController.text = trustee?.contact ?? '';
+
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Padding(
@@ -34,7 +38,7 @@ class EditTrustee extends StatelessWidget {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter Name',
-                hintText: 'Enter Your Name',
+                hintText: 'Enter Name',
               ),
             ),
             const SizedBox(
@@ -44,8 +48,8 @@ class EditTrustee extends StatelessWidget {
               controller: _designationEditController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Enter Name',
-                hintText: 'Enter Your Name',
+                labelText: 'Enter Designation',
+                hintText: 'Enter Designation',
               ),
             ),
             const SizedBox(
@@ -55,14 +59,24 @@ class EditTrustee extends StatelessWidget {
               controller: _contactEditController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Enter Name',
-                hintText: 'Enter Your Name',
+                labelText: 'Enter Contact',
+                hintText: 'Enter Contact',
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text('Save'))
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(trustee != null
+                      ? Trustee(
+                          name: _nameEditController.text,
+                          designation: _designationEditController.text,
+                          contact: _contactEditController.text,
+                        )
+                      : null);
+                },
+                child: const Text('Save'))
           ],
         ),
       ),

@@ -1,4 +1,4 @@
-class model {
+class Model {
   List<WeeklyNamaz>? weeklyNamaz;
   List<Trustee>? trustee;
   List<Ed>? ed;
@@ -8,7 +8,7 @@ class model {
   String? sahr;
   String? iftar;
 
-  model(
+  Model(
       {this.weeklyNamaz,
       this.trustee,
       this.ed,
@@ -18,7 +18,7 @@ class model {
       this.sahr,
       this.iftar});
 
-  model.fromJson(Map<String, dynamic> json) {
+  Model.fromJson(Map<String, dynamic> json) {
     if (json['weekly_namaz'] != null) {
       weeklyNamaz = <WeeklyNamaz>[];
       json['weekly_namaz'].forEach((v) {
@@ -81,7 +81,7 @@ class WeeklyNamaz {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['day'] = day;
     data['azan'] = azan;
     data['jammt'] = jammt;
@@ -128,7 +128,7 @@ class Ed {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     if (jammat != null) {
       data['jammat'] = jammat!.map((v) => v.toJson()).toList();
@@ -170,7 +170,7 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['lat'] = lat;
     data['long'] = long;
     data['place'] = place;

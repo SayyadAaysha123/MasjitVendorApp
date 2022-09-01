@@ -11,7 +11,7 @@ class NamazTimeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? _textStyle = Theme.of(context).textTheme.headline6;
+    TextStyle? _textStyle = Theme.of(context).textTheme.bodyLarge;
     return Card(
       margin: const EdgeInsets.all(8),
       shape: RoundedRectangleBorder(

@@ -3,19 +3,51 @@ import 'package:masjit_vendor_app/model/namaz_time.dart';
 import 'package:masjit_vendor_app/widget/edit_namz_time.dart';
 import 'package:masjit_vendor_app/widget/namaz_time_card.dart';
 
-class ManageTime extends StatelessWidget {
-  ManageTime({Key? key}) : super(key: key);
+class ManageTime extends StatefulWidget {
+  const ManageTime({Key? key}) : super(key: key);
+
+  @override
+  State<ManageTime> createState() => _ManageTimeState();
+}
+
+class _ManageTimeState extends State<ManageTime> {
   final _time = [
-    NamazTime(day: 'FAJR', azan: '05:00', jammt: '05:30'),
-    NamazTime(day: 'ZUHAR', azan: '01:00', jammt: '01:30'),
-    NamazTime(day: 'ASR', azan: '05:00', jammt: '05:30'),
-    NamazTime(day: 'MAGHRIB', azan: '06:30', jammt: '06:35'),
-    NamazTime(day: 'ISHA', azan: '08:30', jammt: '08:45'),
-    NamazTime(day: 'JUMA', azan: '01:45', jammt: '02:30'),
+    NamazTime(day: 'FAJR', azan: '05:00 AM', jammt: '05:30 AM'),
+    NamazTime(day: 'ZUHAR', azan: '01:00 AM', jammt: '01:30 AM'),
+    NamazTime(day: 'ASR', azan: '05:00 AM', jammt: '05:30 AM'),
+    NamazTime(day: 'MAGHRIB', azan: '06:30 AM', jammt: '06:35 AM'),
+    NamazTime(day: 'ISHA', azan: '08:30 AM', jammt: '08:45 AM'),
+    NamazTime(day: 'JUMA', azan: '01:45 AM', jammt: '02:30 AM'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    _show(int i) {
+      Future<NamazTime?> newTime = showModalBottomSheet<NamazTime?>(
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          builder: (context) {
+            return FractionallySizedBox(
+              heightFactor: 0.7,
+              child: EditNamazTime(time: _time[i]),
+            );
+          });
+
+      newTime.then((value) {
+        if (value != null) {
+          setState(() {
+            _time[i] = value;
+          });
+        }
+      });
+    }
+
     return ListView(
       padding: const EdgeInsets.symmetric(
         horizontal: 8,
@@ -23,26 +55,12 @@ class ManageTime extends StatelessWidget {
       ),
       physics: const BouncingScrollPhysics(),
       children: [
-        for (var time in _time)
+        for (int i = 0; i < _time.length; i++)
           InkWell(
             onTap: () {
-              showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  builder: (context) {
-                    return const FractionallySizedBox(
-                      heightFactor: 0.7,
-                      child: EditNamazTime(),
-                    );
-                  });
+              _show(i);
             },
-            child: NamazTimeCard(time: time),
+            child: NamazTimeCard(time: _time[i]),
           ),
       ],
     );

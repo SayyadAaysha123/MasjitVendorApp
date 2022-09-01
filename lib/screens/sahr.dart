@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Sahr extends StatefulWidget {
   const Sahr({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _SahrState extends State<Sahr> {
   Widget build(BuildContext context) {
     TextStyle? _textStyle = Theme.of(context).textTheme.subtitle2;
 
-    _showBottomSheet(int i) {
+    _showBottomSheet(int i, String time) {
       Future<String?> result = showModalBottomSheet<String>(
           context: context,
           isScrollControlled: true,
@@ -33,15 +34,14 @@ class _SahrState extends State<Sahr> {
                 height: MediaQuery.of(context).size.height * .2,
                 child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.time,
+                  initialDateTime: DateFormat('jm').parse(time),
                   onDateTimeChanged: (DateTime newTime) {
-                    _time = '''${newTime.hour}:${newTime.minute}''';
-                    print(_time);
+                    _time = DateFormat.jm().format(newTime);
                   },
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  print(_time);
                   Navigator.of(context).pop(_time);
                 },
                 child: const Text('save'),
@@ -50,11 +50,12 @@ class _SahrState extends State<Sahr> {
           });
 
       result.then((value) => setState(() {
-            print('this is $value');
+            if (value == null) return;
+
             if (i == 0) {
-              _sahr = value ?? '';
+              _sahr = value;
             } else {
-              _iftar = value ?? '';
+              _iftar = value;
             }
           }));
     }
@@ -64,7 +65,7 @@ class _SahrState extends State<Sahr> {
         Card(
           child: InkWell(
             onTap: () {
-              _showBottomSheet(0);
+              _showBottomSheet(0, _sahr);
             },
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -83,7 +84,7 @@ class _SahrState extends State<Sahr> {
         Card(
           child: InkWell(
             onTap: () {
-              _showBottomSheet(1);
+              _showBottomSheet(1, _iftar);
             },
             child: Padding(
               padding: const EdgeInsets.all(20),

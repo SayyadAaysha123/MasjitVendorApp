@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:masjit_vendor_app/model/namaz_time.dart';
 
 class EditNamazTime extends StatefulWidget {
   const EditNamazTime({
     Key? key,
+    required this.time,
   }) : super(key: key);
+
+  final NamazTime time;
 
   @override
   State<EditNamazTime> createState() => _EditNamazTimeState();
@@ -30,7 +35,19 @@ class _EditNamazTimeState extends State<EditNamazTime> {
         child: _selection.isNotEmpty
             ? CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.time,
-                onDateTimeChanged: (DateTime newTime) {},
+                initialDateTime: DateFormat('jm').parse(_selection == 'Azan'
+                    ? widget.time.azan!
+                    : widget.time.jammt!),
+                onDateTimeChanged: (DateTime newTime) {
+                  DateFormat.jm().format(newTime);
+                  if (_selection == 'Azan') {
+                    widget.time.azan = DateFormat.jm().format(newTime);
+                  } else {
+                    widget.time.jammt = DateFormat.jm().format(newTime);
+                  }
+
+                  setState(() {});
+                },
               )
             : const Center(child: Text('Choose to edit')),
       ),
@@ -47,7 +64,7 @@ class _EditNamazTimeState extends State<EditNamazTime> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(
-              'FAZR',
+              widget.time.day!,
               style: _textStyle,
             ),
           ),
@@ -55,18 +72,18 @@ class _EditNamazTimeState extends State<EditNamazTime> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(children: [
               Text(
-                'FAZR',
+                'Azan',
                 style: _textStyle,
               ),
               const Spacer(),
               Text(
-                'FAZR',
+                widget.time.azan!,
                 style: _textStyle,
               ),
               IconButton(
                   onPressed: () {
                     setState(() {
-                      _selection = 'azan';
+                      _selection = 'Azan';
                     });
                   },
                   icon: const Icon(
@@ -80,18 +97,18 @@ class _EditNamazTimeState extends State<EditNamazTime> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(children: [
               Text(
-                'FAZR',
+                'Jammat',
                 style: _textStyle,
               ),
               const Spacer(),
               Text(
-                'FAZR',
+                widget.time.jammt!,
                 style: _textStyle,
               ),
               IconButton(
                   onPressed: () {
                     setState(() {
-                      _selection = 'jammat';
+                      _selection = 'Jammat';
                     });
                   },
                   icon: const Icon(
@@ -116,13 +133,19 @@ class _EditNamazTimeState extends State<EditNamazTime> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: const Text('Cancle'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red),
                     ),
                   ),
-                  ElevatedButton(onPressed: () {}, child: const Text('Save')),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(widget.time);
+                      },
+                      child: const Text('Save')),
                 ]),
           )
         ]),
