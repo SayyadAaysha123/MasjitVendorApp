@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -80,20 +79,14 @@ class _OnBoardingState extends State<OnBoarding> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const Home(),
+                    builder: (context) => const Registration(),
                   ),
                 );
               },
               child: const Text('Buttoon'),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const Registration(),
-                  ),
-                );
-              },
+              onPressed: () {},
               child: const Text('Buttoon'),
             )
           ],

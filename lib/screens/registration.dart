@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:masjit_vendor_app/screens/get_location.dart';
+import 'package:masjit_vendor_app/screens/home.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -9,6 +13,9 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   final _form = GlobalKey<FormState>();
+  String _address = '';
+  late Placemark address;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -23,82 +30,113 @@ class _RegistrationState extends State<Registration> {
           child: Column(children: [
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
+                label: Text('Email Id'),
                 border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
               ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              obscureText: true,
+              decoration: const InputDecoration(
+                label: Text('Password'),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
+                label: Text('Phone No.'),
                 border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
               ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
+                label: Text('Masjid Name'),
                 border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
               ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
+                label: Text('Imam Name'),
                 border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
               ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
+                label: Text('Imam Number'),
                 border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
               ),
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
+            const SizedBox(
+              height: 10,
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Future<Placemark?> result =
+                    Navigator.of(context).push<Placemark>(
+                  MaterialPageRoute(
+                    builder: (context) => const GetLocation(),
+                  ),
+                );
+
+                result.then((value) {
+                  if (value == null) return;
+                  setState(() {
+                    address = value;
+                    _address =
+                        '${address.name}, ${address.street}, ${address.subLocality},\n ${address.locality}, ${address.postalCode},\n ${address.administrativeArea}, ${address.country}';
+                    setState(() {});
+                  });
+                });
+              },
+              child: const Text(
+                'Select Location',
               ),
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
+            const SizedBox(
+              height: 10,
+            ),
+            _address.isNotEmpty ? Text(_address) : const SizedBox.shrink(),
+            const SizedBox(
+              height: 10,
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Future<List<XFile>?> images = _picker.pickMultiImage();
+                images.then((value) {
+                  if (value == null) return;
+                });
+              },
+              child: const Text(
+                'Select Images',
               ),
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Label text',
-                errorText: 'Error message',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(
-                  Icons.error,
-                ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const Home(),
+                  ),
+                );
+              },
+              child: const Text(
+                'Register',
               ),
             ),
           ]),

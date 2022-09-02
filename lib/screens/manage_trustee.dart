@@ -48,7 +48,7 @@ class _ManageTrusteeState extends State<ManageTrustee> {
             physics: const BouncingScrollPhysics(),
             children: [
               for (int i = 0; i < _trustee.length; i++)
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     _show(i);
                   },

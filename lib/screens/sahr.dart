@@ -63,7 +63,7 @@ class _SahrState extends State<Sahr> {
     return Column(
       children: [
         Card(
-          child: InkWell(
+          child: GestureDetector(
             onTap: () {
               _showBottomSheet(0, _sahr);
             },
@@ -82,7 +82,7 @@ class _SahrState extends State<Sahr> {
           ),
         ),
         Card(
-          child: InkWell(
+          child: GestureDetector(
             onTap: () {
               _showBottomSheet(1, _iftar);
             },

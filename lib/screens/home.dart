@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
+import 'package:masjit_vendor_app/screens/manage_notification.dart';
 import 'package:masjit_vendor_app/screens/sahr.dart';
+import 'package:masjit_vendor_app/widget/edit_notice.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/manage_trustee.dart';
@@ -48,6 +50,24 @@ class _HomeState extends State<Home> {
         break;
       case 3:
         _title = 'Notice';
+        _widget = const ManageNotification();
+        _actions = [
+          IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    builder: (context) {
+                      return EditNotice();
+                    });
+              },
+              icon: const Icon(Icons.add_circle))
+        ];
         break;
       case 4:
         _title = 'Trustee';
@@ -59,9 +79,8 @@ class _HomeState extends State<Home> {
                     context: context,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
                       ),
                     ),
                     builder: (context) {

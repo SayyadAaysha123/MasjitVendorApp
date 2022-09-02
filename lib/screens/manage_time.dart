@@ -56,7 +56,7 @@ class _ManageTimeState extends State<ManageTime> {
       physics: const BouncingScrollPhysics(),
       children: [
         for (int i = 0; i < _time.length; i++)
-          InkWell(
+          GestureDetector(
             onTap: () {
               _show(i);
             },

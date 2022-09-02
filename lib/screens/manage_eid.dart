@@ -98,7 +98,7 @@ class _ManageEidState extends State<ManageEid> {
             physics: const BouncingScrollPhysics(),
             children: [
               for (int i = 0; i < _eid.length; i++)
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     _show(i);
                   },
