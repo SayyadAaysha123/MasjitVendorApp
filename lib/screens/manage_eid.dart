@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:masjit_vendor_app/model/ed.dart';
-import 'package:masjit_vendor_app/model/jammat.dart';
+import 'package:masjit_vendor_app/data/model/eid.dart';
+import 'package:masjit_vendor_app/data/model/jammat.dart';
 import 'package:masjit_vendor_app/widget/eid_card.dart';
 
 class ManageEid extends StatefulWidget {
@@ -14,13 +14,13 @@ class ManageEid extends StatefulWidget {
 
 class _ManageEidState extends State<ManageEid> {
   final _eid = [
-    Ed(name: 'EID AL - FITR', jammat: [
-      Jammat(name: '1st Jamaat', time: '08:30'),
-      Jammat(name: '2nd Jamaat', time: '09:30'),
+    Eid(name: 'EID AL - FITR', jammat: [
+      '08:30 AM',
+      '09:30 AM',
     ]),
-    Ed(name: 'EID AL - ADHA', jammat: [
-      Jammat(name: '1st Jamaat', time: '07:30'),
-      Jammat(name: '2nd Jamaat', time: '08:30'),
+    Eid(name: 'EID AL - ADHA', jammat: [
+      '07:30 AM',
+      '08:30 AM',
     ]),
   ];
   final _nameEditController = TextEditingController();
@@ -30,7 +30,7 @@ class _ManageEidState extends State<ManageEid> {
   Widget build(BuildContext context) {
     _show(int i) {
       _selected = i;
-      Future<Jammat?> result = showModalBottomSheet<Jammat>(
+      Future<String?> result = showModalBottomSheet<String>(
           context: context,
           isScrollControlled: true,
           shape: const RoundedRectangleBorder(

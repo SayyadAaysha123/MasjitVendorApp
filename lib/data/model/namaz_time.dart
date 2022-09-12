@@ -1,21 +1,21 @@
-class NamazTime {
+class WeeklyNamaz {
   String? day;
   String? azan;
-  String? jammt;
+  String? jammat;
 
-  NamazTime({this.day, this.azan, this.jammt});
+  WeeklyNamaz({this.day, this.azan, this.jammat});
 
-  NamazTime.fromJson(Map<String, dynamic> json) {
+  WeeklyNamaz.fromJson(Map<String, dynamic> json) {
     day = json['day'];
     azan = json['azan'];
-    jammt = json['jammt'];
+    jammat = json['jammat'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['day'] = day;
     data['azan'] = azan;
-    data['jammt'] = jammt;
+    data['jammat'] = jammat;
     return data;
   }
 }

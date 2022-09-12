@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
+import 'package:masjit_vendor_app/data/model/place.dart';
 
 class GetLocation extends StatefulWidget {
   const GetLocation({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class GetLocationState extends State<GetLocation> {
   bool locationCaputed = false;
   String _address = '';
   late Placemark address;
+  late Place place;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(18.563072, 73.8000896),
@@ -45,6 +47,17 @@ class GetLocationState extends State<GetLocation> {
           address = value[0];
           _address =
               '${address.name}, ${address.street}, ${address.subLocality}, ${address.locality}, ${address.postalCode}, ${address.administrativeArea}, ${address.country}';
+
+          place = Place(
+            administrativeArea: address.administrativeArea,
+            street: address.street,
+            lat: target.latitude.toString(),
+            long: target.longitude.toString(),
+            locality: address.locality,
+            subLocality: address.subLocality,
+            country: address.country,
+            postalCode: address.postalCode,
+          );
           setState(() {});
         },
       );
@@ -123,7 +136,7 @@ class GetLocationState extends State<GetLocation> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop(address);
+                      Navigator.of(context).pop(place);
                     },
                     child: const Text('Save Address'),
                   )

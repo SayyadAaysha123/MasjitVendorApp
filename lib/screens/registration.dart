@@ -1,8 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:masjit_vendor_app/data/dio_client.dart';
+import 'package:masjit_vendor_app/data/model/place.dart';
 import 'package:masjit_vendor_app/screens/get_location.dart';
-import 'package:masjit_vendor_app/screens/home.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -13,8 +14,10 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   final _form = GlobalKey<FormState>();
+  final _images = <XFile>[];
   String _address = '';
-  late Placemark address;
+  final fields = <String, dynamic>{};
+  late Place address;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -29,10 +32,14 @@ class _RegistrationState extends State<Registration> {
           padding: const EdgeInsets.all(16.0),
           child: Column(children: [
             TextFormField(
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 label: Text('Email Id'),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                fields['email'] = value;
+              },
             ),
             const SizedBox(
               height: 10,
@@ -43,50 +50,68 @@ class _RegistrationState extends State<Registration> {
                 label: Text('Password'),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                fields['password'] = value;
+              },
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
+              keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 label: Text('Phone No.'),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                fields['phone'] = value;
+              },
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
+              keyboardType: TextInputType.name,
               decoration: const InputDecoration(
                 label: Text('Masjid Name'),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                fields['masjid_name'] = value;
+              },
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
+              keyboardType: TextInputType.name,
               decoration: const InputDecoration(
                 label: Text('Imam Name'),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                fields['immam_name'] = value;
+              },
             ),
             const SizedBox(
               height: 10,
             ),
             TextFormField(
+              keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 label: Text('Imam Number'),
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                fields['immam_contact'] = value;
+              },
             ),
             const SizedBox(
               height: 10,
             ),
             OutlinedButton(
               onPressed: () {
-                Future<Placemark?> result =
-                    Navigator.of(context).push<Placemark>(
+                Future<Place?> result = Navigator.of(context).push<Place>(
                   MaterialPageRoute(
                     builder: (context) => const GetLocation(),
                   ),
@@ -97,7 +122,7 @@ class _RegistrationState extends State<Registration> {
                   setState(() {
                     address = value;
                     _address =
-                        '${address.name}, ${address.street}, ${address.subLocality},\n ${address.locality}, ${address.postalCode},\n ${address.administrativeArea}, ${address.country}';
+                        '${address.street}, ${address.subLocality},\n ${address.locality}, ${address.postalCode},\n ${address.administrativeArea}, ${address.country}';
                     setState(() {});
                   });
                 });
@@ -116,8 +141,16 @@ class _RegistrationState extends State<Registration> {
             OutlinedButton(
               onPressed: () {
                 Future<List<XFile>?> images = _picker.pickMultiImage();
+
                 images.then((value) {
                   if (value == null) return;
+                  _images.addAll(value);
+
+                  var files = [];
+                  _images.map((e) => MultipartFile.fromFile(e.path)
+                      .then((value) => files.add(value)));
+
+                  fields['images'] = files;
                 });
               },
               child: const Text(
@@ -129,11 +162,21 @@ class _RegistrationState extends State<Registration> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const Home(),
-                  ),
-                );
+                var data = FormData.fromMap({...address.toJson(), ...fields});
+
+                var finalData = DioClient().register(data);
+                finalData.then(
+                  (value) {
+                    if (value.statusCode == 200) {
+                      print(value.data);
+                    } else {
+                      print(value.statusMessage);
+                    }
+                  },
+                ).onError((error, stackTrace) {
+                  error = error as DioError;
+                  print(error.response);
+                });
               },
               child: const Text(
                 'Register',

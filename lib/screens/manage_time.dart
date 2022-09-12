@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/model/namaz_time.dart';
+import 'package:masjit_vendor_app/data/model/namaz_time.dart';
 import 'package:masjit_vendor_app/widget/edit_namz_time.dart';
 import 'package:masjit_vendor_app/widget/namaz_time_card.dart';
 
@@ -12,18 +12,18 @@ class ManageTime extends StatefulWidget {
 
 class _ManageTimeState extends State<ManageTime> {
   final _time = [
-    NamazTime(day: 'FAJR', azan: '05:00 AM', jammt: '05:30 AM'),
-    NamazTime(day: 'ZUHAR', azan: '01:00 AM', jammt: '01:30 AM'),
-    NamazTime(day: 'ASR', azan: '05:00 AM', jammt: '05:30 AM'),
-    NamazTime(day: 'MAGHRIB', azan: '06:30 AM', jammt: '06:35 AM'),
-    NamazTime(day: 'ISHA', azan: '08:30 AM', jammt: '08:45 AM'),
-    NamazTime(day: 'JUMA', azan: '01:45 AM', jammt: '02:30 AM'),
+    WeeklyNamaz(day: 'FAJR', azan: '05:00 AM', jammat: '05:30 AM'),
+    WeeklyNamaz(day: 'ZUHAR', azan: '01:00 AM', jammat: '01:30 AM'),
+    WeeklyNamaz(day: 'ASR', azan: '05:00 AM', jammat: '05:30 AM'),
+    WeeklyNamaz(day: 'MAGHRIB', azan: '06:30 AM', jammat: '06:35 AM'),
+    WeeklyNamaz(day: 'ISHA', azan: '08:30 AM', jammat: '08:45 AM'),
+    WeeklyNamaz(day: 'JUMA', azan: '01:45 AM', jammat: '02:30 AM'),
   ];
 
   @override
   Widget build(BuildContext context) {
     _show(int i) {
-      Future<NamazTime?> newTime = showModalBottomSheet<NamazTime?>(
+      Future<WeeklyNamaz?> newTime = showModalBottomSheet<WeeklyNamaz?>(
           context: context,
           isScrollControlled: true,
           shape: const RoundedRectangleBorder(

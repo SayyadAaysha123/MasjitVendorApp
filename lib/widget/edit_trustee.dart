@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/model/trustee.dart';
+import 'package:masjit_vendor_app/data/model/trustee.dart';
 
 class EditTrustee extends StatelessWidget {
   EditTrustee({Key? key, this.trustee}) : super(key: key);

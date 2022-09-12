@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:masjit_vendor_app/model/namaz_time.dart';
+import 'package:masjit_vendor_app/data/model/namaz_time.dart';
 
 class EditNamazTime extends StatefulWidget {
   const EditNamazTime({
@@ -9,7 +9,7 @@ class EditNamazTime extends StatefulWidget {
     required this.time,
   }) : super(key: key);
 
-  final NamazTime time;
+  final WeeklyNamaz time;
 
   @override
   State<EditNamazTime> createState() => _EditNamazTimeState();
@@ -37,13 +37,13 @@ class _EditNamazTimeState extends State<EditNamazTime> {
                 mode: CupertinoDatePickerMode.time,
                 initialDateTime: DateFormat('jm').parse(_selection == 'Azan'
                     ? widget.time.azan!
-                    : widget.time.jammt!),
+                    : widget.time.jammat!),
                 onDateTimeChanged: (DateTime newTime) {
                   DateFormat.jm().format(newTime);
                   if (_selection == 'Azan') {
                     widget.time.azan = DateFormat.jm().format(newTime);
                   } else {
-                    widget.time.jammt = DateFormat.jm().format(newTime);
+                    widget.time.jammat = DateFormat.jm().format(newTime);
                   }
 
                   setState(() {});
@@ -102,7 +102,7 @@ class _EditNamazTimeState extends State<EditNamazTime> {
               ),
               const Spacer(),
               Text(
-                widget.time.jammt!,
+                widget.time.jammat!,
                 style: _textStyle,
               ),
               IconButton(

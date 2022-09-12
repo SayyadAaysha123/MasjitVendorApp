@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/model/ed.dart';
+import 'package:masjit_vendor_app/data/model/eid.dart';
 
 class EidCard extends StatelessWidget {
   const EidCard({
@@ -7,7 +7,7 @@ class EidCard extends StatelessWidget {
     required this.eid,
   }) : super(key: key);
 
-  final Ed eid;
+  final Eid eid;
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +58,9 @@ class EidCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  eid.jammat![i].name!,
+                  eid.jammat![i],
                   style: _textStyle,
                 ),
-                Text(
-                  eid.jammat![i].time!,
-                  style: _textStyle,
-                )
               ],
             ),
           ),

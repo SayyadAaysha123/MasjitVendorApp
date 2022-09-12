@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/model/trustee.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/widget/trustee_card.dart';
+
+import '../data/model/trustee.dart';
 
 class ManageTrustee extends StatefulWidget {
   const ManageTrustee({Key? key}) : super(key: key);

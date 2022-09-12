@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/model/namaz_time.dart';
+import 'package:masjit_vendor_app/data/model/namaz_time.dart';
 
 class NamazTimeCard extends StatelessWidget {
   const NamazTimeCard({
@@ -7,7 +7,7 @@ class NamazTimeCard extends StatelessWidget {
     required this.time,
   }) : super(key: key);
 
-  final NamazTime time;
+  final WeeklyNamaz time;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class NamazTimeCard extends StatelessWidget {
                 style: _textStyle,
               ),
               Text(
-                time.jammt!,
+                time.jammat!,
                 style: _textStyle,
               )
             ],
