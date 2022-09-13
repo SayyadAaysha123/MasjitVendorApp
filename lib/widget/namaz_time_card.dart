@@ -17,7 +17,8 @@ class NamazTimeCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(children: [
+      child: Column(
+          children: [
         ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),

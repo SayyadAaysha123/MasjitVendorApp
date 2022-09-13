@@ -1,9 +1,13 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:masjit_vendor_app/data/dio_client.dart';
 import 'package:masjit_vendor_app/data/model/place.dart';
+import 'package:masjit_vendor_app/data/model/register.dart';
 import 'package:masjit_vendor_app/screens/get_location.dart';
+import 'package:masjit_vendor_app/screens/home.dart';
+import 'package:masjit_vendor_app/utils/constant.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -17,8 +21,22 @@ class _RegistrationState extends State<Registration> {
   final _images = <XFile>[];
   String _address = '';
   final fields = <String, dynamic>{};
-  late Place address;
+  Place? address;
   final ImagePicker _picker = ImagePicker();
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController masjidNameController = TextEditingController();
+  TextEditingController imamNameController = TextEditingController();
+  TextEditingController imamNumberController = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +50,7 @@ class _RegistrationState extends State<Registration> {
           padding: const EdgeInsets.all(16.0),
           child: Column(children: [
             TextFormField(
+              controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 label: Text('Email Id'),
@@ -45,6 +64,7 @@ class _RegistrationState extends State<Registration> {
               height: 10,
             ),
             TextFormField(
+              controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(
                 label: Text('Password'),
@@ -58,9 +78,10 @@ class _RegistrationState extends State<Registration> {
               height: 10,
             ),
             TextFormField(
+              controller: phoneNumberController,
               keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
-                label: Text('Phone No.'),
+                label: Text('Masjid Phone No.'),
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
@@ -71,6 +92,7 @@ class _RegistrationState extends State<Registration> {
               height: 10,
             ),
             TextFormField(
+              controller: masjidNameController,
               keyboardType: TextInputType.name,
               decoration: const InputDecoration(
                 label: Text('Masjid Name'),
@@ -84,6 +106,7 @@ class _RegistrationState extends State<Registration> {
               height: 10,
             ),
             TextFormField(
+              controller: imamNameController,
               keyboardType: TextInputType.name,
               decoration: const InputDecoration(
                 label: Text('Imam Name'),
@@ -97,6 +120,7 @@ class _RegistrationState extends State<Registration> {
               height: 10,
             ),
             TextFormField(
+              controller: imamNumberController,
               keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 label: Text('Imam Number'),
@@ -122,7 +146,7 @@ class _RegistrationState extends State<Registration> {
                   setState(() {
                     address = value;
                     _address =
-                        '${address.street}, ${address.subLocality},\n ${address.locality}, ${address.postalCode},\n ${address.administrativeArea}, ${address.country}';
+                        'Area ${address?.subLocality},\n City ${address?.locality}, \n Postal Code ${address?.postalCode},\n State ${address?.administrativeArea}, \n Country ${address?.country}';
                     setState(() {});
                   });
                 });
@@ -134,7 +158,30 @@ class _RegistrationState extends State<Registration> {
             const SizedBox(
               height: 10,
             ),
-            _address.isNotEmpty ? Text(_address) : const SizedBox.shrink(),
+            _address.isNotEmpty ?
+            Column(
+              children: [
+                // Text(_address),
+                RichText(
+                  text: TextSpan(
+                    text: ' Area : ',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                        color: Colors.black
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(text: address?.subLocality,
+                          style: TextStyle(
+                          fontSize: 9,
+                            color: Colors.black
+                      ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ) : const SizedBox.shrink(),
             const SizedBox(
               height: 10,
             ),
@@ -146,11 +193,6 @@ class _RegistrationState extends State<Registration> {
                   if (value == null) return;
                   _images.addAll(value);
 
-                  var files = [];
-                  _images.map((e) => MultipartFile.fromFile(e.path)
-                      .then((value) => files.add(value)));
-
-                  fields['images'] = files;
                 });
               },
               child: const Text(
@@ -162,20 +204,24 @@ class _RegistrationState extends State<Registration> {
             ),
             ElevatedButton(
               onPressed: () {
-                var data = FormData.fromMap({...address.toJson(), ...fields});
+                print("Hi");
+                if(address == null){
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Location")));
+                  return;
+                }
+                 var resutl = getRegisterVendors();
+                resutl.then((value) {
+                  value.data?.token;
 
-                var finalData = DioClient().register(data);
-                finalData.then(
-                  (value) {
-                    if (value.statusCode == 200) {
-                      print(value.data);
-                    } else {
-                      print(value.statusMessage);
-                    }
-                  },
-                ).onError((error, stackTrace) {
-                  error = error as DioError;
-                  print(error.response);
+                  var box = Hive.box("testBox");
+
+                  box.put(kToken, value.data?.token);
+                  box.put(kMasjid, value.data?.masjid?.toJson());
+
+                  print(" registrationToken ${box.get("token")}");
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
+
                 });
               },
               child: const Text(
@@ -187,4 +233,39 @@ class _RegistrationState extends State<Registration> {
       ),
     );
   }
+
+
+  Future<RegisterResponseModel> getRegisterVendors() async {
+    try {
+      final result = await http.post(
+        Uri.parse("http://masjid.exportica.in/api/masjid/register"),
+        body: {
+          "email": emailController.text.trim(),
+          "password": phoneNumberController.text.trim(),
+          "immam_name": imamNameController.text.trim(),
+          "masjid_name": masjidNameController.text.trim(),
+          "immam_contact": imamNumberController.text.trim(),
+          "lat": address?.lat,
+          "long": address?.long,
+          "phone": phoneNumberController.text.trim(),
+          "street": address?.street,
+          "sub_locality": address?.subLocality,
+          "locality": address?.locality,
+          "postal_code": address?.postalCode,
+          "administrative_area": address?.administrativeArea,
+          "country": address?.country
+        }
+      );
+      print("new order:" + result.body);
+
+
+
+      return registerResponseModelFromJson(result.body);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+
 }

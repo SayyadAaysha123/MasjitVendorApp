@@ -69,10 +69,7 @@ class _ManageEidState extends State<ManageEid> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(Jammat(
-                      name: _nameEditController.text,
-                      time: _time ?? DateFormat.jm().format(DateTime.now()),
-                    ));
+                    Navigator.of(context).pop(_time ?? DateFormat.jm().format(DateTime.now()));
                   },
                   child: const Text('save'),
                 )

@@ -51,19 +51,38 @@ class EidCard extends StatelessWidget {
             ),
           ),
         ),
-        for (int i = 0; i < eid.jammat!.length; i++)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  eid.jammat![i],
-                  style: _textStyle,
-                ),
-              ],
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Azan',
+                style: _textStyle,
+              ),
+              Text(
+                "5:00",
+                style: _textStyle,
+              )
+            ],
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Jammat',
+                style: _textStyle,
+              ),
+              Text(
+                '7:00',
+                style: _textStyle,
+              )
+            ],
+          ),
+        )
       ]),
     );
   }

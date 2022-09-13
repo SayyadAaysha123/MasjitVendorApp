@@ -1,8 +1,16 @@
+import 'dart:convert';
+
 import 'package:masjit_vendor_app/data/model/eid.dart';
 import 'package:masjit_vendor_app/data/model/jumma.dart';
 import 'package:masjit_vendor_app/data/model/namaz_time.dart';
 import 'package:masjit_vendor_app/data/model/place.dart';
 import 'package:masjit_vendor_app/data/model/trustee.dart';
+
+
+Masjid riderNewOrderFromJson(Map<String, dynamic> str) =>
+    Masjid.fromJson(str);
+
+String riderNewOrderToJson(Masjid data) => json.encode(data.toJson());
 
 class Masjid {
   int? id;

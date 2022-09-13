@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
+import 'package:masjit_vendor_app/utils/constant.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -10,6 +13,9 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   int _currentIndex = 0;
+
+  PageController _pageController = PageController();
+
   final _frames = [
     {
       'image': '',
@@ -30,9 +36,19 @@ class _OnBoardingState extends State<OnBoarding> {
           'Lorem Ipsum is simply dummy text of the printing and typesetting',
     },
   ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    complete() {
+      var box = Hive.box(kBoxName);
+
+      box.put(kIsOnBoardingDone, true);
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
+    }
 
     return Scaffold(
       body: Center(
@@ -41,7 +57,8 @@ class _OnBoardingState extends State<OnBoarding> {
             SizedBox(
               height: size.height * .7,
               child: PageView.builder(
-                physics: const BouncingScrollPhysics(),
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: _frames.length,
                 onPageChanged: (value) => setState(() {
                   _currentIndex = value;
@@ -77,17 +94,17 @@ class _OnBoardingState extends State<OnBoarding> {
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const Registration(),
-                  ),
-                );
+                _currentIndex < (_frames.length - 1)
+                    ? _pageController.nextPage(
+                        duration: Duration(milliseconds: 400),
+                        curve: Curves.easeIn)
+                    : complete();
               },
-              child: const Text('Buttoon'),
+              child: Text(_currentIndex < (_frames.length -1) ? 'next' : 'done'),
             ),
             TextButton(
-              onPressed: () {},
-              child: const Text('Buttoon'),
+              onPressed: complete,
+              child: const Text('Skip'),
             )
           ],
         ),

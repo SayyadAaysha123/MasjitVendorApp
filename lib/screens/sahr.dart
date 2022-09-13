@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:masjit_vendor_app/utils/constant.dart';
+import 'package:http/http.dart' as http;
 
 class Sahr extends StatefulWidget {
   const Sahr({Key? key}) : super(key: key);
@@ -12,6 +18,20 @@ class Sahr extends StatefulWidget {
 class _SahrState extends State<Sahr> {
   String _sahr = '5:30 AM';
   String _iftar = '5:30 AM';
+
+  late Box box;
+  late Masjid masjid;
+
+  @override
+  void initState() {
+    super.initState();
+
+    box = Hive.box(kBoxName);
+    var tokens = box.get(kToken, defaultValue: null);
+    masjid = Masjid.fromJson(box.get(kMasjid));
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,19 +74,29 @@ class _SahrState extends State<Sahr> {
 
             if (i == 0) {
               _sahr = value;
+              masjid.sahr = _sahr;
             } else {
               _iftar = value;
+              masjid.iftar = _iftar;
             }
+
+            updateMasjid().then((value) {
+              box.delete(kMasjid);
+              box.put(kMasjid, masjid.toJson());
+            });
+
+
           }));
     }
 
     return Column(
       children: [
-        Card(
-          child: GestureDetector(
-            onTap: () {
-              _showBottomSheet(0, _sahr);
-            },
+        GestureDetector(
+          onTap: () {
+            _showBottomSheet(0, _sahr);
+            print("Heyy");
+          },
+          child: Card(
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
@@ -81,11 +111,12 @@ class _SahrState extends State<Sahr> {
             ),
           ),
         ),
-        Card(
-          child: GestureDetector(
-            onTap: () {
-              _showBottomSheet(1, _iftar);
-            },
+        GestureDetector(
+          onTap: () {
+            print("Hii");
+            _showBottomSheet(1, _iftar);
+          },
+          child: Card(
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
@@ -103,4 +134,26 @@ class _SahrState extends State<Sahr> {
       ],
     );
   }
+
+  Future<Masjid> updateMasjid() async {
+    final http.Response response = await http.put(
+      Uri.parse("http://masjid.exportica.in/api/masjids/3"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${box.get(kToken)}'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'sahr': _sahr,
+        'iftar' : _iftar
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      return Masjid.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to update album.');
+    }
+  }
+
 }
