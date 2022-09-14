@@ -129,7 +129,7 @@ class _RegistrationState extends State<Registration> {
               },
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             OutlinedButton(
               onPressed: () {
@@ -249,7 +249,7 @@ class _RegistrationState extends State<Registration> {
             const SizedBox(
               height: 10,
             ),
-            OutlinedButton(
+          /*  OutlinedButton(
               onPressed: () {
                 Future<List<XFile>?> images = _picker.pickMultiImage();
 
@@ -261,7 +261,7 @@ class _RegistrationState extends State<Registration> {
               child: const Text(
                 'Select Images',
               ),
-            ),
+            ),*/
             const SizedBox(
               height: 10,
             ),

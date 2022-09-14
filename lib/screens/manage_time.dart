@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:masjit_vendor_app/data/model/jumma.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/data/model/namaz_time.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
@@ -29,6 +30,13 @@ class _ManageTimeState extends State<ManageTime> {
     WeeklyNamaz(day: 'ISHA', azan: '08:30 AM', jammat: '08:45 AM'),
     WeeklyNamaz(day: 'JUMA', azan: '01:45 AM', jammat: '02:30 AM'),
   ];
+
+  var eid =
+    Jumma(azan: '5:00 PM',
+        jammat: [
+      '08:30 AM',
+      '09:30 AM',
+    ]);
 
   late Box box;
   late Masjid masjid;
@@ -80,9 +88,15 @@ class _ManageTimeState extends State<ManageTime> {
 
         result.then((value) => setState(() {
           if (value == null) return;
-
+          eid.jammat?.add(value);
+          updateMasjid().then((value) {
+            box.delete(kMasjid);
+            box.put(kMasjid, masjid.toJson());
+          });
 
         }));
+
+
       }
 
 
@@ -198,10 +212,50 @@ class _ManageTimeState extends State<ManageTime> {
                       },
                     ),
                     Spacer(),
-                    Text(
-                      "7:00",
-                      style: TextStyle(),
+
+
+                    Column(
+                      children: [
+                        for (int i = 0; i <( eid.jammat?.length ?? 0); i++)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+
+                              Text(
+                                eid.jammat![i],
+                                style: TextStyle(
+                                  color: Colors.black
+                                ),
+                              ),
+
+
+                              GestureDetector(
+                                onDoubleTap: (){},
+                                onTap: (){
+                                  setState(() {
+                                    eid.jammat?.removeAt(i);
+                                    updateMasjid().then((value) {
+                                      box.delete(kMasjid);
+                                      box.put(kMasjid, masjid.toJson());
+                                    });
+                                  });
+
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Icon(Icons.remove_circle_outline,
+                                    size: 18,),
+                                ),
+                              )
+                            ],
+                          ),
+                      ],
                     ),
+
+                    /*Text(
+                      eid.toString(),
+                      style: TextStyle(),
+                    ),*/
                   ],
                 ),
               ),
@@ -221,6 +275,8 @@ class _ManageTimeState extends State<ManageTime> {
       },
       body: jsonEncode(<String, dynamic>{
         'weekly_namaz': _time,
+        'jumma': eid
+
       }),
     );
 

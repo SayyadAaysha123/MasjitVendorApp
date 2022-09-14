@@ -1,7 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:masjit_vendor_app/data/model/eid.dart';
+import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:masjit_vendor_app/screens/manage_eid.dart';
+import 'package:masjit_vendor_app/screens/manage_trustee.dart';
+import 'package:masjit_vendor_app/utils/constant.dart';
 
-class EidCard extends StatelessWidget {
+class EidCard extends StatefulWidget {
   const EidCard({
     Key? key,
     required this.eid,
@@ -10,7 +17,77 @@ class EidCard extends StatelessWidget {
   final Eid eid;
 
   @override
+  State<EidCard> createState() => _EidCardState();
+}
+
+class _EidCardState extends State<EidCard> {
+
+  int _selected = 0;
+  final _nameEditController = TextEditingController();
+  late Box box;
+  late Masjid masjid;
+  Eid? eid;
+
+  @override
+  void initState() {
+    super.initState();
+
+    box = Hive.box(kBoxName);
+    var tokens = box.get(kToken, defaultValue: null);
+    masjid = Masjid.fromJson(box.get(kMasjid));
+    // _time = masjid.jumma?.jammat ?? _time;
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    _show(int i) {
+      _selected = i;
+      Future<String?> result = showModalBottomSheet<String>(
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+          ),
+          builder: (context) {
+            String? _time;
+
+            return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Column(mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .2,
+                      child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.time,
+                        onDateTimeChanged: (DateTime newTime) {
+                          _time = DateFormat.jm().format(newTime);
+                        },
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(_time ?? DateFormat.jm().format(DateTime.now()));
+                      },
+                      child: const Text('save'),
+                    )
+                  ]),
+            );
+          });
+
+      result.then((value) {
+        if (value != null) {
+          setState(() {
+
+          });
+
+        }
+      });
+    }
+
+
     TextStyle? _textStyle = Theme.of(context).textTheme.bodyLarge;
     return Card(
       margin: const EdgeInsets.all(8),
@@ -31,7 +108,7 @@ class EidCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    eid.name!,
+                    widget.eid.name!,
                     style: _textStyle?.copyWith(
                       color: Colors.white,
                     ),
@@ -44,7 +121,9 @@ class EidCard extends StatelessWidget {
                       Icons.add_circle,
                       color: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // _show();
+                    },
                   ),
                 )
               ],
@@ -57,29 +136,43 @@ class EidCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Azan',
-                style: _textStyle,
-              ),
-              Text(
-                "5:00",
-                style: _textStyle,
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
                 'Jammat',
                 style: _textStyle,
               ),
-              Text(
-                '7:00',
-                style: _textStyle,
-              )
+
+              Column(
+                children: [
+                  for (int i = 0; i < widget.eid.jammat!.length; i++)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+
+                        Text(
+                          widget.eid.jammat![i],
+                          style: _textStyle,
+                        ),
+
+
+                        GestureDetector(
+                          onDoubleTap: (){},
+                          onTap: (){
+                            setState(() {
+                              widget.eid.jammat?.removeAt(i);
+                            });
+
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child: Icon(Icons.remove_circle_outline,
+                            size: 18,),
+                          ),
+                        )
+                      ],
+                    ),
+                ],
+              ),
+
+
             ],
           ),
         )
