@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:masjit_vendor_app/data/model/trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
 import 'package:masjit_vendor_app/screens/manage_notification.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
@@ -101,7 +102,7 @@ class _HomeState extends State<Home> {
         _actions = [
           IconButton(
               onPressed: () {
-                showModalBottomSheet(
+                Future<Trustee?> list= showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
@@ -112,6 +113,24 @@ class _HomeState extends State<Home> {
                     builder: (context) {
                       return EditTrustee();
                     });
+
+                list.then((value) {
+                 if( value == null ){
+                   return;
+                 }
+
+                 trustee.add(value);
+
+                 updateMasjid(trustee).then((value) {
+                   box.delete(kMasjid);
+                   masjid.trustee = trustee;
+                   box.put(kMasjid, masjid.toJson());
+                   setState(() {
+
+                   });
+                 });
+
+                });
               },
               icon: const Icon(Icons.add_circle))
         ];
@@ -210,3 +229,4 @@ class _HomeState extends State<Home> {
     );
   }
 }
+

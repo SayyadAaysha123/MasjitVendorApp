@@ -68,13 +68,13 @@ class EditTrustee extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(trustee != null
-                      ? Trustee(
-                          name: _nameEditController.text,
-                          designation: _designationEditController.text,
-                          contact: _contactEditController.text,
+                  Navigator.of(context).pop(
+                      Trustee(
+                          name: _nameEditController.text.trim(),
+                          designation: _designationEditController.text.trim(),
+                          contact: _contactEditController.text.trim(),
                         )
-                      : null);
+                  );
                 },
                 child: const Text('Save'))
           ],

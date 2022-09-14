@@ -31,11 +31,9 @@ class _RegistrationState extends State<Registration> {
   TextEditingController imamNameController = TextEditingController();
   TextEditingController imamNumberController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -158,30 +156,96 @@ class _RegistrationState extends State<Registration> {
             const SizedBox(
               height: 10,
             ),
-            _address.isNotEmpty ?
-            Column(
-              children: [
-                // Text(_address),
-                RichText(
-                  text: TextSpan(
-                    text: ' Area : ',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                        color: Colors.black
+            _address.isNotEmpty
+                ? Padding(
+                  padding: EdgeInsets.only(left: 50),
+                  child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: ' Area : ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: address?.subLocality,
+                                style:
+                                    TextStyle(fontSize: 9, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: ' City : ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: address?.locality,
+                                style:
+                                    TextStyle(fontSize: 9, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: ' Postal Code : ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: address?.postalCode,
+                                style:
+                                    TextStyle(fontSize: 9, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: ' Administrative Area : ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: address?.administrativeArea,
+                                style:
+                                    TextStyle(fontSize: 9, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: ' Country : ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: address?.country,
+                                style:
+                                    TextStyle(fontSize: 9, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    children: <TextSpan>[
-                      TextSpan(text: address?.subLocality,
-                          style: TextStyle(
-                          fontSize: 9,
-                            color: Colors.black
-                      ),
-                      ),
-                    ],
-                  ),
                 )
-              ],
-            ) : const SizedBox.shrink(),
+                : const SizedBox.shrink(),
             const SizedBox(
               height: 10,
             ),
@@ -192,7 +256,6 @@ class _RegistrationState extends State<Registration> {
                 images.then((value) {
                   if (value == null) return;
                   _images.addAll(value);
-
                 });
               },
               child: const Text(
@@ -205,11 +268,12 @@ class _RegistrationState extends State<Registration> {
             ElevatedButton(
               onPressed: () {
                 print("Hi");
-                if(address == null){
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please Select Location")));
+                if (address == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please Select Location")));
                   return;
                 }
-                 var resutl = getRegisterVendors();
+                var resutl = getRegisterVendors();
                 resutl.then((value) {
                   value.data?.token;
 
@@ -220,8 +284,8 @@ class _RegistrationState extends State<Registration> {
 
                   print(" registrationToken ${box.get("token")}");
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
-
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Home()));
                 });
               },
               child: const Text(
@@ -234,38 +298,31 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-
   Future<RegisterResponseModel> getRegisterVendors() async {
     try {
       final result = await http.post(
-        Uri.parse("http://masjid.exportica.in/api/masjid/register"),
-        body: {
-          "email": emailController.text.trim(),
-          "password": phoneNumberController.text.trim(),
-          "immam_name": imamNameController.text.trim(),
-          "masjid_name": masjidNameController.text.trim(),
-          "immam_contact": imamNumberController.text.trim(),
-          "lat": address?.lat,
-          "long": address?.long,
-          "phone": phoneNumberController.text.trim(),
-          "street": address?.street,
-          "sub_locality": address?.subLocality,
-          "locality": address?.locality,
-          "postal_code": address?.postalCode,
-          "administrative_area": address?.administrativeArea,
-          "country": address?.country
-        }
-      );
+          Uri.parse("http://masjid.exportica.in/api/masjid/register"),
+          body: {
+            "email": emailController.text.trim(),
+            "password": phoneNumberController.text.trim(),
+            "immam_name": imamNameController.text.trim(),
+            "masjid_name": masjidNameController.text.trim(),
+            "immam_contact": imamNumberController.text.trim(),
+            "lat": address?.lat,
+            "long": address?.long,
+            "phone": phoneNumberController.text.trim(),
+            "street": address?.street,
+            "sub_locality": address?.subLocality,
+            "locality": address?.locality,
+            "postal_code": address?.postalCode,
+            "administrative_area": address?.administrativeArea,
+            "country": address?.country
+          });
       print("new order:" + result.body);
-
-
 
       return registerResponseModelFromJson(result.body);
     } catch (e) {
       throw e;
     }
   }
-
-
-
 }
