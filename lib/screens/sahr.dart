@@ -137,7 +137,7 @@ class _SahrState extends State<Sahr> {
 
   Future<Masjid> updateMasjid() async {
     final http.Response response = await http.put(
-      Uri.parse("http://masjid.exportica.in/api/masjids/3"),
+      Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${box.get(kToken)}'

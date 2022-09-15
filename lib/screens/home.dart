@@ -12,6 +12,11 @@ import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/manage_trustee.dart';
 
+
+Box box = Hive.box(kBoxName);
+Masjid masjid = Masjid.fromJson(box.get(kMasjid));
+
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 

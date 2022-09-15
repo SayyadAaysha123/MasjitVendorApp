@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/widget/trustee_card.dart';
@@ -93,13 +94,12 @@ class _ManageTrusteeState extends State<ManageTrustee> {
 
 }
 
-
 Future<Masjid> updateMasjid(List<Trustee> trustee) async {
 
   var box = Hive.box(kBoxName);
 
   final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/masjids/3"),
+    Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer ${box.get(kToken)}'
