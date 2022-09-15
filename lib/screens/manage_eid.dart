@@ -89,6 +89,11 @@ class _ManageEidState extends State<ManageEid> {
         if (value != null) {
           setState(() {
             eid[_selected].jammat?.add(value);
+            updateMasjid().then((value) {
+              box.delete(kMasjid);
+              masjid.eid = eid;
+              box.put(kMasjid, masjid.toJson());
+            });
           });
         }
       });

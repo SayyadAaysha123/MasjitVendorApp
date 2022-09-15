@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:masjit_vendor_app/data/model/eid.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:http/http.dart' as http;
+import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
-import 'package:masjit_vendor_app/screens/manage_trustee.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
 
 class EidCard extends StatefulWidget {
@@ -79,8 +82,11 @@ class _EidCardState extends State<EidCard> {
 
       result.then((value) {
         if (value != null) {
-          setState(() {
-
+          print("Hii");
+          eid?.jammat?.add(value);
+          updateMasjid().then((value) {
+            box.delete(kMasjid);
+            box.put(kMasjid, masjid.toJson());
           });
 
         }
@@ -158,6 +164,10 @@ class _EidCardState extends State<EidCard> {
                           onTap: (){
                             setState(() {
                               widget.eid.jammat?.removeAt(i);
+                              updateMasjid().then((value) {
+                                box.delete(kMasjid);
+                                box.put(kMasjid, masjid.toJson());
+                              });
                             });
 
                           },
@@ -178,5 +188,28 @@ class _EidCardState extends State<EidCard> {
         )
       ]),
     );
+  }
+
+
+}
+
+Future<Masjid> updateMasjid() async {
+  final http.Response response = await http.put(
+    Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer ${box.get(kToken)}'
+    },
+    body: jsonEncode(<String, dynamic>{
+      'eid': eid
+
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    print(response.body);
+    return Masjid.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to update album.');
   }
 }
