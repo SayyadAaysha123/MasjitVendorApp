@@ -1,13 +1,15 @@
-import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:masjit_vendor_app/data/model/place.dart';
-import 'package:masjit_vendor_app/data/model/register.dart';
 import 'package:masjit_vendor_app/screens/get_location.dart';
 import 'package:masjit_vendor_app/screens/home.dart';
+import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
+import 'dart:async';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -22,7 +24,9 @@ class _RegistrationState extends State<Registration> {
   String _address = '';
   final fields = <String, dynamic>{};
   Place? address;
-  final ImagePicker _picker = ImagePicker();
+  File? _image;
+  final _imagess= [];
+  var img;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -30,6 +34,14 @@ class _RegistrationState extends State<Registration> {
   TextEditingController masjidNameController = TextEditingController();
   TextEditingController imamNameController = TextEditingController();
   TextEditingController imamNumberController = TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
+  var res;
+  //Sangharsh
+   PickedFile? _imageFile;
+  final ImagePicker _picker1 = ImagePicker();
+
+
 
   @override
   void initState() {
@@ -249,31 +261,111 @@ class _RegistrationState extends State<Registration> {
             const SizedBox(
               height: 10,
             ),
-          /*  OutlinedButton(
+            OutlinedButton(
               onPressed: () {
-                Future<List<XFile>?> images = _picker.pickMultiImage();
+                _pickImage1();
+               /* Future<List<XFile>?> images = _picker.pickMultiImage();
 
                 images.then((value) {
                   if (value == null) return;
                   _images.addAll(value);
-                });
+                  print(images);
+                });*/
+
+                // _imagess.length < 3 ?
+                // // /*_imaGallery()*/ _pickImage():
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackBar(content: Text("You have only maximum 3 images uploaded")));
+
+
               },
               child: const Text(
                 'Select Images',
               ),
+            ),
+
+
+            Padding(
+              padding: EdgeInsets.only(left: 10, top: 7),
+              child: GestureDetector(
+                onDoubleTap: (){},
+                onTap: (){
+                  _pickImage1();
+                  print("imgpath---> ${img.toString()}");
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                },
+                child: Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                    // color: Colors.red,
+                  ),
+                  child: _imageFile!=null?
+                  Image.file(File(_imageFile!.path),
+                    fit: BoxFit.cover,) : Container(),
+                ),
+              ),
+            ),
+
+           /* Row(
+              children: [
+                for (int i = 0; i < _imagess.length; i++)
+                  Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Row(
+                      children: [
+
+
+                        Padding(
+                          padding: EdgeInsets.only(left: 10, top: 7),
+                          child: GestureDetector(
+                            onDoubleTap: (){},
+                            onTap: (){
+                              print("imgpath---> ${_imagess[i].toString()}");
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                            },
+                            child: Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                              ),
+                              child: _imagess!=null?
+                              Image.file(_imagess[i]!,
+                              fit: BoxFit.cover,) : Container(),
+                            ),
+                          ),
+                        ),
+
+
+
+
+                      ],
+                    ),
+                  ),
+              ],
             ),*/
+
             const SizedBox(
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
+
+
+
                 print("Hi");
                 if (address == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Please Select Location")));
                   return;
                 }
-                var resutl = getRegisterVendors();
+
+
+                // uploadImage(img.path);
+
+                var resutl = _pickImage1();
+
                 resutl.then((value) {
                   value.data?.token;
 
@@ -298,31 +390,130 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-  Future<RegisterResponseModel> getRegisterVendors() async {
-    try {
-      final result = await http.post(
-          Uri.parse("http://masjid.exportica.in/api/masjid/register"),
-          body: {
-            "email": emailController.text.trim(),
-            "password": phoneNumberController.text.trim(),
-            "immam_name": imamNameController.text.trim(),
-            "masjid_name": masjidNameController.text.trim(),
-            "immam_contact": imamNumberController.text.trim(),
-            "lat": address?.lat,
-            "long": address?.long,
-            "phone": phoneNumberController.text.trim(),
-            "street": address?.street,
-            "sub_locality": address?.subLocality,
-            "locality": address?.locality,
-            "postal_code": address?.postalCode,
-            "administrative_area": address?.administrativeArea,
-            "country": address?.country
-          });
-      print("new order:" + result.body);
 
-      return registerResponseModelFromJson(result.body);
+  _imaGallery()async{
+    // PickedFile? pickedImage = await ImagePicker()
+    //     .getImage(source: ImageSource.gallery,
+    // imageQuality: 50);
+    // setState(() {
+    //    _imagess.add(File(pickedImage!.path));
+    //   File? picked =File(pickedImage.path);
+    //   List<int> imageBytes = picked.readAsBytesSync();
+    //   img = pickedImage.path;
+    //   // uploadImage(pickedImage.path);
+    //   // img = base64Encode(imageBytes);
+    //
+    //
+    // });
+  }
+
+
+
+
+  // void _pickImage() async {
+  //   try {
+  //     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+  //     setState(() async {
+  //       _imagess.add(File(pickedFile!.path));
+  //
+  //       img = File(pickedFile.path);
+  //
+  //     });
+  //   } catch (e) {
+  //     print("Image picker error " + e.toString());
+  //   }
+  // }
+
+
+
+
+
+  // Future<RegisterResponseModel> getRegisterVendors() async {
+  //
+  //   try {
+  //     final result = await http.post(
+  //         Uri.parse("http://masjid.exportica.in/api/masjid/register"),
+  //
+  //
+  //         body: {
+  //           "email": emailController.text.trim(),
+  //           "password": phoneNumberController.text.trim(),
+  //           "immam_name": imamNameController.text.trim(),
+  //           "masjid_name": masjidNameController.text.trim(),
+  //           "immam_contact": imamNumberController.text.trim(),
+  //           "lat": address?.lat,
+  //           "long": address?.long,
+  //           "phone": phoneNumberController.text.trim(),
+  //           "street": address?.street,
+  //           "sub_locality": address?.subLocality,
+  //           "locality": address?.locality,
+  //           "postal_code": address?.postalCode,
+  //           "administrative_area": address?.administrativeArea,
+  //           "country": address?.country,
+  //           "images": img.toString()
+  //         });
+  //
+  //     if(result.statusCode == 200){
+  //       print("Hii ${result.body}");
+  //     }
+  //
+  //
+  //     return registerResponseModelFromJson(result.body);
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
+
+   _pickImage1() async {
+    try {
+      final pickedFile1 = await _picker.getImage(source: ImageSource.gallery);
+      setState(() async {
+
+        setState(() {
+          _imageFile = pickedFile1!;
+        });
+
+
+        var request = http.MultipartRequest('POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
+
+        print("======>"+_imageFile!.path.toString());
+        request.files.add(await http.MultipartFile.fromPath('images[]', _imageFile!.path.toString()));
+
+        request.fields.addAll({
+          "email": emailController.text.trim(),
+          "password": phoneNumberController.text.trim(),
+          "immam_name": imamNameController.text.trim(),
+          "masjid_name": masjidNameController.text.trim(),
+          "immam_contact": imamNumberController.text.trim(),
+          "lat": address!.lat!,
+          "long": address!.long!,
+          "phone": phoneNumberController.text.trim(),
+          "street": address!.street!,
+          "sub_locality": address!.subLocality!,
+          "locality": address!.locality!,
+          "postal_code": address!.postalCode!,
+          "administrative_area": address!.administrativeArea!,
+          "country": address!.country!,
+        });
+
+
+        var res = await request.send();
+        print(res.statusCode);
+      });
     } catch (e) {
-      throw e;
+      print("Image picker error ");
     }
   }
+
+
+  uploadImage (filepath, Uri parse) async {
+
+
+
+
+    //return  registerResponseModelFromJson(res.toString());
+  }
+
+
 }
