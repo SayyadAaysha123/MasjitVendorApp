@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -10,6 +11,8 @@ import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
 import 'dart:async';
+
+import '../data/model/register.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -25,7 +28,7 @@ class _RegistrationState extends State<Registration> {
   final fields = <String, dynamic>{};
   Place? address;
   File? _image;
-  final _imagess= [];
+  final _imagess = [];
   var img;
 
   TextEditingController emailController = TextEditingController();
@@ -37,11 +40,10 @@ class _RegistrationState extends State<Registration> {
 
   final ImagePicker _picker = ImagePicker();
   var res;
+
   //Sangharsh
-   PickedFile? _imageFile;
+  PickedFile? _imageFile;
   final ImagePicker _picker1 = ImagePicker();
-
-
 
   @override
   void initState() {
@@ -170,9 +172,9 @@ class _RegistrationState extends State<Registration> {
             ),
             _address.isNotEmpty
                 ? Padding(
-                  padding: EdgeInsets.only(left: 50),
-                  child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: EdgeInsets.only(left: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RichText(
                           text: TextSpan(
@@ -256,58 +258,58 @@ class _RegistrationState extends State<Registration> {
                         ),
                       ],
                     ),
-                )
+                  )
                 : const SizedBox.shrink(),
             const SizedBox(
               height: 10,
             ),
             OutlinedButton(
               onPressed: () {
-                _pickImage1();
-               /* Future<List<XFile>?> images = _picker.pickMultiImage();
 
-                images.then((value) {
-                  if (value == null) return;
-                  _images.addAll(value);
-                  print(images);
-                });*/
+                print(_imagess.length);
 
-                // _imagess.length < 3 ?
-                // // /*_imaGallery()*/ _pickImage():
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //     SnackBar(content: Text("You have only maximum 3 images uploaded")));
+                setState(() {
+                  _imagess.length < 3 ?
+                  _pickImage():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("You have only maximum 3 images uploaded")));
+                });
 
 
+
+                _pickImage();
               },
               child: const Text(
                 'Select Images',
               ),
             ),
-
-
-            Padding(
+          /*  Padding(
               padding: EdgeInsets.only(left: 10, top: 7),
               child: GestureDetector(
-                onDoubleTap: (){},
-                onTap: (){
-                  _pickImage1();
+                onDoubleTap: () {},
+                onTap: () {
+                  // _pickImage1();
                   print("imgpath---> ${img.toString()}");
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
                 child: Container(
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(
-                    // color: Colors.red,
-                  ),
-                  child: _imageFile!=null?
-                  Image.file(File(_imageFile!.path),
-                    fit: BoxFit.cover,) : Container(),
+                      // color: Colors.red,
+                      ),
+                  child: _imageFile != null
+                      ? Image.file(
+                          File(_imageFile!.path),
+                          fit: BoxFit.cover,
+                        )
+                      : Container(),
                 ),
               ),
-            ),
+            ),*/
 
-           /* Row(
+             Row(
               children: [
                 for (int i = 0; i < _imagess.length; i++)
                   Padding(
@@ -324,15 +326,18 @@ class _RegistrationState extends State<Registration> {
                               print("imgpath---> ${_imagess[i].toString()}");
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                             },
-                            child: Container(
+                            child:  Container(
                               height: 70,
                               width: 70,
                               decoration: BoxDecoration(
-                                color: Colors.red,
+                                // color: Colors.red,
                               ),
-                              child: _imagess!=null?
-                              Image.file(_imagess[i]!,
-                              fit: BoxFit.cover,) : Container(),
+                              child: _imageFile != null
+                                  ? Image.file(
+                                  _imagess[i],
+                                fit: BoxFit.cover,
+                              )
+                                  : Container(),
                             ),
                           ),
                         ),
@@ -344,16 +349,13 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
               ],
-            ),*/
+            ),
 
             const SizedBox(
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () async{
-
-
-
+              onPressed: () async {
                 print("Hi");
                 if (address == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -361,18 +363,17 @@ class _RegistrationState extends State<Registration> {
                   return;
                 }
 
-
                 // uploadImage(img.path);
 
                 var resutl = _pickImage1();
 
                 resutl.then((value) {
-                  value.data?.token;
+                  value?.data?.token;
 
                   var box = Hive.box("testBox");
 
-                  box.put(kToken, value.data?.token);
-                  box.put(kMasjid, value.data?.masjid?.toJson());
+                  box.put(kToken, value?.data?.token);
+                  box.put(kMasjid, value?.data?.masjid?.toJson());
 
                   print(" registrationToken ${box.get("token")}");
 
@@ -390,8 +391,7 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-
-  _imaGallery()async{
+  _imaGallery() async {
     // PickedFile? pickedImage = await ImagePicker()
     //     .getImage(source: ImageSource.gallery,
     // imageQuality: 50);
@@ -407,26 +407,19 @@ class _RegistrationState extends State<Registration> {
     // });
   }
 
+  PickedFile? pickedFile1;
 
-
-
-  // void _pickImage() async {
-  //   try {
-  //     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
-  //     setState(() async {
-  //       _imagess.add(File(pickedFile!.path));
-  //
-  //       img = File(pickedFile.path);
-  //
-  //     });
-  //   } catch (e) {
-  //     print("Image picker error " + e.toString());
-  //   }
-  // }
-
-
-
-
+  void _pickImage() async {
+    try {
+      pickedFile1 = await _picker.getImage(source: ImageSource.gallery);
+      setState(() {
+        _imageFile = pickedFile1!;
+        _imagess.add(File(_imageFile!.path));
+      });
+    } catch (e) {
+      print("Image picker error " + e.toString());
+    }
+  }
 
   // Future<RegisterResponseModel> getRegisterVendors() async {
   //
@@ -464,56 +457,41 @@ class _RegistrationState extends State<Registration> {
   //   }
   // }
 
-
-   _pickImage1() async {
+  Future<RegisterResponseModel?> _pickImage1() async {
     try {
-      final pickedFile1 = await _picker.getImage(source: ImageSource.gallery);
-      setState(() async {
 
-        setState(() {
-          _imageFile = pickedFile1!;
-        });
+      var request = http.MultipartRequest(
+          'POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
 
+      print("======>" + _imageFile!.path.toString());
+      request.files.add(await http.MultipartFile.fromPath(
+          'images[]', _imageFile!.path.toString()));
 
-        var request = http.MultipartRequest('POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
-
-        print("======>"+_imageFile!.path.toString());
-        request.files.add(await http.MultipartFile.fromPath('images[]', _imageFile!.path.toString()));
-
-        request.fields.addAll({
-          "email": emailController.text.trim(),
-          "password": phoneNumberController.text.trim(),
-          "immam_name": imamNameController.text.trim(),
-          "masjid_name": masjidNameController.text.trim(),
-          "immam_contact": imamNumberController.text.trim(),
-          "lat": address!.lat!,
-          "long": address!.long!,
-          "phone": phoneNumberController.text.trim(),
-          "street": address!.street!,
-          "sub_locality": address!.subLocality!,
-          "locality": address!.locality!,
-          "postal_code": address!.postalCode!,
-          "administrative_area": address!.administrativeArea!,
-          "country": address!.country!,
-        });
-
-
-        var res = await request.send();
-        print(res.statusCode);
+      request.fields.addAll({
+        "email": emailController.text.trim(),
+        "password": phoneNumberController.text.trim(),
+        "immam_name": imamNameController.text.trim(),
+        "masjid_name": masjidNameController.text.trim(),
+        "immam_contact": imamNumberController.text.trim(),
+        "lat": address!.lat!,
+        "long": address!.long!,
+        "phone": phoneNumberController.text.trim(),
+        "street": address!.street!,
+        "sub_locality": address!.subLocality!,
+        "locality": address!.locality!,
+        "postal_code": address!.postalCode!,
+        "administrative_area": address!.administrativeArea!,
+        "country": address!.country!,
       });
+
+      var res = await request.send();
+
+      var get = await res.stream.bytesToString();
+      print(get);
+
+      return registerResponseModelFromJson(get);
     } catch (e) {
       print("Image picker error ");
     }
   }
-
-
-  uploadImage (filepath, Uri parse) async {
-
-
-
-
-    //return  registerResponseModelFromJson(res.toString());
-  }
-
-
 }
