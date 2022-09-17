@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -11,7 +9,6 @@ import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
 import 'dart:async';
-
 import '../data/model/register.dart';
 
 class Registration extends StatefulWidget {
@@ -22,14 +19,10 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  final _form = GlobalKey<FormState>();
-  final _images = <XFile>[];
   String _address = '';
   final fields = <String, dynamic>{};
   Place? address;
-  File? _image;
   final _imagess = [];
-  var img;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -39,11 +32,10 @@ class _RegistrationState extends State<Registration> {
   TextEditingController imamNumberController = TextEditingController();
 
   final ImagePicker _picker = ImagePicker();
-  var res;
 
   //Sangharsh
   PickedFile? _imageFile;
-  final ImagePicker _picker1 = ImagePicker();
+
 
   @override
   void initState() {
@@ -179,7 +171,7 @@ class _RegistrationState extends State<Registration> {
                         RichText(
                           text: TextSpan(
                             text: ' Area : ',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -187,7 +179,7 @@ class _RegistrationState extends State<Registration> {
                               TextSpan(
                                 text: address?.subLocality,
                                 style:
-                                    TextStyle(fontSize: 9, color: Colors.black),
+                                    const TextStyle(fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -195,7 +187,7 @@ class _RegistrationState extends State<Registration> {
                         RichText(
                           text: TextSpan(
                             text: ' City : ',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -203,7 +195,7 @@ class _RegistrationState extends State<Registration> {
                               TextSpan(
                                 text: address?.locality,
                                 style:
-                                    TextStyle(fontSize: 9, color: Colors.black),
+                                    const TextStyle(fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -211,7 +203,7 @@ class _RegistrationState extends State<Registration> {
                         RichText(
                           text: TextSpan(
                             text: ' Postal Code : ',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -219,7 +211,7 @@ class _RegistrationState extends State<Registration> {
                               TextSpan(
                                 text: address?.postalCode,
                                 style:
-                                    TextStyle(fontSize: 9, color: Colors.black),
+                                    const TextStyle(fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -227,7 +219,7 @@ class _RegistrationState extends State<Registration> {
                         RichText(
                           text: TextSpan(
                             text: ' Administrative Area : ',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -235,7 +227,7 @@ class _RegistrationState extends State<Registration> {
                               TextSpan(
                                 text: address?.administrativeArea,
                                 style:
-                                    TextStyle(fontSize: 9, color: Colors.black),
+                                    const TextStyle(fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -243,7 +235,7 @@ class _RegistrationState extends State<Registration> {
                         RichText(
                           text: TextSpan(
                             text: ' Country : ',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -251,7 +243,7 @@ class _RegistrationState extends State<Registration> {
                               TextSpan(
                                 text: address?.country,
                                 style:
-                                    TextStyle(fontSize: 9, color: Colors.black),
+                                    const TextStyle(fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -265,92 +257,55 @@ class _RegistrationState extends State<Registration> {
             ),
             OutlinedButton(
               onPressed: () {
-
                 print(_imagess.length);
 
                 setState(() {
-                  _imagess.length < 3 ?
-                  _pickImage():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("You have only maximum 3 images uploaded")));
+                  _imagess.length < 3
+                      ? _pickImage()
+                      : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text("You have only maximum 3 images uploaded")));
                 });
-
-
-
-                _pickImage();
               },
               child: const Text(
                 'Select Images',
               ),
             ),
-          /*  Padding(
-              padding: EdgeInsets.only(left: 10, top: 7),
-              child: GestureDetector(
-                onDoubleTap: () {},
-                onTap: () {
-                  // _pickImage1();
-                  print("imgpath---> ${img.toString()}");
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()));
-                },
-                child: Container(
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                      // color: Colors.red,
-                      ),
-                  child: _imageFile != null
-                      ? Image.file(
-                          File(_imageFile!.path),
-                          fit: BoxFit.cover,
-                        )
-                      : Container(),
-                ),
-              ),
-            ),*/
-
-             Row(
+            Row(
               children: [
                 for (int i = 0; i < _imagess.length; i++)
                   Padding(
-                    padding: EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(left: 30),
                     child: Row(
                       children: [
-
-
                         Padding(
-                          padding: EdgeInsets.only(left: 10, top: 7),
+                          padding: const EdgeInsets.only(left: 10, top: 7),
                           child: GestureDetector(
-                            onDoubleTap: (){},
-                            onTap: (){
+                            onDoubleTap: () {},
+                            onTap: () {
                               print("imgpath---> ${_imagess[i].toString()}");
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginScreen()));
                             },
-                            child:  Container(
+                            child: Container(
                               height: 70,
                               width: 70,
-                              decoration: BoxDecoration(
-                                // color: Colors.red,
-                              ),
                               child: _imageFile != null
                                   ? Image.file(
-                                  _imagess[i],
-                                fit: BoxFit.cover,
-                              )
+                                      _imagess[i],
+                                      fit: BoxFit.cover,
+                                    )
                                   : Container(),
                             ),
                           ),
                         ),
-
-
-
-
                       ],
                     ),
                   ),
               ],
             ),
-
             const SizedBox(
               height: 10,
             ),
@@ -359,7 +314,7 @@ class _RegistrationState extends State<Registration> {
                 print("Hi");
                 if (address == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Please Select Location")));
+                      const SnackBar(content: Text("Please Select Location")));
                   return;
                 }
 
@@ -378,7 +333,7 @@ class _RegistrationState extends State<Registration> {
                   print(" registrationToken ${box.get("token")}");
 
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home()));
+                      context, MaterialPageRoute(builder: (context) => const Home()));
                 });
               },
               child: const Text(
@@ -389,22 +344,6 @@ class _RegistrationState extends State<Registration> {
         ),
       ),
     );
-  }
-
-  _imaGallery() async {
-    // PickedFile? pickedImage = await ImagePicker()
-    //     .getImage(source: ImageSource.gallery,
-    // imageQuality: 50);
-    // setState(() {
-    //    _imagess.add(File(pickedImage!.path));
-    //   File? picked =File(pickedImage.path);
-    //   List<int> imageBytes = picked.readAsBytesSync();
-    //   img = pickedImage.path;
-    //   // uploadImage(pickedImage.path);
-    //   // img = base64Encode(imageBytes);
-    //
-    //
-    // });
   }
 
   PickedFile? pickedFile1;
@@ -459,7 +398,6 @@ class _RegistrationState extends State<Registration> {
 
   Future<RegisterResponseModel?> _pickImage1() async {
     try {
-
       var request = http.MultipartRequest(
           'POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
 
