@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
+import 'package:masjit_vendor_app/data/model/logoutResponse.dart';
+import 'package:http/http.dart' as http;
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/data/model/trustee.dart';
+import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
 import 'package:masjit_vendor_app/screens/manage_notification.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
@@ -11,11 +17,6 @@ import 'package:masjit_vendor_app/widget/edit_notice.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/manage_trustee.dart';
-
-
-Box box = Hive.box(kBoxName);
-Masjid masjid = Masjid.fromJson(box.get(kMasjid));
-
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -30,30 +31,28 @@ class _HomeState extends State<Home> {
   String _title = 'Weekly Namaz';
   Widget _widget = const ManageTime();
   List<Widget> _actions = <Widget>[];
-  late Box box;
-  late Masjid masjid;
+  Masjid? masjid1;
+  String? token;
+  String? masjidId;
 
   @override
   void initState() {
     super.initState();
 
-    box = Hive.box(kBoxName);
-   var tokens = box.get(kToken, defaultValue: null);
-
-   masjid = Masjid.fromJson(box.get(kMasjid));
-
+    AppPreferences.getMasjid().then((value) {
+      if (value == null) return;
+      masjid1 = value;
+    });
+    AppPreferences.getToken().then((value) {
+      token = value;
+    });
+    AppPreferences.getIds().then((value) {
+      masjidId = value;
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
-
-    var box = Hive.box(kBoxName);
-
-    print(" HomeToken ${box.get("token")}");
-
-
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(title: Text(_title), centerTitle: true, actions: _actions),
@@ -61,7 +60,6 @@ class _HomeState extends State<Home> {
       body: _widget,
     );
   }
-
 
   _pageChange(int page) {
     switch (page) {
@@ -107,7 +105,7 @@ class _HomeState extends State<Home> {
         _actions = [
           IconButton(
               onPressed: () {
-                Future<Trustee?> list= showModalBottomSheet(
+                Future<Trustee?> list = showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
@@ -120,21 +118,16 @@ class _HomeState extends State<Home> {
                     });
 
                 list.then((value) {
-                 if( value == null ){
-                   return;
-                 }
+                  if (value == null) {
+                    return;
+                  }
 
-                 trustee.add(value);
+                  trustee.add(value);
 
-                 updateMasjid(trustee).then((value) {
-                   box.delete(kMasjid);
-                   masjid.trustee = trustee;
-                   box.put(kMasjid, masjid.toJson());
-                   setState(() {
-
-                   });
-                 });
-
+                  updateMasjid(trustee).then((value) {
+                    AppPreferences.setMasjid(json.encode(value));
+                    setState(() {});
+                  });
                 });
               },
               icon: const Icon(Icons.add_circle))
@@ -225,7 +218,7 @@ class _HomeState extends State<Home> {
           ListTile(
             title: const Text('Logout'),
             onTap: () {
-              _pageChange(7);
+              getLogoutData();
               Navigator.pop(context);
             },
           ),
@@ -233,5 +226,28 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
+  Future<LogOutResponseModel> getLogoutData() async {
+    try {
+      final result = await http.get(
+        Uri.parse("http://masjid.exportica.in/api/user/logout"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      );
+
+      if (result.statusCode == 200) {
+        print("Hii ${result.body}");
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            (route) => false);
+      }
+
+      return logOutResponseModelFromJson(result.body);
+    } catch (e) {
+      throw e;
+    }
+  }
+}

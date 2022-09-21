@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
@@ -9,6 +10,8 @@ import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/widget/trustee_card.dart';
 import 'package:http/http.dart' as http;
 import '../data/model/trustee.dart';
+
+
 
 
 var trustee = [
@@ -26,17 +29,28 @@ class _ManageTrusteeState extends State<ManageTrustee> {
 
 
 
-  late Box box;
-  late Masjid masjid;
+  Masjid? masjid1;
+  String? token;
+  String? masjidId;
+
+
 
   @override
   void initState() {
     super.initState();
 
-    box = Hive.box(kBoxName);
-    var tokens = box.get(kToken, defaultValue: null);
-    masjid = Masjid.fromJson(box.get(kMasjid));
-    trustee = masjid.trustee ?? trustee;
+    AppPreferences.getMasjid().then((value) {
+      if (value == null) return;
+      masjid1 = value;
+    });
+    AppPreferences.getToken().then((value) {
+      token = value;
+    });
+    AppPreferences.getIds().then((value) {
+      masjidId = value;
+    });
+
+    trustee = masjid1?.trustee ?? trustee;
   }
 
   @override
@@ -62,9 +76,7 @@ class _ManageTrusteeState extends State<ManageTrustee> {
         }
 
         updateMasjid(trustee).then((value) {
-          box.delete(kMasjid);
-          masjid.trustee = trustee;
-          box.put(kMasjid, masjid.toJson());
+          AppPreferences.setMasjid(json.encode(value));
         });
 
       });
@@ -96,13 +108,21 @@ class _ManageTrusteeState extends State<ManageTrustee> {
 
 Future<Masjid> updateMasjid(List<Trustee> trustee) async {
 
-  var box = Hive.box(kBoxName);
+  String? token;
+  String? masjidId;
+
+  AppPreferences.getIds().then((value) {
+    masjidId = value;
+  });
+  AppPreferences.getToken().then((value) {
+    token = value;
+  });
 
   final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
+    Uri.parse("http://masjid.exportica.in/api/$masjidId/"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ${box.get(kToken)}'
+      'Authorization': 'Bearer $token'
     },
     body: jsonEncode(<String, dynamic>{
       'trustee': trustee,

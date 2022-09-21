@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/jumma.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/data/model/namaz_time.dart';
@@ -31,75 +32,76 @@ class _ManageTimeState extends State<ManageTime> {
     WeeklyNamaz(day: 'JUMA', azan: '01:45 AM', jammat: '02:30 AM'),
   ];
 
-  var eid =
-    Jumma(azan: '5:00 PM',
-        jammat: [
-      '08:30 AM',
-      '09:30 AM',
-    ]);
+  var eid = Jumma(azan: '5:00 PM', jammat: [
+    '08:30 AM',
+    '09:30 AM',
+  ]);
 
-  late Box box;
-  late Masjid masjid;
+  Masjid? masjid1;
+  String? token;
+  String? masjidId;
 
   @override
   void initState() {
     super.initState();
 
-    box = Hive.box(kBoxName);
-    var tokens = box.get(kToken, defaultValue: null);
-    masjid = Masjid.fromJson(box.get(kMasjid));
-    _time = masjid.weeklyNamaz ?? _time;
+    AppPreferences.getMasjid().then((value) {
+      if (value == null) return;
+      masjid1 = value;
+    });
+    AppPreferences.getToken().then((value) {
+      token = value;
+      print("iiiii $token");
+    });
+    AppPreferences.getIds().then((value) {
+      masjidId = value;
+      print("aaaaa $masjidId");
+    });
+
+    _time = masjid1?.weeklyNamaz ?? _time;
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-      _showBottomSheet() {
-        Future<String?> result = showModalBottomSheet<String>(
-            context: context,
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+    _showBottomSheet() {
+      Future<String?> result = showModalBottomSheet<String>(
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
-            builder: (context) {
-              String? _time;
-              return Column(mainAxisSize: MainAxisSize.min, children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * .2,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.time,
-                    onDateTimeChanged: (DateTime newTime) {
-                      _time = DateFormat.jm().format(newTime);
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(_time);
+          ),
+          builder: (context) {
+            String? _time;
+            return Column(mainAxisSize: MainAxisSize.min, children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .2,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  onDateTimeChanged: (DateTime newTime) {
+                    _time = DateFormat.jm().format(newTime);
                   },
-                  child: const Text('save'),
-                )
-              ]);
-            });
-
-        result.then((value) => setState(() {
-          if (value == null) return;
-          eid.jammat?.add(value);
-          updateMasjid().then((value) {
-            box.delete(kMasjid);
-            box.put(kMasjid, masjid.toJson());
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(_time);
+                },
+                child: const Text('save'),
+              )
+            ]);
           });
 
-        }));
-
-
-      }
-
-
+      result.then((value) => setState(() {
+            if (value == null) return;
+            eid.jammat?.add(value);
+            updateMasjid().then((value) {
+              AppPreferences.setMasjid(json.encode(value));
+            });
+          }));
+    }
 
     _show(int i) {
       Future<WeeklyNamaz?> newTime = showModalBottomSheet<WeeklyNamaz?>(
@@ -122,13 +124,10 @@ class _ManageTimeState extends State<ManageTime> {
         if (value != null) {
           setState(() {
             _time[i] = value;
-
           });
 
           updateMasjid().then((value) {
-            box.delete(kMasjid);
-            masjid.weeklyNamaz = _time;
-            box.put(kMasjid, masjid.toJson());
+            masjid1?.weeklyNamaz = _time;
           });
         }
       });
@@ -149,41 +148,39 @@ class _ManageTimeState extends State<ManageTime> {
             child: NamazTimeCard(time: _time[i]),
           ),
         GestureDetector(
-          onTap: () {
-
-          },
+          onTap: () {},
           child: Card(
-            margin: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(10),
-                ),
-                child: Container(
-                  color: Colors.green.shade900,
-                  padding: const EdgeInsets.all(8),
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "JUMMA",
-                          style: TextStyle(
-                            color: Colors.white,
+              margin: const EdgeInsets.all(8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(10),
+                  ),
+                  child: Container(
+                    color: Colors.green.shade900,
+                    padding: const EdgeInsets.all(8),
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "JUMMA",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -196,71 +193,65 @@ class _ManageTimeState extends State<ManageTime> {
                     ],
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("JAMAAt"),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.add_circle,
-                        size: 20,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("JAMAAt"),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.add_circle,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          _showBottomSheet();
+                        },
                       ),
-                      onPressed: () {
-                        _showBottomSheet();
-                      },
-                    ),
-                    Spacer(),
-
-
-                    Column(
-                      children: [
-                        for (int i = 0; i <( eid.jammat?.length ?? 0); i++)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-
-                              Text(
-                                eid.jammat![i],
-                                style: TextStyle(
-                                  color: Colors.black
+                      Spacer(),
+                      Column(
+                        children: [
+                          for (int i = 0; i < (eid.jammat?.length ?? 0); i++)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  eid.jammat![i],
+                                  style: TextStyle(color: Colors.black),
                                 ),
-                              ),
-
-
-                              GestureDetector(
-                                onDoubleTap: (){},
-                                onTap: (){
-                                  setState(() {
-                                    eid.jammat?.removeAt(i);
-                                    updateMasjid().then((value) {
-                                      box.delete(kMasjid);
-                                      box.put(kMasjid, masjid.toJson());
+                                GestureDetector(
+                                  onDoubleTap: () {},
+                                  onTap: () {
+                                    setState(() {
+                                      eid.jammat?.removeAt(i);
+                                      updateMasjid().then((value) {
+                                        AppPreferences.setMasjid(
+                                            json.encode(value));
+                                      });
                                     });
-                                  });
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Icon(
+                                      Icons.remove_circle_outline,
+                                      size: 18,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                        ],
+                      ),
 
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 5),
-                                  child: Icon(Icons.remove_circle_outline,
-                                    size: 18,),
-                                ),
-                              )
-                            ],
-                          ),
-                      ],
-                    ),
-
-                    /*Text(
+                      /*Text(
                       eid.toString(),
                       style: TextStyle(),
                     ),*/
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ])
-        ),
+              ])),
         )
       ],
     );
@@ -268,16 +259,12 @@ class _ManageTimeState extends State<ManageTime> {
 
   Future<Masjid> updateMasjid() async {
     final http.Response response = await http.put(
-      Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
+      Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${box.get(kToken)}'
+        'Authorization': 'Bearer ${token}'
       },
-      body: jsonEncode(<String, dynamic>{
-        'weekly_namaz': _time,
-        'jumma': eid
-
-      }),
+      body: jsonEncode(<String, dynamic>{'weekly_namaz': _time, 'jumma': eid}),
     );
 
     if (response.statusCode == 200) {

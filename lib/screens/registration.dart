@@ -1,14 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:masjit_vendor_app/data/model/place.dart';
+import 'package:masjit_vendor_app/data/model/registerSharePre.dart';
 import 'package:masjit_vendor_app/screens/get_location.dart';
 import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import '../data/model/SharePreferenceClass.dart';
 import '../data/model/register.dart';
 
 class Registration extends StatefulWidget {
@@ -19,6 +23,8 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
+  // RegisterData registerData = RegisterData();
+
   String _address = '';
   final fields = <String, dynamic>{};
   Place? address;
@@ -35,7 +41,6 @@ class _RegistrationState extends State<Registration> {
 
   //Sangharsh
   PickedFile? _imageFile;
-
 
   @override
   void initState() {
@@ -178,8 +183,8 @@ class _RegistrationState extends State<Registration> {
                             children: <TextSpan>[
                               TextSpan(
                                 text: address?.subLocality,
-                                style:
-                                    const TextStyle(fontSize: 9, color: Colors.black),
+                                style: const TextStyle(
+                                    fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -194,8 +199,8 @@ class _RegistrationState extends State<Registration> {
                             children: <TextSpan>[
                               TextSpan(
                                 text: address?.locality,
-                                style:
-                                    const TextStyle(fontSize: 9, color: Colors.black),
+                                style: const TextStyle(
+                                    fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -210,8 +215,8 @@ class _RegistrationState extends State<Registration> {
                             children: <TextSpan>[
                               TextSpan(
                                 text: address?.postalCode,
-                                style:
-                                    const TextStyle(fontSize: 9, color: Colors.black),
+                                style: const TextStyle(
+                                    fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -226,8 +231,8 @@ class _RegistrationState extends State<Registration> {
                             children: <TextSpan>[
                               TextSpan(
                                 text: address?.administrativeArea,
-                                style:
-                                    const TextStyle(fontSize: 9, color: Colors.black),
+                                style: const TextStyle(
+                                    fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -242,8 +247,8 @@ class _RegistrationState extends State<Registration> {
                             children: <TextSpan>[
                               TextSpan(
                                 text: address?.country,
-                                style:
-                                    const TextStyle(fontSize: 9, color: Colors.black),
+                                style: const TextStyle(
+                                    fontSize: 9, color: Colors.black),
                               ),
                             ],
                           ),
@@ -262,9 +267,10 @@ class _RegistrationState extends State<Registration> {
                 setState(() {
                   _imagess.length < 3
                       ? _pickImage()
-                      : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content:
-                              Text("You have only maximum 3 images uploaded")));
+                      : ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  "You have only maximum 3 images uploaded")));
                 });
               },
               child: const Text(
@@ -287,7 +293,8 @@ class _RegistrationState extends State<Registration> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const LoginScreen()));
+                                      builder: (context) =>
+                                          const LoginScreen()));
                             },
                             child: Container(
                               height: 70,
@@ -318,23 +325,8 @@ class _RegistrationState extends State<Registration> {
                   return;
                 }
 
-                // uploadImage(img.path);
+                _pickImage1();
 
-                var resutl = _pickImage1();
-
-                resutl.then((value) {
-                  value?.data?.token;
-
-                  var box = Hive.box("testBox");
-
-                  box.put(kToken, value?.data?.token);
-                  box.put(kMasjid, value?.data?.masjid?.toJson());
-
-                  print(" registrationToken ${box.get("token")}");
-
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const Home()));
-                });
               },
               child: const Text(
                 'Register',
@@ -422,12 +414,39 @@ class _RegistrationState extends State<Registration> {
         "country": address!.country!,
       });
 
-      var res = await request.send();
+      var response = await request.send();
 
-      var get = await res.stream.bytesToString();
-      print(get);
 
-      return registerResponseModelFromJson(get);
+      response.stream.transform(utf8.decoder).listen((value) async {
+        var jsonData = json.decode(value);
+
+        print("jsonData    ${jsonData["data"]}");
+
+        var masjid = jsonData["data"]["masjid"];
+
+        print("masjid    $masjid");
+
+        var token = jsonData["data"]["token"];
+
+        print("token    $token");
+
+        var namaj = jsonData["data"]["masjid"]["weekly_namaz"];
+
+        print("namaj    $namaj");
+
+        AppPreferences.setToken(jsonData["data"]["token"]);
+
+        AppPreferences.setMasjid(json.encode(jsonData["data"]["masjid"]));
+
+        AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
+
+        final masjid1 = await AppPreferences.getMasjid();
+
+        print("Idddddd ${json.encode(jsonData["data"]["masjid"]["id"])}");
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Home()));
+      });
     } catch (e) {
       print("Image picker error ");
     }

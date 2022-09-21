@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:masjit_vendor_app/data/model/notice.dart';
-import 'package:masjit_vendor_app/data/model/noticeCreate.dart';
-import 'package:masjit_vendor_app/screens/home.dart';
-import 'package:masjit_vendor_app/utils/constant.dart';
-import 'package:masjit_vendor_app/widget/edit_notice.dart';
+import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
+import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:masjit_vendor_app/data/model/getAllNoticeResponseModel.dart';
 import 'package:http/http.dart' as http;
 
 class ManageNotification extends StatefulWidget {
@@ -14,29 +12,45 @@ class ManageNotification extends StatefulWidget {
 }
 
 class _ManageNotificationState extends State<ManageNotification> {
-  var _notice = [];
-
-  late Future<GetAllNoticesResponseModel> result;
-
   var getNoticesData;
+
+  Masjid? masjid1;
+  String? masjidId;
+  String? token;
 
   @override
   void initState() {
     super.initState();
 
-    result = getAllNotices();
 
-    if (mounted) {
+    if(mounted){
       setState(() {
-        getNoticesData = getAllNotices();
+        AppPreferences.getMasjid().then((value) {
+          if (value == null) return;
+          masjid1 = value;
+        });
+        AppPreferences.getIds().then((value) {
+          masjidId = value;
+          print("aaaaa $masjidId");
+        });
+        AppPreferences.getToken().then((value) {
+          token = value;
+        });
       });
     }
+
+    // getNoticeData();
+
+    setState(() {
+      getNoticesData = getAllNotices();
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<GetAllNoticesResponseModel>(
+      body: FutureBuilder<GetAllNotices>(
           future: getNoticesData,
           builder: (context, snapshot) {
             return ListView.builder(
@@ -75,23 +89,63 @@ class _ManageNotificationState extends State<ManageNotification> {
     );
   }
 
-  Future<GetAllNoticesResponseModel> getAllNotices() async {
+  Future<GetAllNotices> getAllNotices() async {
+
+    String? token = await AppPreferences.getToken();
+    String? id = await AppPreferences.getIds();
+    print(token);
+
     try {
+      var headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
+
+      print('headers');
+      print(headers);
       final result = await http.get(
-        Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}/notice"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${box.get(kToken)}'
-        },
+        Uri.parse("http://masjid.exportica.in/api/masjids/$id/notice"),
+        headers: headers,
       );
 
-      if (result.statusCode == 200) {
+
+      if(result.statusCode == 200){
         print(result.body);
       }
 
-      return getAllNoticesResponseModelFromJson(result.body);
+
+      return getAllNoticesFromJson(result.body);
     } catch (e) {
       throw e;
     }
   }
+
+
+
+/*  Future<GetAllNotices> getNoticeData() async {
+
+    try {
+      final result = await http.get(
+        Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId/notice"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+
+      if(result.statusCode == 200){
+        print("Hii ${result.body}");
+
+      }
+
+
+      return getAllNoticesFromJson(result.body);
+    } catch (e) {
+      throw e;
+    }
+  }*/
+
+
 }

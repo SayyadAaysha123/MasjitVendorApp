@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
 import 'package:http/http.dart' as http;
@@ -19,16 +20,29 @@ class _SahrState extends State<Sahr> {
   String _sahr = '5:30 AM';
   String _iftar = '5:30 AM';
 
-  late Box box;
-  late Masjid masjid;
+  Masjid? masjid1;
+  String? token;
+  String? masjidId;
 
   @override
   void initState() {
     super.initState();
 
-    box = Hive.box(kBoxName);
-    var tokens = box.get(kToken, defaultValue: null);
-    masjid = Masjid.fromJson(box.get(kMasjid));
+
+    AppPreferences.getMasjid().then((value) {
+      if (value == null) return;
+      masjid1 = value;
+      print(masjid1?.id);
+    });
+
+    AppPreferences.getToken().then((value) {
+      token = value;
+      print(token);
+    });
+
+    AppPreferences.getIds().then((value) {
+      masjidId = value;
+    });
 
   }
 
@@ -74,15 +88,16 @@ class _SahrState extends State<Sahr> {
 
             if (i == 0) {
               _sahr = value;
-              masjid.sahr = _sahr;
+              masjid1?.sahr = _sahr;
             } else {
               _iftar = value;
-              masjid.iftar = _iftar;
+              masjid1?.iftar = _iftar;
             }
 
             updateMasjid().then((value) {
-              box.delete(kMasjid);
-              box.put(kMasjid, masjid.toJson());
+              masjid1?.sahr = _sahr;
+              masjid1?.iftar = _iftar;
+              AppPreferences.setMasjid(json.encode(value));
             });
 
 
@@ -136,11 +151,13 @@ class _SahrState extends State<Sahr> {
   }
 
   Future<Masjid> updateMasjid() async {
-    final http.Response response = await http.put(
-      Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
+    print(masjid1?.id);
+    final http.Response response = await http.patch(
+      Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${box.get(kToken)}'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token}'
       },
       body: jsonEncode(<String, dynamic>{
         'sahr': _sahr,
@@ -148,12 +165,13 @@ class _SahrState extends State<Sahr> {
       }),
     );
 
-    if (response.statusCode == 200) {
+    print(response.statusCode);
+    print(response.body);
+
+
       print(response.body);
       return Masjid.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to update album.');
-    }
+
   }
 
 }

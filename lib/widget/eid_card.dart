@@ -1,15 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/eid.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:http/http.dart' as http;
-import 'package:masjit_vendor_app/screens/home.dart';
-import 'package:masjit_vendor_app/screens/manage_eid.dart';
-import 'package:masjit_vendor_app/utils/constant.dart';
 
 class EidCard extends StatefulWidget {
   const EidCard({
@@ -27,18 +23,26 @@ class _EidCardState extends State<EidCard> {
 
   int _selected = 0;
   final _nameEditController = TextEditingController();
-  late Box box;
-  late Masjid masjid;
+
   Eid? eid;
+  Masjid? masjid1;
+  String? token;
+  String? masjidId;
 
   @override
   void initState() {
     super.initState();
 
-    box = Hive.box(kBoxName);
-    var tokens = box.get(kToken, defaultValue: null);
-    masjid = Masjid.fromJson(box.get(kMasjid));
-    // _time = masjid.jumma?.jammat ?? _time;
+    AppPreferences.getMasjid().then((value) {
+      if (value == null) return;
+      masjid1 = value;
+    });
+    AppPreferences.getToken().then((value) {
+      token = value;
+    });
+    AppPreferences.getIds().then((value) {
+      masjidId = value;
+    });
   }
 
   @override
@@ -85,8 +89,7 @@ class _EidCardState extends State<EidCard> {
           print("Hii");
           eid?.jammat?.add(value);
           updateMasjid().then((value) {
-            box.delete(kMasjid);
-            box.put(kMasjid, masjid.toJson());
+            AppPreferences.setMasjid(json.encode(value));
           });
 
         }
@@ -165,8 +168,7 @@ class _EidCardState extends State<EidCard> {
                             setState(() {
                               widget.eid.jammat?.removeAt(i);
                               updateMasjid().then((value) {
-                                box.delete(kMasjid);
-                                box.put(kMasjid, masjid.toJson());
+                                AppPreferences.setMasjid(json.encode(value));
                               });
                             });
 
@@ -174,7 +176,7 @@ class _EidCardState extends State<EidCard> {
                           child: const Padding(
                             padding: EdgeInsets.only(left: 5),
                             child: Icon(Icons.remove_circle_outline,
-                            size: 18,),
+                              size: 18,),
                           ),
                         )
                       ],
@@ -190,15 +192,56 @@ class _EidCardState extends State<EidCard> {
     );
   }
 
+  Future<Masjid> updateMasjid() async {
+
+    print("iiiii $masjidId");
+    print("hhhhh $token");
+
+    final http.Response response = await http.put(
+      Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${token}'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'eid': eid
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      return Masjid.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to update album.');
+    }
+  }
 
 }
 
-Future<Masjid> updateMasjid() async {
+
+
+
+
+
+/*Future<Masjid> updateMasjid() async {
+
+
+  String? token;
+  String? masjidId;
+
+  AppPreferences.getIds().then((value) {
+    masjidId = value;
+  });
+  AppPreferences.getToken().then((value) {
+    token = value;
+  });
+
+
   final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/masjids/${masjid.id}"),
+    Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ${box.get(kToken)}'
+      'Authorization': 'Bearer $token'
     },
     body: jsonEncode(<String, dynamic>{
       'eid': eid
@@ -212,4 +255,4 @@ Future<Masjid> updateMasjid() async {
   } else {
     throw Exception('Failed to update album.');
   }
-}
+}*/

@@ -42,12 +42,11 @@ class _OnBoardingState extends State<OnBoarding> {
     Size size = MediaQuery.of(context).size;
 
     complete() {
-      var box = Hive.box(kBoxName);
 
-      box.put(kIsOnBoardingDone, true);
+
 
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home()));
+          context, MaterialPageRoute(builder: (context) => Registration()));
     }
 
     return Scaffold(
