@@ -4,11 +4,12 @@ import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/data/model/noticeCreate.dart';
 import 'package:http/http.dart' as http;
+import 'package:masjit_vendor_app/screens/home.dart';
 
 
 class EditNotice extends StatefulWidget {
   EditNotice({
-    Key? key,
+    Key? key
   }) : super(key: key);
 
   @override
@@ -78,11 +79,12 @@ class _EditNoticeState extends State<EditNotice> {
     );
   }
 
-  Future<NoticesCreateResponseModel> createNotice() async {
 
+  Future<NoticesCreateResponseModel> createNotice() async {
     String? token = await AppPreferences.getToken();
     String? id = await AppPreferences.getIds();
     print("idddddd $id");
+    print("sssss ${_nameEditController.text.trim()}");
 
 
     try {
@@ -100,44 +102,24 @@ class _EditNoticeState extends State<EditNotice> {
       print('headers');
 
       print(headers);
-      final result = await http.put(
-        Uri.parse("http://masjid.exportica.in/api/$id/notice"),
-        headers: headers,
-        body: msg
+
+      final result = await http.post(
+          Uri.parse("http://masjid.exportica.in/api/masjids/notice"),
+          headers: headers,
+          body: msg
       );
 
-      print(result.body);
+      print("heyyy ${result.body}");
+
+      if (result.statusCode == 200) {
+        print("hiiii ${result.body}");
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(come: "1",)));
+      }
+
 
       return noticesCreateResponseModelFromJson(result.body);
     } catch (e) {
       throw e;
     }
-
-/*    Map<String, String> headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token'
-    };
-    final msg = jsonEncode({
-      "masjid_id": masjidId,
-      "notices": _nameEditController.text.trim()
-    });
-
-    var response = await http.post(
-      Uri.parse("http://masjid.exportica.in/api/$id/notice"),
-      headers: headers,
-      body: msg,
-    );
-
-    if (response.statusCode == 200) {
-      Navigator.pop(context);
-
-      print("Yess.. ${response.body}");
-
-      print("Hiii");
-
-      return noticesCreateResponseModelFromJson(response.body);
-    } else {
-      throw Exception('Failed to create album.');
-    }*/
   }
 }

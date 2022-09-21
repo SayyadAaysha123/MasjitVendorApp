@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
+import 'package:masjit_vendor_app/data/model/getAllNoticeResponseModel.dart';
 import 'package:masjit_vendor_app/data/model/logoutResponse.dart';
 import 'package:http/http.dart' as http;
 import 'package:masjit_vendor_app/data/model/masjid.dart';
@@ -10,16 +9,17 @@ import 'package:masjit_vendor_app/data/model/trustee.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
 import 'package:masjit_vendor_app/screens/manage_notification.dart';
-import 'package:masjit_vendor_app/screens/registration.dart';
 import 'package:masjit_vendor_app/screens/sahr.dart';
-import 'package:masjit_vendor_app/utils/constant.dart';
 import 'package:masjit_vendor_app/widget/edit_notice.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/manage_trustee.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+
+  final String come;
+
+  const Home({Key? key, this.come = ""}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -28,9 +28,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String _title = 'Weekly Namaz';
-  Widget _widget = const ManageTime();
-  List<Widget> _actions = <Widget>[];
+  String? _title;
+  Widget? _widget;
+  List<Widget>? _actions;
   Masjid? masjid1;
   String? token;
   String? masjidId;
@@ -38,6 +38,26 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
+    _widget = widget.come == "1" ? ManageNotification() : widget.come == "2" ? ManageTrustee() : ManageTime();
+    _title = widget.come == "1" ? 'Notice' : widget.come == "2" ? "Trustee" : 'Weekly Namaz';
+
+    _actions = widget.come == "1" ? _actions = [
+      IconButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                builder: (context) {
+                  return EditNotice();
+                });
+          },
+          icon: const Icon(Icons.add_circle))] : <Widget>[];
 
     AppPreferences.getMasjid().then((value) {
       if (value == null) return;
@@ -55,7 +75,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text(_title), centerTitle: true, actions: _actions),
+      appBar: AppBar(title: Text(_title!), centerTitle: true, actions: _actions),
       drawer: _drawer(),
       body: _widget,
     );
@@ -249,5 +269,44 @@ class _HomeState extends State<Home> {
     } catch (e) {
       throw e;
     }
+  }
+
+
+
+  Future<GetAllNotices> getAllNotices() async {
+
+    String? token = await AppPreferences.getToken();
+    String? id = await AppPreferences.getIds();
+    print(token);
+
+    try {
+      var headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
+
+      print('headers');
+      print(headers);
+      final result = await http.get(
+        Uri.parse("http://masjid.exportica.in/api/masjids/$id/notice"),
+        headers: headers,
+      );
+
+
+      if(result.statusCode == 200){
+        print(result.body);
+      }
+
+
+      return getAllNoticesFromJson(result.body);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  getNoticeApiCall() {
+    print("Yesss");
   }
 }

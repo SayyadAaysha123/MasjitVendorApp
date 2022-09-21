@@ -108,18 +108,13 @@ class _ManageTrusteeState extends State<ManageTrustee> {
 
 Future<Masjid> updateMasjid(List<Trustee> trustee) async {
 
-  String? token;
-  String? masjidId;
+  String? token = await AppPreferences.getToken();
+  String? id = await AppPreferences.getIds();
+  print("idddddd $id");
 
-  AppPreferences.getIds().then((value) {
-    masjidId = value;
-  });
-  AppPreferences.getToken().then((value) {
-    token = value;
-  });
 
   final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/$masjidId/"),
+    Uri.parse("http://masjid.exportica.in/api/masjids/$id"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token'
