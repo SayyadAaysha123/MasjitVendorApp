@@ -152,7 +152,7 @@ class _ManageTimeState extends State<ManageTime> {
           });
 
       newTime.then((value) {
-        if (value != null) {
+       /* if (value != null) {
           setState(() {
             _time[i] = value;
           });
@@ -161,7 +161,19 @@ class _ManageTimeState extends State<ManageTime> {
               .then((value) async {
             await AppPreferences.setMasjid(json.encode(value));
           });
-        }
+        }*/
+
+
+        setState(() {
+          _time[i] = value!;
+          updateMasjid({'weekly_namaz': _time}).then((value) {
+            AppPreferences.setMasjid(json.encode(value));
+            setState(() {
+
+            });
+          });
+        });
+
       });
     }
 
@@ -249,125 +261,126 @@ class _ManageTimeState extends State<ManageTime> {
                       );
                     }),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Card(
-                    margin: const EdgeInsets.all(8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(10),
-                        ),
-                        child: Container(
-                          color: Colors.green.shade900,
-                          padding: const EdgeInsets.all(8),
-                          width: double.infinity,
-                          child: Stack(
-                            children: const [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "JUMMA",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
+
+
+
+
+              Card(
+                  margin: const EdgeInsets.all(8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(10),
+                      ),
+                      child: Container(
+                        color: Colors.green.shade900,
+                        padding: const EdgeInsets.all(8),
+                        width: double.infinity,
+                        child: Stack(
+                          children: const [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "JUMMA",
+                                style: TextStyle(
+                                  color: Colors.white,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:  [
-                            Column(
-                              children: const [
-                                Text("AZAN"),
-                              ],
-                            ),
-                            Spacer(),
-                            const Text(
-                              "5:00 PM",
-                              style: TextStyle(),
                             ),
                           ],
                         ),
                       ),
-                      Row(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 10),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-
-                          Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("JAMMAT"),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.add_circle_outline,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      _showJamat();
-                                    },
-                                  ),
-                              ],
-                            ),
-                          ),
-
+                        children:  [
                           Column(
-                            children: [
-                              for (int i = 0; i < jumma.jammat!.length; i++)
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-
-                                    GestureDetector(
-                                      onTap: (){
-                                        _showJamat();
-                                      },
-                                      child: Text(
-                                        jumma.jammat![i],
-                                        style: _textStyle,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onDoubleTap: () {},
-                                      onTap: () {
-                                        setState(() {
-                                          jumma.jammat?.removeAt(i);
-                                          updateMasjid({'jumma': jumma}).then((value) {
-                                            AppPreferences.setMasjid(
-                                                json.encode(value));
-                                            setState(() {
-
-                                            });
-                                          });
-                                        });
-                                      },
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 5),
-                                        child: Icon(
-                                          Icons.remove_circle_outline,
-                                          size: 18,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                            children: const [
+                              Text("AZAN"),
                             ],
+                          ),
+                          Spacer(),
+                          const Text(
+                            "5:00 PM",
+                            style: TextStyle(),
                           ),
                         ],
                       ),
-                    ])),
-              )
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                        Padding(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("JAMMAT"),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.add_circle_outline,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    _showJamat();
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
+
+                        Column(
+                          children: [
+                            for (int i = 0; i < jumma.jammat!.length; i++)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+
+                                  GestureDetector(
+                                    onTap: (){
+                                      _showJamat();
+                                    },
+                                    child: Text(
+                                      jumma.jammat![i],
+                                      style: _textStyle,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onDoubleTap: () {},
+                                    onTap: () {
+                                      setState(() {
+                                        jumma.jammat?.removeAt(i);
+                                        updateMasjid({'jumma': jumma}).then((value) {
+                                          AppPreferences.setMasjid(
+                                              json.encode(value));
+                                          setState(() {
+
+                                          });
+                                        });
+                                      });
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(left: 5),
+                                      child: Icon(
+                                        Icons.remove_circle_outline,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ]))
             ],
           );
         });
