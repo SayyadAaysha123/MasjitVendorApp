@@ -303,19 +303,23 @@ class _ManageTimeState extends State<ManageTime> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
 
-                          Row(
-                            children: [
-                              Text("JAMMAT"),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.add_circle,
-                                    color: Colors.black,
+                          Padding(
+                            padding: EdgeInsets.only(left: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("JAMMAT"),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.add_circle_outline,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      _showJamat();
+                                    },
                                   ),
-                                  onPressed: () {
-                                    _showJamat();
-                                  },
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
 
                           Column(
