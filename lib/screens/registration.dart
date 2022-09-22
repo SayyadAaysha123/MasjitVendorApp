@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -289,7 +288,6 @@ class _RegistrationState extends State<Registration> {
                           child: GestureDetector(
                             onDoubleTap: () {},
                             onTap: () {
-                              print("imgpath---> ${_imagess[i].toString()}");
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -326,12 +324,38 @@ class _RegistrationState extends State<Registration> {
                 }
 
                 _pickImage1();
-
               },
               child: const Text(
                 'Register',
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Already Have an Masjid?", style: TextStyle(
+                    fontSize: 15,
+                  ),),
+
+                  GestureDetector(
+                    onDoubleTap: (){},
+                    onTap: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: const Text(" Login", style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green
+                      ),),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ]),
         ),
       ),
@@ -352,54 +376,17 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-  // Future<RegisterResponseModel> getRegisterVendors() async {
-  //
-  //   try {
-  //     final result = await http.post(
-  //         Uri.parse("http://masjid.exportica.in/api/masjid/register"),
-  //
-  //
-  //         body: {
-  //           "email": emailController.text.trim(),
-  //           "password": phoneNumberController.text.trim(),
-  //           "immam_name": imamNameController.text.trim(),
-  //           "masjid_name": masjidNameController.text.trim(),
-  //           "immam_contact": imamNumberController.text.trim(),
-  //           "lat": address?.lat,
-  //           "long": address?.long,
-  //           "phone": phoneNumberController.text.trim(),
-  //           "street": address?.street,
-  //           "sub_locality": address?.subLocality,
-  //           "locality": address?.locality,
-  //           "postal_code": address?.postalCode,
-  //           "administrative_area": address?.administrativeArea,
-  //           "country": address?.country,
-  //           "images": img.toString()
-  //         });
-  //
-  //     if(result.statusCode == 200){
-  //       print("Hii ${result.body}");
-  //     }
-  //
-  //
-  //     return registerResponseModelFromJson(result.body);
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
-
   Future<RegisterResponseModel?> _pickImage1() async {
     try {
       var request = http.MultipartRequest(
           'POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
 
-      print("======>" + _imageFile!.path.toString());
       request.files.add(await http.MultipartFile.fromPath(
           'images[]', _imageFile!.path.toString()));
 
-      request.fields.addAll({
+      final fields = {
         "email": emailController.text.trim(),
-        "password": phoneNumberController.text.trim(),
+        "password": passwordController.text.trim(),
         "immam_name": imamNameController.text.trim(),
         "masjid_name": masjidNameController.text.trim(),
         "immam_contact": imamNumberController.text.trim(),
@@ -412,39 +399,23 @@ class _RegistrationState extends State<Registration> {
         "postal_code": address!.postalCode!,
         "administrative_area": address!.administrativeArea!,
         "country": address!.country!,
-      });
+      };
+
+      print("register  $fields");
+      request.fields.addAll(fields);
+
+
 
       var response = await request.send();
-
 
       response.stream.transform(utf8.decoder).listen((value) async {
         var jsonData = json.decode(value);
 
-        print("jsonData    ${jsonData["data"]}");
-
-        var masjid = jsonData["data"]["masjid"];
-
-        print("masjid    $masjid");
-
-        var token = jsonData["data"]["token"];
-
-        print("token    $token");
-
-        var namaj = jsonData["data"]["masjid"]["weekly_namaz"];
-
-        print("namaj    $namaj");
-
         AppPreferences.setToken(jsonData["data"]["token"]);
-
         AppPreferences.setMasjid(json.encode(jsonData["data"]["masjid"]));
-
         AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
 
-        final masjid1 = await AppPreferences.getMasjid();
-
-        print("Idddddd ${json.encode(jsonData["data"]["masjid"]["id"])}");
-
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const Home()));
       });
     } catch (e) {
