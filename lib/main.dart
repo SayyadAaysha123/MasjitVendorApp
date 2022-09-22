@@ -1,57 +1,69 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
+import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/screens/home.dart';
-import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/on_boarding.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
 
-import 'utils/constant.dart';
 
-String? accessToken;
-bool? firstRun;
 void main() async{
-
-  await Hive.initFlutter();
-
-  var box = await Hive.openBox(kBoxName);
-
-  accessToken = await AppPreferences.getToken();
-   firstRun = await AppPreferences.setIsFirstTime();
-
-  print("is_first---> $firstRun");
-  print("Heyyyy ${AppPreferences.getToken()}");
 
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
+ /* Masjid? masjid1;
+  String? token;
+  String? masjidId;
+  Widget? destination;*/
+
+  @override
+  void initState() {
+    super.initState();
+
+   /* AppPreferences.getMasjid().then((value) {
+      if (value == null) return;
+      masjid1 = value;
+    });
+    AppPreferences.getToken().then((value) {
+      token = value;
+    });
+    AppPreferences.getIds().then((value) {
+      masjidId = value;
+    });
+*/
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
+   /* if (token == null) {
+      destination = const Registration();
+    } else {
+      destination = const Home();
+    }*/
 
-    Widget destination = Registration();
+    // if (firstRun == true) {
+    //   destination = LoginScreen();
+    // } else {
+    //   // firstRun = await AppPreferences.setIsFirstTime();
+    //   destination = OnBoarding();
+    // }
 
-
-    if (accessToken == "") {
-        destination = Registration();
-    }else{
-      destination = Home();
-    }
-
-    if(firstRun == true){
-
-      destination = LoginScreen();
-
-    }else{
-      // firstRun = await AppPreferences.setIsFirstTime();
-      destination = OnBoarding();
-
-
-    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -62,8 +74,95 @@ class MyApp extends StatelessWidget {
         ),
       ),
         // box.get(kIsOnBoardingDone, defaultValue: false) ?
-      home: Registration(),
+      home:  MyHomePage(),
       debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/onBoardingScreen': (BuildContext context) => OnBoarding(),
+          '/registrationScreen': (BuildContext context) => Registration(),
+          '/homeScreen': (BuildContext context) => Home(),
+        }
     );
   }
+
+}
+
+
+
+class MyHomePage extends StatefulWidget {
+
+
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+
+}
+
+
+class _MyHomePageState extends State<MyHomePage> {
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    startTimer();
+
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: splash(),
+      ),
+    );
+  }
+
+  Widget splash() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
+    );
+  }
+
+  void navigateSignUpParentPage() {
+    Navigator.of(context).pushReplacementNamed('/registrationScreen');
+  }
+
+  void navigateDashboardScreenPage() {
+    Navigator.of(context).pushReplacementNamed('/homeScreen');
+  }
+
+  void navigateOnBoardScreenPage() {
+    Navigator.of(context).pushReplacementNamed('/onBoardingScreen');
+  }
+
+
+  startTimer() async {
+    var duration =  Duration(milliseconds: Platform.isIOS ? 1000 : 1000);
+    try {
+
+      String? accessToken = await AppPreferences.getToken();
+      Masjid? masjid1 = await AppPreferences.getMasjid();
+
+
+      if (accessToken == "" && masjid1 == null) {
+        return Timer(duration, navigateSignUpParentPage);
+      }
+
+      else if (accessToken != "" && masjid1 != null) {
+        return Timer(duration, navigateDashboardScreenPage);
+      }
+
+    } catch (e) {
+      print("eeeeee    $e");
+    }
+
+    return Timer(duration, navigateOnBoardScreenPage);
+  }
+
 }

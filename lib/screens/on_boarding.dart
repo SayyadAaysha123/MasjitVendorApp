@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
 import 'package:masjit_vendor_app/utils/constant.dart';
@@ -42,8 +41,6 @@ class _OnBoardingState extends State<OnBoarding> {
     Size size = MediaQuery.of(context).size;
 
     complete() {
-
-
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Registration()));

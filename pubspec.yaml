@@ -38,8 +38,6 @@ dependencies:
   google_maps_flutter: ^2.2.0
   geocoding: ^2.0.5
   image_picker: ^0.8.5+3
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   shared_preferences:
 #  flutter_hooks: ^0.18.5+1
 #  hooks_riverpod: ^1.0.4
@@ -51,9 +49,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  hive_generator: ^1.1.3
-  build_runner: ^2.2.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

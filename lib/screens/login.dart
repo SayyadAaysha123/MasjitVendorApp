@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/loginResponse.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
@@ -95,20 +94,6 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () async {
           var result = loginMasjid();
 
-          result.then((value) {
-
-            var box = Hive.box("testBox");
-            box.delete(kToken);
-            box.put(kToken, value?.data?.token);
-            box.delete(kMasjid);
-            box.put(kMasjid, value?.data?.masjid?.toJson());
-
-            print(" registrationToken ${box.get("token")}");
-
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const Home()));
-
-          });
         },
         child: const Text(
           'Login',

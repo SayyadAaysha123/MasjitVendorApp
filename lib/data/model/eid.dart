@@ -15,4 +15,9 @@ class Eid {
     data['jammat'] = jammat;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Eid{name: $name, jammat: $jammat}';
+  }
 }

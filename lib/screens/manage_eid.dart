@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/eid.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
+import 'package:masjit_vendor_app/data/update_masjid.dart';
 import 'package:masjit_vendor_app/widget/eid_card.dart';
 
 var eid = [
@@ -49,13 +50,11 @@ class _ManageEidState extends State<ManageEid> {
     AppPreferences.getIds().then((value) {
       masjidId = value;
     });
-
   }
 
 
   @override
   Widget build(BuildContext context) {
-
     _show(int i) {
       _selected = i;
       Future<String?> result = showModalBottomSheet<String>(
@@ -70,11 +69,16 @@ class _ManageEidState extends State<ManageEid> {
             String? _time;
 
             return Padding(
-              padding: MediaQuery.of(context).viewInsets,
+              padding: MediaQuery
+                  .of(context)
+                  .viewInsets,
               child: Column(mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * .2,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * .2,
                       child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (DateTime newTime) {
@@ -84,7 +88,8 @@ class _ManageEidState extends State<ManageEid> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pop(_time ?? DateFormat.jm().format(DateTime.now()));
+                        Navigator.of(context).pop(
+                            _time ?? DateFormat.jm().format(DateTime.now()));
                       },
                       child: const Text('save'),
                     )
@@ -96,7 +101,7 @@ class _ManageEidState extends State<ManageEid> {
         if (value != null) {
           setState(() {
             eid[_selected].jammat?.add(value);
-            updateMasjid().then((value) {
+            updateMasjid({'eid': eid}).then((value) {
               AppPreferences.setMasjid(json.encode(value));
             });
           });
@@ -125,27 +130,6 @@ class _ManageEidState extends State<ManageEid> {
         : const Center(
       child: Text("add trustee"),
     );
-  }
-
-  Future<Masjid> updateMasjid() async {
-
-    final http.Response response = await http.put(
-      Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${token}'
-      },
-      body: jsonEncode(<String, dynamic>{
-        'eid': eid
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      print(response.body);
-      return Masjid.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to update album.');
-    }
   }
 
 }

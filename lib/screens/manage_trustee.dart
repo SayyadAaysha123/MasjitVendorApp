@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
-import 'package:masjit_vendor_app/screens/home.dart';
-import 'package:masjit_vendor_app/utils/constant.dart';
+import 'package:masjit_vendor_app/data/update_masjid.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/widget/trustee_card.dart';
-import 'package:http/http.dart' as http;
+
 import '../data/model/trustee.dart';
 
 
@@ -75,7 +73,7 @@ class _ManageTrusteeState extends State<ManageTrustee> {
           });
         }
 
-        updateMasjid(trustee).then((value) {
+        updateMasjid({'trustee':trustee}).then((value) {
           AppPreferences.setMasjid(json.encode(value));
         });
 
@@ -106,28 +104,3 @@ class _ManageTrusteeState extends State<ManageTrustee> {
 
 }
 
-Future<Masjid> updateMasjid(List<Trustee> trustee) async {
-
-  String? token = await AppPreferences.getToken();
-  String? id = await AppPreferences.getIds();
-  print("idddddd $id");
-
-
-  final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/masjids/$id"),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token'
-    },
-    body: jsonEncode(<String, dynamic>{
-      'trustee': trustee,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    print(response.body);
-    return Masjid.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to update album.');
-  }
-}

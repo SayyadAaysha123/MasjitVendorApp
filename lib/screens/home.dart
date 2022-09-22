@@ -6,6 +6,8 @@ import 'package:masjit_vendor_app/data/model/logoutResponse.dart';
 import 'package:http/http.dart' as http;
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/data/model/trustee.dart';
+import 'package:masjit_vendor_app/data/update_masjid.dart';
+import 'package:masjit_vendor_app/screens/exit_dialog.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
 import 'package:masjit_vendor_app/screens/manage_notification.dart';
@@ -16,7 +18,6 @@ import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/manage_trustee.dart';
 
 class Home extends StatefulWidget {
-
   final String come;
 
   const Home({Key? key, this.come = ""}) : super(key: key);
@@ -35,49 +36,60 @@ class _HomeState extends State<Home> {
   String? token;
   String? masjidId;
 
+  Future<void> init() async {
+    masjid1 = await AppPreferences.getMasjid();
+    token = await AppPreferences.getToken();
+    masjidId = await AppPreferences.getIds();
+  }
+
+
   @override
   void initState() {
     super.initState();
+    init();
+    _widget = widget.come == "1"
+        ? ManageNotification()
+        : widget.come == "2"
+            ? ManageTrustee()
+            : ManageTime();
+    _title = widget.come == "1"
+        ? 'Notice'
+        : widget.come == "2"
+            ? "Trustee"
+            : 'Weekly Namaz';
 
-    _widget = widget.come == "1" ? ManageNotification() : widget.come == "2" ? ManageTrustee() : ManageTime();
-    _title = widget.come == "1" ? 'Notice' : widget.come == "2" ? "Trustee" : 'Weekly Namaz';
-
-    _actions = widget.come == "1" ? _actions = [
-      IconButton(
-          onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
-                builder: (context) {
-                  return EditNotice();
-                });
-          },
-          icon: const Icon(Icons.add_circle))] : <Widget>[];
-
-    AppPreferences.getMasjid().then((value) {
-      if (value == null) return;
-      masjid1 = value;
-    });
-    AppPreferences.getToken().then((value) {
-      token = value;
-    });
-    AppPreferences.getIds().then((value) {
-      masjidId = value;
-    });
+    _actions = widget.come == "1"
+        ? _actions = [
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) {
+                        return EditNotice();
+                      });
+                },
+                icon: const Icon(Icons.add_circle))
+          ]
+        : <Widget>[];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(title: Text(_title!), centerTitle: true, actions: _actions),
-      drawer: _drawer(),
-      body: _widget,
+    return WillPopScope(
+      onWillPop:  _onBackPressed,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar:
+            AppBar(title: Text(_title!), centerTitle: true, actions: _actions),
+        drawer: _drawer(),
+        body: _widget,
+      ),
     );
   }
 
@@ -144,7 +156,7 @@ class _HomeState extends State<Home> {
 
                   trustee.add(value);
 
-                  updateMasjid(trustee).then((value) {
+                  updateMasjid({'trustee':trustee}).then((value) {
                     AppPreferences.setMasjid(json.encode(value));
                     setState(() {});
                   });
@@ -248,6 +260,9 @@ class _HomeState extends State<Home> {
   }
 
   Future<LogOutResponseModel> getLogoutData() async {
+    String? token = await AppPreferences.getToken();
+    print(token);
+
     try {
       final result = await http.get(
         Uri.parse("http://masjid.exportica.in/api/user/logout"),
@@ -259,7 +274,7 @@ class _HomeState extends State<Home> {
 
       if (result.statusCode == 200) {
         print("Hii ${result.body}");
-
+        AppPreferences.clearAppPreference();
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => LoginScreen()),
             (route) => false);
@@ -271,10 +286,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-
-
   Future<GetAllNotices> getAllNotices() async {
-
     String? token = await AppPreferences.getToken();
     String? id = await AppPreferences.getIds();
     print(token);
@@ -286,18 +298,14 @@ class _HomeState extends State<Home> {
         'Authorization': 'Bearer $token'
       };
 
-      print('headers');
-      print(headers);
       final result = await http.get(
         Uri.parse("http://masjid.exportica.in/api/masjids/$id/notice"),
         headers: headers,
       );
 
-
-      if(result.statusCode == 200){
+      if (result.statusCode == 200) {
         print(result.body);
       }
-
 
       return getAllNoticesFromJson(result.body);
     } catch (e) {
@@ -305,8 +313,38 @@ class _HomeState extends State<Home> {
     }
   }
 
-  @override
-  getNoticeApiCall() {
-    print("Yesss");
+  static showExitDialog(BuildContext context) {
+    if (context != null) {
+      showGeneralDialog(
+          barrierColor: Colors.black.withOpacity(0.5),
+          transitionBuilder: (context, a1, a2, widget) {
+            final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+            // return Transform(
+            //   transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+            return Transform.scale(
+              scale: a1.value,
+              child: Opacity(
+                opacity: a1.value,
+                child: ExitAppDialog(
+                  message: "Are You Sure To Exit",
+                ),
+              ),
+            );
+          },
+          transitionDuration: Duration(milliseconds: 200),
+          barrierDismissible: true,
+          barrierLabel: '',
+          context: context,
+          pageBuilder: (context, animation2, animation1) {
+            return Container();
+          });
+    }
   }
+
+  Future<bool> _onBackPressed() {
+    return showExitDialog(context);
+  }
+
+
+
 }

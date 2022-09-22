@@ -113,7 +113,7 @@ class _EditNoticeState extends State<EditNotice> {
 
       if (result.statusCode == 200) {
         print("hiiii ${result.body}");
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(come: "1",)));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home(come: "1",)));
       }
 
 

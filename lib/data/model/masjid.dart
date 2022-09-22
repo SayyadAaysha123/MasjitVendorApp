@@ -23,6 +23,12 @@ class Masjid {
   String? iftar;
   Place? place;
 
+
+  @override
+  String toString() {
+    return 'Masjid{id: $id, weeklyNamaz: $weeklyNamaz, jumma: $jumma, trustee: $trustee, eid: $eid, images: $images, sahr: $sahr, iftar: $iftar, place: $place}';
+  }
+
   Masjid(
       {this.id,
       this.weeklyNamaz,

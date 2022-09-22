@@ -415,8 +415,8 @@ class _RegistrationState extends State<Registration> {
         AppPreferences.setMasjid(json.encode(jsonData["data"]["masjid"]));
         AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Home()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const Home()));
       });
     } catch (e) {
       print("Image picker error ");

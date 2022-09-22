@@ -20,6 +20,11 @@ class Place {
       this.lat,
       this.long});
 
+  @override
+  String toString() {
+    return 'Place{masjidName: $masjidName, street: $street, subLocality: $subLocality, locality: $locality, postalCode: $postalCode, administrativeArea: $administrativeArea, country: $country, lat: $lat, long: $long}';
+  }
+
   Place.fromJson(Map<String, dynamic> json) {
     masjidName = json['masjid_name'];
     street = json['street'];

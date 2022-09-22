@@ -11,6 +11,11 @@ class WeeklyNamaz {
     jammat = json['jammat'];
   }
 
+  @override
+  String toString() {
+    return 'WeeklyNamaz{day: $day, azan: $azan, jammat: $jammat}';
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['day'] = day;

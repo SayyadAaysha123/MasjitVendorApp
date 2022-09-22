@@ -2,6 +2,11 @@ class Jumma {
   String? azan;
   List<String>? jammat;
 
+  @override
+  String toString() {
+    return 'Jumma{azan: $azan, jammat: $jammat}';
+  }
+
   Jumma({this.azan, this.jammat});
 
   Jumma.fromJson(Map<String, dynamic> json) {

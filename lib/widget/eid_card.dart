@@ -6,6 +6,7 @@ import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/eid.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:http/http.dart' as http;
+import 'package:masjit_vendor_app/data/update_masjid.dart';
 
 class EidCard extends StatefulWidget {
   const EidCard({
@@ -47,54 +48,6 @@ class _EidCardState extends State<EidCard> {
 
   @override
   Widget build(BuildContext context) {
-
-    _show(int i) {
-      _selected = i;
-      Future<String?> result = showModalBottomSheet<String>(
-          context: context,
-          isScrollControlled: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          builder: (context) {
-            String? _time;
-
-            return Padding(
-              padding: MediaQuery.of(context).viewInsets,
-              child: Column(mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * .2,
-                      child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.time,
-                        onDateTimeChanged: (DateTime newTime) {
-                          _time = DateFormat.jm().format(newTime);
-                        },
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(_time ?? DateFormat.jm().format(DateTime.now()));
-                      },
-                      child: const Text('save'),
-                    )
-                  ]),
-            );
-          });
-
-      result.then((value) {
-        if (value != null) {
-          print("Hii");
-          eid?.jammat?.add(value);
-          updateMasjid().then((value) {
-            AppPreferences.setMasjid(json.encode(value));
-          });
-
-        }
-      });
-    }
 
 
     TextStyle? _textStyle = Theme.of(context).textTheme.bodyLarge;
@@ -167,7 +120,7 @@ class _EidCardState extends State<EidCard> {
                           onTap: (){
                             setState(() {
                               widget.eid.jammat?.removeAt(i);
-                              updateMasjid().then((value) {
+                              updateMasjid({'eid': eid}).then((value) {
                                 AppPreferences.setMasjid(json.encode(value));
                               });
                             });
@@ -192,67 +145,9 @@ class _EidCardState extends State<EidCard> {
     );
   }
 
-  Future<Masjid> updateMasjid() async {
-
-    print("iiiii $masjidId");
-    print("hhhhh $token");
-
-    final http.Response response = await http.put(
-      Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${token}'
-      },
-      body: jsonEncode(<String, dynamic>{
-        'eid': eid
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      print(response.body);
-      return Masjid.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to update album.');
-    }
-  }
-
 }
 
 
 
 
 
-
-/*Future<Masjid> updateMasjid() async {
-
-
-  String? token;
-  String? masjidId;
-
-  AppPreferences.getIds().then((value) {
-    masjidId = value;
-  });
-  AppPreferences.getToken().then((value) {
-    token = value;
-  });
-
-
-  final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token'
-    },
-    body: jsonEncode(<String, dynamic>{
-      'eid': eid
-
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    print(response.body);
-    return Masjid.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to update album.');
-  }
-}*/

@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/masjid.dart';
-import 'package:masjit_vendor_app/utils/constant.dart';
-import 'package:http/http.dart' as http;
+import 'package:masjit_vendor_app/data/update_masjid.dart';
 
 class Sahr extends StatefulWidget {
   const Sahr({Key? key}) : super(key: key);
@@ -28,7 +26,6 @@ class _SahrState extends State<Sahr> {
   void initState() {
     super.initState();
 
-
     AppPreferences.getMasjid().then((value) {
       if (value == null) return;
       masjid1 = value;
@@ -43,9 +40,7 @@ class _SahrState extends State<Sahr> {
     AppPreferences.getIds().then((value) {
       masjidId = value;
     });
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -94,16 +89,19 @@ class _SahrState extends State<Sahr> {
               masjid1?.iftar = _iftar;
             }
 
-            updateMasjid().then((value) {
+            updateMasjid({'sahr': _sahr, 'iftar': _iftar}).then((value) {
               masjid1?.sahr = _sahr;
               masjid1?.iftar = _iftar;
               AppPreferences.setMasjid(json.encode(value));
             });
-
-
           }));
     }
 
+    return FutureBuilder<Masjid?>(
+        future: AppPreferences.getMasjid(),
+    builder: (context, snapshot) {
+    _sahr = snapshot.data?.sahr ?? _sahr;
+    _iftar = snapshot.data?.iftar ?? _iftar;
     return Column(
       children: [
         GestureDetector(
@@ -148,30 +146,7 @@ class _SahrState extends State<Sahr> {
         )
       ],
     );
-  }
-
-  Future<Masjid> updateMasjid() async {
-    print(masjid1?.id);
-    final http.Response response = await http.patch(
-      Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${token}'
-      },
-      body: jsonEncode(<String, dynamic>{
-        'sahr': _sahr,
-        'iftar' : _iftar
-      }),
-    );
-
-    print(response.statusCode);
-    print(response.body);
-
-
-      print(response.body);
-      return Masjid.fromJson(json.decode(response.body));
+    });
 
   }
-
 }
