@@ -11,6 +11,11 @@ class Trustee {
     designation = json['designation'];
   }
 
+  @override
+  String toString() {
+    return 'Trustee{name: $name, contact: $contact, designation: $designation}';
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;

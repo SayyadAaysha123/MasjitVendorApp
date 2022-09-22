@@ -158,6 +158,7 @@ class _HomeState extends State<Home> {
 
                   updateMasjid({'trustee':trustee}).then((value) {
                     AppPreferences.setMasjid(json.encode(value));
+                    _widget = ManageTrustee();
                     setState(() {});
                   });
                 });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masjit_vendor_app/data/model/trustee.dart';
+import 'package:masjit_vendor_app/screens/home.dart';
 
 class EditTrustee extends StatelessWidget {
   EditTrustee({Key? key, this.trustee}) : super(key: key);
@@ -75,6 +76,8 @@ class EditTrustee extends StatelessWidget {
                           contact: _contactEditController.text.trim(),
                         )
                   );
+
+                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home(come: "2",)));
                 },
                 child: const Text('Save'))
           ],

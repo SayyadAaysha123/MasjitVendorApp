@@ -27,7 +27,7 @@ class TrusteeCard extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               width: double.infinity,
               child: Text(
-                trustee.designation!,
+                trustee.designation ?? '',
                 style: _textStyle?.copyWith(
                   color: Colors.white,
                 ),
@@ -41,11 +41,11 @@ class TrusteeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  trustee.name!,
+                  trustee.name ?? '',
                   style: _textStyle,
                 ),
                 Text(
-                  trustee.contact!,
+                  trustee.contact ?? '',
                   style: _textStyle,
                 )
               ],
