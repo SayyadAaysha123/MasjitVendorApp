@@ -46,7 +46,7 @@ class _SahrState extends State<Sahr> {
   Widget build(BuildContext context) {
     TextStyle? _textStyle = Theme.of(context).textTheme.subtitle2;
 
-    _showBottomSheet(int i, String time) {
+    _showBottomSheetSahr(int i, String time) {
       Future<String?> result = showModalBottomSheet<String>(
           context: context,
           isScrollControlled: true,
@@ -81,10 +81,65 @@ class _SahrState extends State<Sahr> {
       result.then((value) => setState(() {
             if (value == null) return;
 
-            if (i == 0) {
+            setState(() {
+              masjid1?.sahr = value;
+              updateMasjid({'sahr': value}).then((value) {
+                AppPreferences.setMasjid(json.encode(value));
+                setState(() {});
+              });
+            });
+
+            /* if (i == 0) {
               _sahr = value;
               masjid1?.sahr = _sahr;
             } else {
+              _iftar = value;
+              masjid1?.iftar = _iftar;
+            }
+
+            updateMasjid({'sahr': _sahr}).then((value) {
+              // masjid1?.sahr = _sahr;
+              AppPreferences.setMasjid(json.encode(value));
+            });*/
+          }));
+    }
+
+    _showBottomSheetIftar(int i, String time) {
+      Future<String?> result = showModalBottomSheet<String>(
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          builder: (context) {
+            String? _time;
+            return Column(mainAxisSize: MainAxisSize.min, children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .2,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: DateFormat('jm').parse(time),
+                  onDateTimeChanged: (DateTime newTime) {
+                    _time = DateFormat.jm().format(newTime);
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(_time);
+                },
+                child: const Text('save'),
+              )
+            ]);
+          });
+
+      result.then((value) => setState(() {
+            if (value == null) return;
+
+            /*  if (i == 0){
               _iftar = value;
               masjid1?.iftar = _iftar;
             }
@@ -93,60 +148,78 @@ class _SahrState extends State<Sahr> {
               masjid1?.sahr = _sahr;
               masjid1?.iftar = _iftar;
               AppPreferences.setMasjid(json.encode(value));
+            });*/
+
+            setState(() {
+              masjid1?.iftar = value;
+              updateMasjid({'iftar': value}).then((value) {
+                AppPreferences.setMasjid(json.encode(value));
+                setState(() {});
+              });
             });
           }));
     }
 
     return FutureBuilder<Masjid?>(
         future: AppPreferences.getMasjid(),
-    builder: (context, snapshot) {
-    _sahr = snapshot.data?.sahr ?? _sahr;
-    _iftar = snapshot.data?.iftar ?? _iftar;
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            _showBottomSheet(0, _sahr);
-            print("Heyy");
-          },
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'SAHR',
-                      style: _textStyle,
-                    ),
-                    Text(_sahr),
-                  ]),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            print("Hii");
-            _showBottomSheet(1, _iftar);
-          },
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'IFTAR',
-                      style: _textStyle,
-                    ),
-                    Text(_iftar),
-                  ]),
-            ),
-          ),
-        )
-      ],
-    );
-    });
-
+        builder: (context, snapshot) {
+          _sahr = snapshot.data?.sahr ?? _sahr;
+          _iftar = snapshot.data?.iftar ?? _iftar;
+          return Column(
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'SAHR',
+                          style: _textStyle,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _showBottomSheetSahr(0, _sahr);
+                            print("_sahr ");
+                          },
+                          child: Container(
+                              color: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(_sahr),
+                              )),
+                        ),
+                      ]),
+                ),
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'IFTAR',
+                          style: _textStyle,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _showBottomSheetIftar(0, _iftar);
+                            print("_iftar ");
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(_iftar),
+                            ),
+                          ),
+                        ),
+                      ]),
+                ),
+              )
+            ],
+          );
+        });
   }
 }

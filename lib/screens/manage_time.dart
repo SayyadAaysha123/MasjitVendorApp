@@ -125,6 +125,9 @@ class _ManageTimeState extends State<ManageTime> {
             jumma.jammat?.add(value);
             updateMasjid({'jumma': jumma}).then((value) {
               AppPreferences.setMasjid(json.encode(value));
+              setState(() {
+
+              });
             });
           });
         }
@@ -154,7 +157,7 @@ class _ManageTimeState extends State<ManageTime> {
             _time[i] = value;
           });
 
-          updateMasjid({'weekly_namaz': _time, 'jumma': jumma})
+          updateMasjid({'weekly_namaz': _time})
               .then((value) async {
             await AppPreferences.setMasjid(json.encode(value));
           });
@@ -336,9 +339,12 @@ class _ManageTimeState extends State<ManageTime> {
                                       onTap: () {
                                         setState(() {
                                           jumma.jammat?.removeAt(i);
-                                          updateMasjid({'eid': jumma}).then((value) {
+                                          updateMasjid({'jumma': jumma}).then((value) {
                                             AppPreferences.setMasjid(
                                                 json.encode(value));
+                                            setState(() {
+
+                                            });
                                           });
                                         });
                                       },
