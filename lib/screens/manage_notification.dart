@@ -22,6 +22,10 @@ class _ManageNotificationState extends State<ManageNotification> {
   void initState() {
     super.initState();
 
+    setState(() {
+      getNoticesData = getAllNotices();
+    });
+
 
     if(mounted){
       setState(() {
@@ -40,10 +44,6 @@ class _ManageNotificationState extends State<ManageNotification> {
     }
 
     // getNoticeData();
-
-    setState(() {
-      getNoticesData = getAllNotices();
-    });
 
   }
 
