@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
 import 'package:masjit_vendor_app/data/model/eid.dart';
@@ -28,7 +29,6 @@ class ManageEid extends StatefulWidget {
 }
 
 class _ManageEidState extends State<ManageEid> {
-
   final _nameEditController = TextEditingController();
   int _selected = 0;
 
@@ -52,7 +52,6 @@ class _ManageEidState extends State<ManageEid> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     _show(int i) {
@@ -69,31 +68,25 @@ class _ManageEidState extends State<ManageEid> {
             String? _time;
 
             return Padding(
-              padding: MediaQuery
-                  .of(context)
-                  .viewInsets,
-              child: Column(mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * .2,
-                      child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.time,
-                        onDateTimeChanged: (DateTime newTime) {
-                          _time = DateFormat.jm().format(newTime);
-                        },
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(
-                            _time ?? DateFormat.jm().format(DateTime.now()));
-                      },
-                      child: const Text('save'),
-                    )
-                  ]),
+              padding: MediaQuery.of(context).viewInsets,
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * .2,
+                  child: CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.time,
+                    onDateTimeChanged: (DateTime newTime) {
+                      _time = DateFormat.jm().format(newTime);
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pop(_time ?? DateFormat.jm().format(DateTime.now()));
+                  },
+                  child: const Text('save'),
+                )
+              ]),
             );
           });
 
@@ -103,33 +96,40 @@ class _ManageEidState extends State<ManageEid> {
             eid[_selected].jammat?.add(value);
             updateMasjid({'eid': eid}).then((value) {
               AppPreferences.setMasjid(json.encode(value));
+              setState(() {
+
+              });
             });
           });
         }
       });
     }
 
-
     return eid.isNotEmpty
-        ? ListView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
-      physics: const BouncingScrollPhysics(),
-      children: [
-        for (int i = 0; i < eid.length; i++)
-          GestureDetector(
-            onTap: () {
-              _show(i);
-            },
-            child: EidCard(eid: eid[i]),
-          ),
-      ],
-    )
-        : const Center(
-      child: Text("add trustee"),
-    );
-  }
+        ? FutureBuilder<Masjid?>(
+            future: AppPreferences.getMasjid(),
+            builder: (context, snapshot) {
+              eid = snapshot.data?.eid ?? eid;
 
+              return ListView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  for (int i = 0; i < eid.length; i++)
+                    GestureDetector(
+                      onTap: () {
+                        _show(i);
+                      },
+                      child: EidCard(eid: eid[i]),
+                    ),
+                ],
+              );
+            })
+        : const Center(
+            child: Text("add trustee"),
+          );
+  }
 }
