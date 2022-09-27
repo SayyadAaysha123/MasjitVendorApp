@@ -9,8 +9,7 @@ import 'package:masjit_vendor_app/screens/on_boarding.dart';
 import 'package:masjit_vendor_app/screens/registration.dart';
 
 
-void main() async{
-
+void main() async {
   runApp(const MyApp());
 }
 
@@ -24,7 +23,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
 
- /* Masjid? masjid1;
+  /* Masjid? masjid1;
   String? token;
   String? masjidId;
   Widget? destination;*/
@@ -33,7 +32,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-   /* AppPreferences.getMasjid().then((value) {
+    /* AppPreferences.getMasjid().then((value) {
       if (value == null) return;
       masjid1 = value;
     });
@@ -51,7 +50,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-   /* if (token == null) {
+    /* if (token == null) {
       destination = const Registration();
     } else {
       destination = const Home();
@@ -65,17 +64,17 @@ class _MyAppState extends State<MyApp> {
     // }
 
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: Colors.green.shade900,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green.shade900,
-          primary: Colors.green.shade900,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColor: Colors.green.shade900,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.green.shade900,
+            primary: Colors.green.shade900,
+          ),
         ),
-      ),
         // box.get(kIsOnBoardingDone, defaultValue: false) ?
-      home:  MyHomePage(),
-      debugShowCheckedModeBanner: false,
+        home: MyHomePage(),
+        debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
           '/onBoardingScreen': (BuildContext context) => OnBoarding(),
           '/registrationScreen': (BuildContext context) => Registration(),
@@ -87,9 +86,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-
 class MyHomePage extends StatefulWidget {
-
 
 
   @override
@@ -101,20 +98,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
-
   @override
   void initState() {
     super.initState();
 
     startTimer();
-
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
         child: splash(),
       ),
@@ -122,11 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget splash() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-    );
+    return const Center(
+        child:
+        Image(image: AssetImage("assets/images/splash.jpeg")));
   }
 
   void navigateSignUpParentPage() {
@@ -143,9 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   startTimer() async {
-    var duration =  Duration(milliseconds: Platform.isIOS ? 1000 : 1000);
+    var duration = Duration(milliseconds: Platform.isIOS ? 3000 : 3000);
     try {
-
       String? accessToken = await AppPreferences.getToken();
       Masjid? masjid1 = await AppPreferences.getMasjid();
 
@@ -157,7 +149,6 @@ class _MyHomePageState extends State<MyHomePage> {
       else if (accessToken != "" && masjid1 != null) {
         return Timer(duration, navigateDashboardScreenPage);
       }
-
     } catch (e) {
       print("eeeeee    $e");
     }
