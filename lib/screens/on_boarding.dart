@@ -88,15 +88,20 @@ class _OnBoardingState extends State<OnBoarding> {
               ],
             ),
             const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                _currentIndex < (_frames.length - 1)
-                    ? _pageController.nextPage(
-                        duration: Duration(milliseconds: 400),
-                        curve: Curves.easeIn)
-                    : complete();
-              },
-              child: Text(_currentIndex < (_frames.length -1) ? 'next' : 'done'),
+            Container(
+              color: Colors.transparent,
+              width: 90,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () {
+                  _currentIndex < (_frames.length - 1)
+                      ? _pageController.nextPage(
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.easeIn)
+                      : complete();
+                },
+                child: Text(_currentIndex < (_frames.length -1) ? 'Next' : 'Done'),
+              ),
             ),
             TextButton(
               onPressed: complete,

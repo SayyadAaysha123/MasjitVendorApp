@@ -312,21 +312,26 @@ class _RegistrationState extends State<Registration> {
               ],
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                print("Hi");
-                if (address == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please Select Location")));
-                  return;
-                }
+            Container(
+              color: Colors.transparent,
+              width: 100,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () async {
+                  print("Hi");
+                  if (address == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please Select Location")));
+                    return;
+                  }
 
-                _pickImage1();
-              },
-              child: const Text(
-                'Register',
+                  _pickImage1();
+                },
+                child: const Text(
+                  'Register',
+                ),
               ),
             ),
 
