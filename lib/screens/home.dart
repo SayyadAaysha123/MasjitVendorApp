@@ -191,13 +191,16 @@ class _HomeState extends State<Home> {
             decoration: BoxDecoration(
               color: Colors.green.shade900,
             ),
-            child: const Text(
-              'Drawer Header',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
+            child:   Center(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 40),
+                      child: Image(image: AssetImage("assets/images/appLogo.png"),
+                      height: 110,),
+                    ),
+                  ],
+                ))
           ),
           ListTile(
             title: const Text('Weekley Namaz Time'),

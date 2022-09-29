@@ -17,19 +17,19 @@ class _OnBoardingState extends State<OnBoarding> {
 
   final _frames = [
     {
-      'image': '',
+      'image': "https://cdn.pixabay.com/photo/2015/10/25/21/02/abu-1006336__340.jpg",
       'heading': 'Frame 1',
       'description':
           'Lorem Ipsum is simply dummy description of the printing and typesetting',
     },
     {
-      'image': '',
+      'image': "https://images.unsplash.com/photo-1590273089302-ebbc53986b6e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bW9zcXVlfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
       'heading': 'Frame 2',
       'description':
           'Lorem Ipsum is simply dummy description of the printing and typesetting',
     },
     {
-      'image': '',
+      'image': "https://cdn.pixabay.com/photo/2015/01/28/23/10/mosque-615415_960_720.jpg",
       'heading': 'Frame 3',
       'description':
           'Lorem Ipsum is simply dummy text of the printing and typesetting',
@@ -141,6 +141,14 @@ class Frame extends StatelessWidget {
               color: const Color.fromARGB(218, 109, 113, 136),
               borderRadius: BorderRadius.circular(30),
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child:Image.network(
+                image,
+                fit: BoxFit.cover,
+
+              ),
+            ) ,
             height: MediaQuery.of(context).size.height * .3,
             width: MediaQuery.of(context).size.width * .7,
           ),
