@@ -25,6 +25,21 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
+  String _userEmail = '';
+  String _password = '';
+
+  void _trySubmitForm() {
+    final bool? isValid = _formKey.currentState?.validate();
+    if (isValid == true) {
+      debugPrint('Everything looks good!');
+      debugPrint(_userEmail);
+      debugPrint(_password);
+
+      loginMasjid();
+    }
+  }
 
   Masjid? masjid1;
   String? token;
@@ -44,9 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
         title: const Text('Login'),
         centerTitle: true,
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [getEmailField(), getPasswordField(), getLoginButton(), getBottomText()],
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            getEmailField(),
+            getPasswordField(),
+            getLoginButton(),
+            getBottomText()],
+        ),
       ),
     );
   }
@@ -63,7 +85,19 @@ class _LoginScreenState extends State<LoginScreen> {
           label: Text('Email Id'),
           border: OutlineInputBorder(),
         ),
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return 'Please enter your email address';
+          }
+          // Check if the entered email has the right format
+          if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+            return 'Please enter a valid email address';
+          }
+          // Return null if the entered email is valid
+          return null;
+        },
         onChanged: (value) {
+          _userEmail = value;
           fields['email'] = value;
         },
       ),
@@ -80,8 +114,18 @@ class _LoginScreenState extends State<LoginScreen> {
           label: Text('Password'),
           border: OutlineInputBorder(),
         ),
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return 'This field is required';
+          }
+          if (value.trim().length < 6) {
+            return 'Password must be at least 6 characters in length';
+          }
+          // Return null if the entered password is valid
+          return null;
+        },
         onChanged: (value) {
-          fields['password'] = value;
+          _password = value;
         },
       ),
     );
@@ -92,7 +136,8 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.only(top: 50, left: 25, right: 25),
       child: ElevatedButton(
         onPressed: () async {
-          var result = loginMasjid();
+
+          _trySubmitForm();
 
         },
         child: const Text(

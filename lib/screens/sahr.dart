@@ -169,7 +169,7 @@ class _SahrState extends State<Sahr> {
             children: [
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -186,7 +186,18 @@ class _SahrState extends State<Sahr> {
                               color: Colors.transparent,
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
-                                child: Text(_sahr),
+                                child: Row(
+                                  children: [
+                                    Text(_sahr),
+                                    IconButton(
+                                        iconSize: 15,
+                                        onPressed: () {_showBottomSheetSahr(0, _sahr);},
+                                        icon: const Icon(
+                                          Icons.edit,
+                                          color: Colors.black,
+                                        )),
+                                  ],
+                                ),
                               )),
                         ),
                       ]),
@@ -194,7 +205,7 @@ class _SahrState extends State<Sahr> {
               ),
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -211,7 +222,18 @@ class _SahrState extends State<Sahr> {
                             color: Colors.transparent,
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: Text(_iftar),
+                              child: Row(
+                                children: [
+                                  Text(_iftar),
+                                  IconButton(
+                                      iconSize: 15,
+                                      onPressed: () { _showBottomSheetIftar(0, _iftar);},
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.black,
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
                         ),

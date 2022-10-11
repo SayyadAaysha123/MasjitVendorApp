@@ -190,7 +190,7 @@ class _ManageTimeState extends State<ManageTime> {
             physics: const BouncingScrollPhysics(),
             children: [
               Container(
-                height: 600,
+                height: 700,
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
@@ -221,8 +221,7 @@ class _ManageTimeState extends State<ManageTime> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 10),
+                              padding: EdgeInsets.only(left: 30),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -231,16 +230,29 @@ class _ManageTimeState extends State<ManageTime> {
                                     'Azan',
                                     style: TextStyle(),
                                   ),
-                                  Text(
-                                    "${snapshot.data?.weeklyNamaz?[index].azan}",
-                                    style: TextStyle(),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${snapshot.data?.weeklyNamaz?[index].azan}",
+                                          style: TextStyle(),
+                                        ),
+                                        IconButton(
+                                          iconSize: 15,
+                                            onPressed: () {_show(index);},
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              color: Colors.black,
+                                            )),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 10),
+                              padding: EdgeInsets.only(left: 30),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -249,9 +261,20 @@ class _ManageTimeState extends State<ManageTime> {
                                     'Jammat',
                                     style: TextStyle(),
                                   ),
-                                  Text(
-                                    "${snapshot.data?.weeklyNamaz?[index].jammat}",
-                                    style: TextStyle(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "${snapshot.data?.weeklyNamaz?[index].jammat}",
+                                        style: TextStyle(),
+                                      ),
+                                      IconButton(
+                                          iconSize: 15,
+                                          onPressed: () {_show(index);},
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: Colors.black,
+                                          )),
+                                    ],
                                   )
                                 ],
                               ),

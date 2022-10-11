@@ -29,6 +29,36 @@ class _RegistrationState extends State<Registration> {
   Place? address;
   final _imagess = [];
 
+  String _userEmail = '';
+  String _number = '';
+  String _password = '';
+  String _imamnumber = '';
+
+  void _trySubmitForm() {
+    final bool? isValid = _formKey.currentState?.validate();
+    if (isValid == true) {
+      debugPrint('Everything looks good!');
+      debugPrint(_userEmail);
+      debugPrint(_number);
+      debugPrint(_password);
+      debugPrint(_imamnumber);
+      print("Hi");
+      if (address == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Location")));
+        return;
+      }else if(_imageFile == null){
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please Select Image")));
+        return;
+      }
+
+      _pickImage1();
+    }
+  }
+
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
@@ -56,312 +86,353 @@ class _RegistrationState extends State<Registration> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(children: [
-            TextFormField(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                label: Text('Email Id'),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                fields['email'] = value;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                label: Text('Password'),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                fields['password'] = value;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: phoneNumberController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                label: Text('Masjid Phone No.'),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                fields['phone'] = value;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: masjidNameController,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                label: Text('Masjid Name'),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                fields['masjid_name'] = value;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: imamNameController,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                label: Text('Imam Name'),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                fields['immam_name'] = value;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: imamNumberController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                label: Text('Imam Number'),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                fields['immam_contact'] = value;
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            OutlinedButton(
-              onPressed: () {
-                Future<Place?> result = Navigator.of(context).push<Place>(
-                  MaterialPageRoute(
-                    builder: (context) => const GetLocation(),
-                  ),
-                );
-
-                result.then((value) {
-                  if (value == null) return;
-                  setState(() {
-                    address = value;
-                    _address =
-                        'Area ${address?.subLocality},\n City ${address?.locality}, \n Postal Code ${address?.postalCode},\n State ${address?.administrativeArea}, \n Country ${address?.country}';
-                    setState(() {});
-                  });
-                });
-              },
-              child: const Text(
-                'Select Location',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _address.isNotEmpty
-                ? Padding(
-                    padding: EdgeInsets.only(left: 50),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: ' Area : ',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: address?.subLocality,
-                                style: const TextStyle(
-                                    fontSize: 9, color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: ' City : ',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: address?.locality,
-                                style: const TextStyle(
-                                    fontSize: 9, color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: ' Postal Code : ',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: address?.postalCode,
-                                style: const TextStyle(
-                                    fontSize: 9, color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: ' Administrative Area : ',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: address?.administrativeArea,
-                                style: const TextStyle(
-                                    fontSize: 9, color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: ' Country : ',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: address?.country,
-                                style: const TextStyle(
-                                    fontSize: 9, color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : const SizedBox.shrink(),
-            const SizedBox(
-              height: 10,
-            ),
-            OutlinedButton(
-              onPressed: () {
-                print(_imagess.length);
-
-                setState(() {
-                  _imagess.length < 3
-                      ? _pickImage()
-                      : ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  "You have only maximum 3 images uploaded")));
-                });
-              },
-              child: const Text(
-                'Select Images',
-              ),
-            ),
-            Row(
-              children: [
-                for (int i = 0; i < _imagess.length; i++)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, top: 7),
-                          child: GestureDetector(
-                            onDoubleTap: () {},
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()));
-                            },
-                            child: Container(
-                              height: 70,
-                              width: 70,
-                              child: _imageFile != null
-                                  ? Image.file(
-                                      _imagess[i],
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Container(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              color: Colors.transparent,
-              width: 100,
-              height: 40,
-              child: ElevatedButton(
-                onPressed: () async {
-                  print("Hi");
-                  if (address == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please Select Location")));
-                    return;
+          child: Form(
+            key: _formKey,
+            child: Column(children: [
+              TextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  label: Text('Email Id'),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter your email address';
                   }
+                  // Check if the entered email has the right format
+                  if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                    return 'Please enter a valid email address';
+                  }
+                  // Return null if the entered email is valid
+                  return null;
+                },
+                onChanged: (value) {
+                  _userEmail = value;
+                  fields['email'] = value;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  label: Text('Password'),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'This field is required';
+                  }
+                  if (value.trim().length < 6) {
+                    return 'Password must be at least 6 characters in length';
+                  }
+                  // Return null if the entered password is valid
+                  return null;
+                },
+                onChanged: (value) {
+                  _password = value;
+                  fields['password'] = value;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: phoneNumberController,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(
+                  label: Text('Masjid Phone No.'),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'This field is required';
+                  }
+                  if (value.trim().length < 10 || value.trim().length > 10) {
+                    return 'Please Enter Valid Number';
+                  }
+                  // Return null if the entered password is valid
+                  return null;
+                },
+                onChanged: (value) {
+                  _number = value;
+                  fields['phone'] = value;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: masjidNameController,
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(
+                  label: Text('Masjid Name'),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  fields['masjid_name'] = value;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: imamNameController,
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(
+                  label: Text('Imam Name'),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  fields['immam_name'] = value;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: imamNumberController,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(
+                  label: Text('Imam Number'),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'This field is required';
+                  }
+                  if (value.trim().length < 10 || value.trim().length > 10) {
+                    return 'Please Enter Valid Number';
+                  }
+                  // Return null if the entered password is valid
+                  return null;
+                },
+                onChanged: (value) {
+                  _imamnumber = value;
+                  fields['immam_contact'] = value;
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  Future<Place?> result = Navigator.of(context).push<Place>(
+                    MaterialPageRoute(
+                      builder: (context) => const GetLocation(),
+                    ),
+                  );
 
-                  _pickImage1();
+                  result.then((value) {
+                    if (value == null) return;
+                    setState(() {
+                      address = value;
+                      _address =
+                          'Area ${address?.subLocality},\n City ${address?.locality}, \n Postal Code ${address?.postalCode},\n State ${address?.administrativeArea}, \n Country ${address?.country}';
+                      setState(() {});
+                    });
+                  });
                 },
                 child: const Text(
-                  'Register',
+                  'Select Location',
                 ),
               ),
-            ),
+              const SizedBox(
+                height: 10,
+              ),
+              _address.isNotEmpty
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 50),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: ' Area : ',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: address?.subLocality,
+                                  style: const TextStyle(
+                                      fontSize: 9, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: ' City : ',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: address?.locality,
+                                  style: const TextStyle(
+                                      fontSize: 9, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: ' Postal Code : ',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: address?.postalCode,
+                                  style: const TextStyle(
+                                      fontSize: 9, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: ' Administrative Area : ',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: address?.administrativeArea,
+                                  style: const TextStyle(
+                                      fontSize: 9, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: ' Country : ',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: address?.country,
+                                  style: const TextStyle(
+                                      fontSize: 9, color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+              const SizedBox(
+                height: 10,
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  print(_imagess.length);
 
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  setState(() {
+                    _imagess.length < 3
+                        ? _pickImage()
+                        : ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    "You have only maximum 3 images uploaded")));
+                  });
+                },
+                child: const Text(
+                  'Select Images',
+                ),
+              ),
+              Row(
                 children: [
-                  const Text("Already Have an Masjid?", style: TextStyle(
-                    fontSize: 15,
-                  ),),
-
-                  GestureDetector(
-                    onDoubleTap: (){},
-                    onTap: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      child: const Text(" Login", style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green
-                      ),),
+                  for (int i = 0; i < _imagess.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 7),
+                            child: GestureDetector(
+                              onDoubleTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen()));
+                              },
+                              child: Container(
+                                height: 70,
+                                width: 70,
+                                child: _imageFile != null
+                                    ? Image.file(
+                                        _imagess[i],
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
-            )
-          ]),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                color: Colors.transparent,
+                width: 100,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    _trySubmitForm();
+                  },
+                  child: const Text(
+                    'Register',
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already Have an Masjid?", style: TextStyle(
+                      fontSize: 15,
+                    ),),
+
+                    GestureDetector(
+                      onDoubleTap: (){},
+                      onTap: (){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: const Text(" Login", style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green
+                        ),),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );
