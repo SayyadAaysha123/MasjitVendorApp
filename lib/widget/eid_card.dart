@@ -21,7 +21,6 @@ class EidCard extends StatefulWidget {
 }
 
 class _EidCardState extends State<EidCard> {
-
   int _selected = 0;
   final _nameEditController = TextEditingController();
 
@@ -48,8 +47,6 @@ class _EidCardState extends State<EidCard> {
 
   @override
   Widget build(BuildContext context) {
-
-
     TextStyle? _textStyle = Theme.of(context).textTheme.bodyLarge;
     return Card(
       margin: const EdgeInsets.all(8),
@@ -69,25 +66,31 @@ class _EidCardState extends State<EidCard> {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    widget.eid.name!,
-                    style: _textStyle?.copyWith(
-                      color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 10, top: 10),
+                    child: Text(
+                      widget.eid.name!,
+                      style: _textStyle?.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.add_circle,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      // _show();
-                    },
-                  ),
-                )
+                // Align(
+                //   alignment: Alignment.center,
+                //   child: Padding(
+                //     padding: EdgeInsets.only(left: 140),
+                //     child: IconButton(
+                //       icon: const Icon(
+                //         Icons.add_circle,
+                //         color: Colors.white,
+                //       ),
+                //       onPressed: () {
+                //         // _show();
+                //       },
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),
@@ -101,53 +104,42 @@ class _EidCardState extends State<EidCard> {
                 'Jammat',
                 style: _textStyle,
               ),
-
               Column(
                 children: [
                   for (int i = 0; i < widget.eid.jammat!.length; i++)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-
                         Text(
                           widget.eid.jammat![i],
                           style: _textStyle,
                         ),
-
-
                         GestureDetector(
-                          onDoubleTap: (){},
-                          onTap: (){
+                          onDoubleTap: () {},
+                          onTap: () {
                             setState(() {
                               widget.eid.jammat?.removeAt(i);
                               updateMasjid({'eid': eid}).then((value) {
                                 AppPreferences.setMasjid(json.encode(value));
                               });
                             });
-
                           },
                           child: const Padding(
                             padding: EdgeInsets.only(left: 5),
-                            child: Icon(Icons.remove_circle_outline,
-                              size: 18,),
+                            child: Icon(
+                              Icons.remove_circle_outline,
+                              size: 18,
+                            ),
                           ),
                         )
                       ],
                     ),
                 ],
               ),
-
-
             ],
           ),
         )
       ]),
     );
   }
-
 }
-
-
-
-
-

@@ -123,7 +123,26 @@ class _ManageEidState extends State<ManageEid> {
                       onTap: () {
                         _show(i);
                       },
-                      child: EidCard(eid: eid[i]),
+                      child: Stack(
+                        children: [
+                          EidCard(eid: eid[i]),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10, right: 10),
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.add_circle,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  _show(i);
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                 ],
               );

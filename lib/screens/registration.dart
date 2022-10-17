@@ -4,12 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:masjit_vendor_app/data/model/place.dart';
-import 'package:masjit_vendor_app/data/model/registerSharePre.dart';
 import 'package:masjit_vendor_app/screens/get_location.dart';
 import 'package:masjit_vendor_app/screens/home.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
-import 'package:masjit_vendor_app/utils/constant.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import '../data/model/SharePreferenceClass.dart';
 import '../data/model/register.dart';
@@ -32,7 +29,9 @@ class _RegistrationState extends State<Registration> {
   String _userEmail = '';
   String _number = '';
   String _password = '';
-  String _imamnumber = '';
+  String _imamName = '';
+  String _masjidName = '';
+  String _imamNumber = '';
 
   void _trySubmitForm() {
     final bool? isValid = _formKey.currentState?.validate();
@@ -41,15 +40,17 @@ class _RegistrationState extends State<Registration> {
       debugPrint(_userEmail);
       debugPrint(_number);
       debugPrint(_password);
-      debugPrint(_imamnumber);
+      debugPrint(_imamNumber);
+      debugPrint(_imamName);
+      debugPrint(_masjidName);
       print("Hi");
       if (address == null) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Please Select Location")));
         return;
-      }else if(_imageFile == null){
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please Select Image")));
+      } else if (_imageFile == null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Please Select Image")));
         return;
       }
 
@@ -172,7 +173,14 @@ class _RegistrationState extends State<Registration> {
                   label: Text('Masjid Name'),
                   border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter Masjid Name address';
+                  }
+                  return null;
+                },
                 onChanged: (value) {
+                  _masjidName = value;
                   fields['masjid_name'] = value;
                 },
               ),
@@ -186,6 +194,12 @@ class _RegistrationState extends State<Registration> {
                   label: Text('Imam Name'),
                   border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter Imam Name address';
+                  }
+                  return null;
+                },
                 onChanged: (value) {
                   fields['immam_name'] = value;
                 },
@@ -211,7 +225,7 @@ class _RegistrationState extends State<Registration> {
                   return null;
                 },
                 onChanged: (value) {
-                  _imamnumber = value;
+                  _imamNumber = value;
                   fields['immam_contact'] = value;
                 },
               ),
@@ -345,8 +359,8 @@ class _RegistrationState extends State<Registration> {
                         ? _pickImage()
                         : ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text(
-                                    "You have only maximum 3 images uploaded")));
+                                content:
+                                    Text("You can uploaded only 3 Images")));
                   });
                 },
                 child: const Text(
@@ -404,28 +418,34 @@ class _RegistrationState extends State<Registration> {
                   ),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already Have an Masjid?", style: TextStyle(
-                      fontSize: 15,
-                    ),),
-
+                    const Text(
+                      "Already Have an Masjid?",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
                     GestureDetector(
-                      onDoubleTap: (){},
-                      onTap: (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                      onDoubleTap: () {},
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()));
                       },
                       child: Container(
                         color: Colors.transparent,
-                        child: const Text(" Login", style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green
-                        ),),
+                        child: const Text(
+                          " Login",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green),
+                        ),
                       ),
                     ),
                   ],
@@ -445,10 +465,14 @@ class _RegistrationState extends State<Registration> {
       pickedFile1 = await _picker.getImage(source: ImageSource.gallery);
       setState(() {
         _imageFile = pickedFile1!;
+
         _imagess.add(File(_imageFile!.path));
       });
     } catch (e) {
       print("Image picker error " + e.toString());
+    }
+    for (int i = 0; i < _imagess.length; i++) {
+      print("Images->${_imagess[i]}");
     }
   }
 
@@ -457,8 +481,11 @@ class _RegistrationState extends State<Registration> {
       var request = http.MultipartRequest(
           'POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
 
-      request.files.add(await http.MultipartFile.fromPath(
-          'images[]', _imageFile!.path.toString()));
+      for (int i = 0; i < _imagess.length; i++) {
+        request.files.add(await http.MultipartFile.fromPath(
+            'images[]', _imagess[i].path.toString()));
+        print("tester---->${_imagess[i].path.toString()}");
+      }
 
       final fields = {
         "email": emailController.text.trim(),
@@ -480,8 +507,6 @@ class _RegistrationState extends State<Registration> {
       print("register  $fields");
       request.fields.addAll(fields);
 
-
-
       var response = await request.send();
 
       response.stream.transform(utf8.decoder).listen((value) async {
@@ -490,9 +515,14 @@ class _RegistrationState extends State<Registration> {
         AppPreferences.setToken(jsonData["data"]["token"]);
         AppPreferences.setMasjid(json.encode(jsonData["data"]["masjid"]));
         AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
+        AppPreferences.setMasjidName(
+            json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"]));
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const Home()));
+        print(
+            "imagesssss ${json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"])}");
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const Home()));
       });
     } catch (e) {
       print("Image picker error ");

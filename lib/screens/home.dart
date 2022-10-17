@@ -12,6 +12,7 @@ import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
 import 'package:masjit_vendor_app/screens/manage_notification.dart';
 import 'package:masjit_vendor_app/screens/sahr.dart';
+import 'package:masjit_vendor_app/widget/edit_masjid_name.dart';
 import 'package:masjit_vendor_app/widget/edit_notice.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_time.dart';
@@ -35,11 +36,13 @@ class _HomeState extends State<Home> {
   Masjid? masjid1;
   String? token;
   String? masjidId;
+  String? masjidName;
 
   Future<void> init() async {
     masjid1 = await AppPreferences.getMasjid();
     token = await AppPreferences.getToken();
     masjidId = await AppPreferences.getIds();
+    masjidName = await AppPreferences.getMasjidName();
   }
 
 
@@ -47,6 +50,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     init();
+    print("nammeeeee $masjidName");
     _widget = widget.come == "1"
         ? ManageNotification()
         : widget.come == "2"
@@ -96,7 +100,7 @@ class _HomeState extends State<Home> {
   _pageChange(int page) {
     switch (page) {
       case 0:
-        _title = 'Weekley Namaz Time';
+        _title = 'Weekly Namaz Time';
         _widget = const ManageTime();
         _actions = [];
         break;
@@ -192,18 +196,60 @@ class _HomeState extends State<Home> {
               color: Colors.green.shade900,
             ),
             child:   Center(
-                child: Row(
+                child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 40),
-                      child: Image(image: AssetImage("assets/images/appLogo.png"),
-                      height: 110,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(image: AssetImage("assets/images/appLogo.png"),
+                        height: 90,),
+                      ],
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 30, top: 5),
+                              child: Text(masjidName != null ?"$masjidName" :"",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17
+                              ),),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: (){
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    builder: (context) {
+                                      return EditMasjidName();
+                                    });
+                              },
+                              child: Visibility(
+                                visible: masjidName != null ? true : false,
+                                child: Icon(Icons.edit,
+                                color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
                   ],
                 ))
           ),
           ListTile(
-            title: const Text('Weekley Namaz Time'),
+            title: const Text('Weekly Namaz Time'),
             onTap: () {
               _pageChange(0);
               Navigator.pop(context);
@@ -237,20 +283,20 @@ class _HomeState extends State<Home> {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            title: const Text('Privacy Policy'),
-            onTap: () {
-              _pageChange(5);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Terms & Condition'),
-            onTap: () {
-              _pageChange(6);
-              Navigator.pop(context);
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Privacy Policy'),
+          //   onTap: () {
+          //     _pageChange(5);
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          // ListTile(
+          //   title: const Text('Terms & Condition'),
+          //   onTap: () {
+          //     _pageChange(6);
+          //     Navigator.pop(context);
+          //   },
+          // ),
           ListTile(
             title: const Text('Logout'),
             onTap: () {

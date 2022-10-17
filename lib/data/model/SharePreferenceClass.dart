@@ -30,6 +30,16 @@ class AppPreferences {
     prefs.setString("id", idss);
   }
 
+  static Future<String?> getMasjidName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("masjid_name");
+  }
+
+  static setMasjidName(String masjidName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("masjid_name", masjidName);
+  }
+
   static Future<Masjid?> getMasjid() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final masjid = Masjid.fromJson(json.decode(prefs.getString("masjid")!));

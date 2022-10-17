@@ -214,9 +214,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
 
+        AppPreferences.setMasjidName(json.encode(jsonData["data"]["masjid"]["masjid_name"]));
+
         final masjid1 = await AppPreferences.getMasjid();
 
-        print("Idddddd ${json.encode(jsonData["data"]["masjid"]["id"])}");
+        print("Idddddd ${json.encode(jsonData["data"]["masjid"]["masjid_name"])}");
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Home()));
@@ -225,24 +227,4 @@ class _LoginScreenState extends State<LoginScreen> {
       print(e);
     }
   }
-
-/* Future<LogInResponseModel> loginMasjid() async {
-    try {
-      final result = await http.post(
-          Uri.parse("http://masjid.exportica.in/api/masjid/login"),
-          body: {
-            "email": emailController.text.trim(),
-            "password": passwordController.text.trim()
-          });
-
-      if (result.statusCode == 200) {
-        print("Hii ${result.body}");
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
-      }
-
-      return registerResponseModelFromJson(result.body);
-    } catch (e) {
-      throw e;
-    }
-  }*/
 }

@@ -18,6 +18,8 @@ Future<Masjid> updateMasjid(Map<String, dynamic> fileds) async {
 
   if (response.statusCode == 200) {
     print('update response -> ${response.body}');
+    AppPreferences.setMasjidName(json.decode(response.body)['masjid']['masjid_name']);
+    print("finallyy ${json.decode(response.body)['masjid']['masjid_name']}");
     return Masjid.fromJson(json.decode(response.body)['masjid']);
   } else {
     throw Exception('Failed to update album.');
