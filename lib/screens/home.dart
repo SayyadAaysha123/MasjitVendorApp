@@ -54,7 +54,8 @@ class _HomeState extends State<Home> {
     _widget = widget.come == "1"
         ? ManageNotification()
         : widget.come == "2"
-            ? ManageTrustee()
+            ? ManageTrustee() : widget.come == "3"
+        ? ManageTime()
             : ManageTime();
     _title = widget.come == "1"
         ? 'Notice'
@@ -211,7 +212,7 @@ class _HomeState extends State<Home> {
                           child: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 30, top: 5),
-                              child: Text(masjidName != null ?"$masjidName" :"",
+                              child: Text(masjidName != null ?masjidName.toString() :"",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17
@@ -223,6 +224,9 @@ class _HomeState extends State<Home> {
                           children: [
                             GestureDetector(
                               onTap: (){
+
+                                Navigator.pop(context);
+
                                 showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,

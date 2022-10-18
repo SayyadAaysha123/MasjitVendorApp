@@ -63,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
         key: _formKey,
         child: ListView(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           children: [
             getEmailField(),
             getPasswordField(),
@@ -194,6 +195,13 @@ class _LoginScreenState extends State<LoginScreen> {
       response.stream.transform(utf8.decoder).listen((value) async {
         var jsonData = json.decode(value);
 
+        Map<String, dynamic> body = jsonDecode(value);
+
+        if (!body['success']) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("${body['message']}")));
+        }
+
         print("jsonData    ${jsonData["data"]}");
 
         var masjid = jsonData["data"]["masjid"];
@@ -219,6 +227,8 @@ class _LoginScreenState extends State<LoginScreen> {
         final masjid1 = await AppPreferences.getMasjid();
 
         print("Idddddd ${json.encode(jsonData["data"]["masjid"]["masjid_name"])}");
+
+        print("status ${jsonData}");
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Home()));

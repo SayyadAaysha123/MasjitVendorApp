@@ -518,11 +518,23 @@ class _RegistrationState extends State<Registration> {
         AppPreferences.setMasjidName(
             json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"]));
 
+
+        if (response.statusCode == 422) {
+          Map<String, dynamic> body = jsonDecode(value);
+          Map<String, dynamic> error = body['errors'];
+
+          for (var et in error.entries) {
+            print('${et.key}, ${et.value[0]}');
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("${et.value[0]}")));
+          }
+        }
+
         print(
             "imagesssss ${json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"])}");
 
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const Home()));
+            .push(MaterialPageRoute(builder: (context) => const Home(come: "3",)));
       });
     } catch (e) {
       print("Image picker error ");

@@ -61,6 +61,7 @@ class _EditMasjidNameState extends State<EditMasjidName> {
             ),
             TextField(
               controller: _nameEditController,
+              textInputAction: TextInputAction.none,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter Masjid Name',
@@ -77,6 +78,7 @@ class _EditMasjidNameState extends State<EditMasjidName> {
                       .then((value) {
                     AppPreferences.setMasjid(json.encode(value));
                     // AppPreferences.setMasjidName(_nameEditController.text.trim());
+                    if(mounted)
                     setState(() {});
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) => const Home()));
