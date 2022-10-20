@@ -260,7 +260,7 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            title: const Text('SAR / IFTAR'),
+            title: const Text('SAHAR / IFTAR'),
             onTap: () {
               _pageChange(1);
               Navigator.pop(context);
