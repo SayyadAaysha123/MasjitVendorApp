@@ -174,7 +174,7 @@ class _SahrState extends State<Sahr> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'SAHR',
+                          'SAHAR',
                           style: _textStyle,
                         ),
                         GestureDetector(
