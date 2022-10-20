@@ -18,21 +18,21 @@ class _OnBoardingState extends State<OnBoarding> {
   final _frames = [
     {
       'image': "https://cdn.pixabay.com/photo/2015/10/25/21/02/abu-1006336__340.jpg",
-      'heading': 'Frame 1',
+      'heading': "",
       'description':
-          'Lorem Ipsum is simply dummy description of the printing and typesetting',
+          'This app user for Islamic timetable of masjids.',
     },
     {
       'image': "https://images.unsplash.com/photo-1590273089302-ebbc53986b6e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bW9zcXVlfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-      'heading': 'Frame 2',
+      'heading': "",
       'description':
-          'Lorem Ipsum is simply dummy description of the printing and typesetting',
+          'You can always update,edit prayer timings. Eid of Muslims to be edit according to the Islamic Calender',
     },
     {
       'image': "https://cdn.pixabay.com/photo/2015/01/28/23/10/mosque-615415_960_720.jpg",
-      'heading': 'Frame 3',
+      'heading': "",
       'description':
-          'Lorem Ipsum is simply dummy text of the printing and typesetting',
+          'Molvi Can Locate their accurate masjid location for the user',
     },
   ];
 
@@ -62,7 +62,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 itemBuilder: (context, index) {
                   return Frame(
                     image: _frames[index]['image'] ?? 'img',
-                    heading: _frames[index]['heading'] ?? 'he',
+                    heading: _frames[index]['heading'] ?? '',
                     description: _frames[index]['description'] ?? 'desc',
                   );
                 },

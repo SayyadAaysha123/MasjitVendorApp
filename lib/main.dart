@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
     // }
 
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Azan For Salah Masjid',
         theme: ThemeData(
           primaryColor: Colors.green.shade900,
           colorScheme: ColorScheme.fromSeed(

@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
         _actions = [];
         break;
       case 1:
-        _title = 'SAHR / IFTAR';
+        _title = 'SAHAR / IFTAR';
         _widget = const Sahr();
         _actions = [];
         break;

@@ -325,7 +325,7 @@ class _ManageTimeState extends State<ManageTime> {
                         children:  [
                           Column(
                             children: const [
-                              Text("AZAN"),
+                              Text("Azan"),
                             ],
                           ),
                           Spacer(),
@@ -345,7 +345,7 @@ class _ManageTimeState extends State<ManageTime> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("JAMMAT"),
+                              Text("Jammat"),
                                 IconButton(
                                   icon: const Icon(
                                     Icons.add_circle_outline,
