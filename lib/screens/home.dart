@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
         _actions = [];
         break;
       case 1:
-        _title = 'SAHAR / IFTAR';
+        _title = 'Sahar / Iftar';
         _widget = const Sahr();
         _actions = [];
         break;
@@ -260,7 +260,7 @@ class _HomeState extends State<Home> {
             },
           ),
           ListTile(
-            title: const Text('SAHAR / IFTAR'),
+            title: const Text('Sahar / Iftar'),
             onTap: () {
               _pageChange(1);
               Navigator.pop(context);
