@@ -77,7 +77,7 @@ class EditTrustee extends StatelessWidget {
                         )
                   );
 
-                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home(come: "2",)));
+                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home(come: "2",)));
                 },
                 child: const Text('Save'))
           ],

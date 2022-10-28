@@ -46,6 +46,7 @@ class _ManageTrusteeState extends State<ManageTrustee> {
 
         updateMasjid({'trustee': trustee}).then((value) {
           AppPreferences.setMasjid(json.encode(value));
+          setState(() {});
         });
       });
     }

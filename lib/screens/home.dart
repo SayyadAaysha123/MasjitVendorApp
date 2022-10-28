@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
         ? 'Notice'
         : widget.come == "2"
             ? "Trustee"
-            : 'Weekly Namaz';
+            : 'Jammat Time';
 
     _actions = widget.come == "1"
         ? _actions = [
@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
   _pageChange(int page) {
     switch (page) {
       case 0:
-        _title = 'Weekly Namaz Time';
+        _title = 'Jammat Time';
         _widget = const ManageTime();
         _actions = [];
         break;
@@ -212,7 +212,7 @@ class _HomeState extends State<Home> {
                           child: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 30, top: 5),
-                              child: Text(masjidName != null ?masjidName.toString() :"",
+                              child: Text(masjidName != null?"$masjidName" :"",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17
@@ -253,7 +253,7 @@ class _HomeState extends State<Home> {
                 ))
           ),
           ListTile(
-            title: const Text('Weekly Namaz Time'),
+            title: const Text('Jammat Time'),
             onTap: () {
               _pageChange(0);
               Navigator.pop(context);

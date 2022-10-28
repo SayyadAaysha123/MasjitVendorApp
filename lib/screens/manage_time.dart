@@ -317,7 +317,7 @@ class _ManageTimeState extends State<ManageTime> {
                         ),
                       ),
                     ),
-                    Padding(
+                   /* Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 10),
                       child: Row(
@@ -335,7 +335,7 @@ class _ManageTimeState extends State<ManageTime> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

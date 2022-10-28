@@ -73,16 +73,16 @@ class _EditMasjidNameState extends State<EditMasjidName> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
                   updateMasjid({'masjid_name': _nameEditController.text.trim()})
                       .then((value) {
                     AppPreferences.setMasjid(json.encode(value));
-                    // AppPreferences.setMasjidName(_nameEditController.text.trim());
                     if(mounted)
-                    setState(() {});
+                      setState(() {});
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) => const Home()));
                   });
+                 /* Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => const Home()));*/
                 },
                 child: const Text('Save'))
           ],
