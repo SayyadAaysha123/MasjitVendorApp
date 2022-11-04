@@ -371,14 +371,16 @@ class _RegistrationState extends State<Registration> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   for (int i = 0; i < _imagess.length; i++)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 7),
-                            child: Stack(
-                              alignment: Alignment.topRight,
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          height: 87,
+                          width: 77,
+                          // color: Colors.red,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: Row(
                               children: [
                                 Container(
                                   height: 70,
@@ -390,22 +392,25 @@ class _RegistrationState extends State<Registration> {
                                         )
                                       : Container(),
                                 ),
-                                GestureDetector(
-                                  onTap: (){
-                                    _imagess.removeAt(i);
-                                    setState(() {
-
-                                    });
-                                  },
-                                  child: Icon(Icons.cancel_outlined,
-                                  color: Colors.red,
-                                  size: 13,),
-                                )
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                            _imagess.removeAt(i);
+                            setState(() {
+
+                            });
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Icon(Icons.cancel_sharp,
+                              color: Colors.red,
+                              size: 17,),
+                          ),
+                        )
+                      ],
                     ),
                 ],
               ),
