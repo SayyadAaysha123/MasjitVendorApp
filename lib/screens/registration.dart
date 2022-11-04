@@ -377,25 +377,31 @@ class _RegistrationState extends State<Registration> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 10, top: 7),
-                            child: GestureDetector(
-                              onDoubleTap: () {},
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()));
-                              },
-                              child: Container(
-                                height: 70,
-                                width: 70,
-                                child: _imageFile != null
-                                    ? Image.file(
-                                        _imagess[i],
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(),
-                              ),
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                Container(
+                                  height: 70,
+                                  width: 70,
+                                  child: _imageFile != null
+                                      ? Image.file(
+                                          _imagess[i],
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    _imagess.removeAt(i);
+                                    setState(() {
+
+                                    });
+                                  },
+                                  child: Icon(Icons.cancel_outlined,
+                                  color: Colors.red,
+                                  size: 13,),
+                                )
+                              ],
                             ),
                           ),
                         ],
