@@ -20,19 +20,19 @@ class _OnBoardingState extends State<OnBoarding> {
       'image': "https://cdn.pixabay.com/photo/2015/10/25/21/02/abu-1006336__340.jpg",
       'heading': "",
       'description':
-          'This app user for Islamic timetable of masjids.',
+          'This app use for Islamic Timetable of Masjids.',
     },
     {
       'image': "https://images.unsplash.com/photo-1590273089302-ebbc53986b6e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8bW9zcXVlfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
       'heading': "",
       'description':
-          'You can always update,edit prayer timings. Eid of Muslims to be edit according to the Islamic Calender',
+          'You can always update, edit prayer timings. Time of Eid can be edit according to the Islamic Calender.',
     },
     {
       'image': "https://cdn.pixabay.com/photo/2015/01/28/23/10/mosque-615415_960_720.jpg",
       'heading': "",
       'description':
-          'Molvi Can Locate their accurate masjid location for the user',
+          'Molvi can Locate their accurate Masjid location.',
     },
   ];
 
@@ -47,67 +47,70 @@ class _OnBoardingState extends State<OnBoarding> {
     }
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: size.height * .7,
-              child: PageView.builder(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _frames.length,
-                onPageChanged: (value) => setState(() {
-                  _currentIndex = value;
-                }),
-                itemBuilder: (context, index) {
-                  return Frame(
-                    image: _frames[index]['image'] ?? 'img',
-                    heading: _frames[index]['heading'] ?? '',
-                    description: _frames[index]['description'] ?? 'desc',
-                  );
-                },
+      body: Padding(
+        padding: const EdgeInsets.only(top: 97),
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: size.height * .5,
+                child: PageView.builder(
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _frames.length,
+                  onPageChanged: (value) => setState(() {
+                    _currentIndex = value;
+                  }),
+                  itemBuilder: (context, index) {
+                    return Frame(
+                      image: _frames[index]['image'] ?? 'img',
+                      heading: _frames[index]['heading'] ?? '',
+                      description: _frames[index]['description'] ?? 'desc',
+                    );
+                  },
+                ),
               ),
-            ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int i = 0; i < _frames.length; i++)
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.fastOutSlowIn,
-                    width: _currentIndex == i ? 21 : 7,
-                    height: 7,
-                    margin: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: _currentIndex == i
-                            ? Colors.green[900]
-                            : Colors.grey[300]),
-                  )
-              ],
-            ),
-            const Spacer(),
-            Container(
-              color: Colors.transparent,
-              width: 90,
-              height: 40,
-              child: ElevatedButton(
-                onPressed: () {
-                  _currentIndex < (_frames.length - 1)
-                      ? _pageController.nextPage(
-                          duration: Duration(milliseconds: 400),
-                          curve: Curves.easeIn)
-                      : complete();
-                },
-                child: Text(_currentIndex < (_frames.length -1) ? 'Next' : 'Done'),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < _frames.length; i++)
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.fastOutSlowIn,
+                      width: _currentIndex == i ? 21 : 7,
+                      height: 5,
+                      margin: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: _currentIndex == i
+                              ? Colors.green[900]
+                              : Colors.grey[300]),
+                    )
+                ],
               ),
-            ),
-            TextButton(
-              onPressed: complete,
-              child: const Text('Skip'),
-            )
-          ],
+              const Spacer(),
+              Container(
+                color: Colors.transparent,
+                width: 90,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _currentIndex < (_frames.length - 1)
+                        ? _pageController.nextPage(
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.easeIn)
+                        : complete();
+                  },
+                  child: Text(_currentIndex < (_frames.length -1) ? 'Next' : 'Done'),
+                ),
+              ),
+              TextButton(
+                onPressed: complete,
+                child: const Text('Skip'),
+              )
+            ],
+          ),
         ),
       ),
     );

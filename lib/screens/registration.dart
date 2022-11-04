@@ -360,7 +360,7 @@ class _RegistrationState extends State<Registration> {
                         : ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content:
-                                    Text("You can uploaded only 3 Images")));
+                                    Text("You can upload only 3 Images")));
                   });
                 },
                 child: const Text(
@@ -368,10 +368,11 @@ class _RegistrationState extends State<Registration> {
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   for (int i = 0; i < _imagess.length; i++)
                     Padding(
-                      padding: const EdgeInsets.only(left: 30),
+                      padding: const EdgeInsets.only(left: 0),
                       child: Row(
                         children: [
                           Padding(
@@ -496,12 +497,12 @@ class _RegistrationState extends State<Registration> {
         "lat": address!.lat!,
         "long": address!.long!,
         "phone": phoneNumberController.text.trim(),
-        "street": address!.street!,
-        "sub_locality": address!.subLocality!,
-        "locality": address!.locality!,
-        "postal_code": address!.postalCode!,
-        "administrative_area": address!.administrativeArea!,
-        "country": address!.country!,
+        "street": address!.street!.isNotEmpty?address!.street!:"punee",
+        "sub_locality": address!.subLocality!.isNotEmpty?address!.subLocality!:"punes",
+        "locality": address!.locality!.isNotEmpty?address!.locality!:"pune",
+        "postal_code": address!.postalCode!.isNotEmpty?address!.postalCode!:"123456",
+        "administrative_area": address!.administrativeArea!.isNotEmpty?address!.administrativeArea!:"dheli",
+        "country": address!.country!.isNotEmpty?address!.country!:"India",
       };
 
       print("register  $fields");
@@ -512,11 +513,8 @@ class _RegistrationState extends State<Registration> {
       response.stream.transform(utf8.decoder).listen((value) async {
         var jsonData = json.decode(value);
 
-        AppPreferences.setToken(jsonData["data"]["token"]);
-        AppPreferences.setMasjid(json.encode(jsonData["data"]["masjid"]));
-        AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
-        AppPreferences.setMasjidName(
-            json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"]));
+        print(jsonData);
+
 
 
         if (response.statusCode == 422) {
@@ -528,7 +526,16 @@ class _RegistrationState extends State<Registration> {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text("${et.value[0]}")));
           }
+
+          return;
         }
+
+        AppPreferences.setToken(jsonData["data"]["token"]);
+        AppPreferences.setMasjid(json.encode(jsonData["data"]["masjid"]));
+        AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));
+        AppPreferences.setMasjidName(
+            json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"]));
+
 
         print(
             "imagesssss ${json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"])}");
