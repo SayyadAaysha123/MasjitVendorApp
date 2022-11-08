@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:masjit_vendor_app/data/SizeConfig.dart';
+import 'package:masjit_vendor_app/data/commanColor.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
+import 'package:masjit_vendor_app/data/model/deleteAccountResponseModel.dart';
 import 'package:masjit_vendor_app/data/model/getAllNoticeResponseModel.dart';
 import 'package:masjit_vendor_app/data/model/logoutResponse.dart';
 import 'package:http/http.dart' as http;
@@ -11,13 +14,13 @@ import 'package:masjit_vendor_app/screens/exit_dialog.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
 import 'package:masjit_vendor_app/screens/manage_notification.dart';
+import 'package:masjit_vendor_app/screens/registration.dart';
 import 'package:masjit_vendor_app/screens/sahr.dart';
 import 'package:masjit_vendor_app/widget/edit_masjid_name.dart';
 import 'package:masjit_vendor_app/widget/edit_notice.dart';
 import 'package:masjit_vendor_app/widget/edit_trustee.dart';
 import 'package:masjit_vendor_app/screens/manage_time.dart';
 import 'package:masjit_vendor_app/screens/manage_trustee.dart';
-
 
 class Home extends StatefulWidget {
   final String come;
@@ -87,6 +90,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return WillPopScope(
       onWillPop:  _onBackPressed,
       child: Scaffold(
@@ -180,6 +185,9 @@ class _HomeState extends State<Home> {
         break;
       case 7:
         _title = 'Logout';
+        break;
+      case 8:
+        _title = 'Delete Account';
         break;
     }
 
@@ -309,6 +317,196 @@ class _HomeState extends State<Home> {
               Navigator.pop(context);
             },
           ),
+      /*    ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text('Delete Account', style: TextStyle(
+                  color: Colors.red
+                ),),
+              ],
+            ),
+            onTap: () {
+              getLogoutData();
+              Navigator.pop(context);
+            },
+          ),*/
+          ListTile(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Center(
+                        child: Text(
+                          "Delete Account",
+                          style: TextStyle(
+                            color: CommonColor.REGISTRARTION_COLOR,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20,
+                            fontFamily: 'Roboto_Medium',
+                          ),
+                        )),
+                    content: Padding(
+                      padding: EdgeInsets.only(
+                          left: SizeConfig.screenWidth*0.04),
+                      child: const Text(
+                        "Are you sure you want to delete your account?",
+                        style: TextStyle(
+                          color: CommonColor.BLACK_COLOR,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          fontFamily: 'Roboto_Medium',
+                        ),
+                      ),
+                    ),
+                    actions: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom:
+                            SizeConfig.screenHeight*0.03),
+                        child: Center(
+                          child: Column(
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  getDeleteAccount();
+
+                                  //cityController.text.isEmpty ? _validate = true : _validate = false;
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left:
+                                      SizeConfig.screenWidth *
+                                          0.1,
+                                      right:
+                                      SizeConfig.screenWidth *
+                                          0.1),
+                                  child: Container(
+                                      height: SizeConfig
+                                          .screenHeight *
+                                          0.05,
+                                      decoration: BoxDecoration(
+                                        gradient:
+                                        const LinearGradient(
+                                            begin: Alignment
+                                                .centerLeft,
+                                            end: Alignment
+                                                .centerRight,
+                                            colors: [
+                                              CommonColor
+                                                  .LEFT_COLOR,
+                                              CommonColor
+                                                  .RIGHT_COLOR
+                                            ]),
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            30),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                              fontFamily:
+                                              "Roboto_Regular",
+                                              fontWeight:
+                                              FontWeight.w700,
+                                              fontSize: SizeConfig
+                                                  .blockSizeHorizontal *
+                                                  4.5,
+                                              color: CommonColor
+                                                  .WHITE_COLOR),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: SizeConfig
+                                          .screenHeight *
+                                          0.03),
+                                  child: GestureDetector(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: SizeConfig
+                                              .screenHeight *
+                                              0.0,
+                                          left: SizeConfig
+                                              .screenWidth *
+                                              0.1,
+                                          right: SizeConfig
+                                              .screenWidth *
+                                              0.1),
+                                      child: Container(
+                                          height: SizeConfig
+                                              .screenHeight *
+                                              0.05,
+                                          decoration:
+                                          BoxDecoration(
+                                            gradient: const LinearGradient(
+                                                begin: Alignment
+                                                    .centerLeft,
+                                                end: Alignment
+                                                    .centerRight,
+                                                colors: [
+                                                  CommonColor
+                                                      .LEFT_COLOR,
+                                                  CommonColor
+                                                      .RIGHT_COLOR
+                                                ]),
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(30),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                  "Roboto_Regular",
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w700,
+                                                  fontSize: SizeConfig
+                                                      .blockSizeHorizontal *
+                                                      4.5,
+                                                  color: CommonColor
+                                                      .WHITE_COLOR),
+                                            ),
+                                          )),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ));
+            },
+            // leading: Icon(Icons.message),
+            title: Padding(
+              padding: EdgeInsets.only(
+                  left: 2),
+              child: const Text(
+                "Delete Account",
+                style: TextStyle(
+                    fontSize: 13,
+                    fontFamily: 'Roboto_Medium',
+                    fontWeight: FontWeight.w500,
+                    color: Colors.red),
+              ),
+            ),
+          ),
+
         ],
       ),
     );
@@ -341,6 +539,34 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<DeleteAccount> getDeleteAccount() async {
+  //  print(" tokennn ${box.get(kToken)}");
+
+    String? token = await AppPreferences.getToken();
+
+   var headersList = {'Authorization': 'Bearer $token', 'Accept': 'application/json'};
+
+    var response = await http.get(
+        Uri.parse('http://masjid.exportica.in/api/user/delete_account'),
+        headers: headersList);
+
+    if (response.statusCode == 200) {
+      print("Yess.. ${response.body}");
+
+      print("delete");
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const Registration()));
+
+      return deleteAccountFromJson(response.body);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to create album.');
+    }
+  }
   Future<GetAllNotices> getAllNotices() async {
     String? token = await AppPreferences.getToken();
     String? id = await AppPreferences.getIds();
