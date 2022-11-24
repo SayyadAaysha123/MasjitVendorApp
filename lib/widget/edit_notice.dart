@@ -104,7 +104,7 @@ class _EditNoticeState extends State<EditNotice> {
       print(headers);
 
       final result = await http.post(
-          Uri.parse("http://masjid.exportica.in/api/masjids/notice"),
+          Uri.parse("http://admin.azan4salah.com/api/masjids/notice"),
           headers: headers,
           body: msg
       );

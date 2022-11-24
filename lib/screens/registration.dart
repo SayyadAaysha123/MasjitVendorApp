@@ -491,7 +491,7 @@ class _RegistrationState extends State<Registration> {
   Future<RegisterResponseModel?> _pickImage1() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse("http://masjid.exportica.in/api/masjid/register"));
+          'POST', Uri.parse("http://admin.azan4salah.com/api/masjid/register"));
 
       for (int i = 0; i < _imagess.length; i++) {
         request.files.add(await http.MultipartFile.fromPath(
@@ -518,6 +518,7 @@ class _RegistrationState extends State<Registration> {
 
       print("register  $fields");
       request.fields.addAll(fields);
+      request.headers.addAll({'accept': 'application/json'});
 
       var response = await request.send();
 

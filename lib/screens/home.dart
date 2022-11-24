@@ -210,9 +210,9 @@ class _HomeState extends State<Home> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(image: AssetImage("assets/images/appLogo.png"),
-                        height: 90,),
+                      children: const [
+                        Image(image: AssetImage("assets/images/white_image.png"),
+                        height: 100,),
                       ],
                     ),
                     Row(
@@ -518,7 +518,7 @@ class _HomeState extends State<Home> {
 
     try {
       final result = await http.get(
-        Uri.parse("http://masjid.exportica.in/api/user/logout"),
+        Uri.parse("http://admin.azan4salah.com/api/user/logout"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
@@ -547,7 +547,7 @@ class _HomeState extends State<Home> {
    var headersList = {'Authorization': 'Bearer $token', 'Accept': 'application/json'};
 
     var response = await http.get(
-        Uri.parse('http://masjid.exportica.in/api/user/delete_account'),
+        Uri.parse('http://admin.azan4salah.com/api/user/delete_account'),
         headers: headersList);
 
     if (response.statusCode == 200) {
@@ -580,7 +580,7 @@ class _HomeState extends State<Home> {
       };
 
       final result = await http.get(
-        Uri.parse("http://masjid.exportica.in/api/masjids/$id/notice"),
+        Uri.parse("http://admin.azan4salah.com/api/masjids/$id/notice"),
         headers: headers,
       );
 

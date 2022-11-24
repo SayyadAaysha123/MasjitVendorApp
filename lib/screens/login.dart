@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<LogInResponseModel?> loginMasjid() async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse("http://masjid.exportica.in/api/masjid/login"));
+          'POST', Uri.parse("http://admin.azan4salah.com/api/masjid/login"));
 
       request.fields.addAll({
         "email": emailController.text.trim(),

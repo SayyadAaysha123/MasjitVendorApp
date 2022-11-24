@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget splash() {
     return const Center(
         child:
-        Image(image: AssetImage("assets/images/splash.jpeg")));
+        Image(image: AssetImage("assets/images/newAppIcon.png"),height: 220,));
   }
 
   void navigateSignUpParentPage() {

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Masjit Vendor App</string>
+	<string>Azan For Salah Masjid</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,10 +24,20 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow location service to fetch and manage user location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow location service to fetch and manage user location.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Allow location service to fetch and manage user location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location will be used to show your location on the map and see how far away your friends and devices are.</string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchScreen.storyboard</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -43,5 +53,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>this permission for profile photo only</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>this permission for profile photo only</string>
 </dict>
 </plist>

@@ -34,7 +34,7 @@ class Datum {
   });
 
   int? id;
-  int? masjidId;
+  String? masjidId;
   String? notice;
   DateTime? createdAt;
   DateTime? updatedAt;

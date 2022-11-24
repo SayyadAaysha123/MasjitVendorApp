@@ -57,9 +57,11 @@ class _ManageNotificationState extends State<ManageNotification> {
             return ListView.builder(
                 itemCount: snapshot.data?.data?.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
+                  print("noticcccceee${snapshot.data?.data?.length}");
+                  print("data ---> ${snapshot.data}");
+                  return  Padding(
                     padding: EdgeInsets.only(top: 15, left: 10, right: 10),
-                    child: Container(
+                    child:snapshot.data?.data?.length != null ? Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: Colors.green, width: 1)),
@@ -122,7 +124,8 @@ class _ManageNotificationState extends State<ManageNotification> {
                               )
                             ],
                           ),
-                        )),
+                        ))
+                    : Container(),
                   );
                 });
           }),
@@ -141,15 +144,14 @@ class _ManageNotificationState extends State<ManageNotification> {
         'Authorization': 'Bearer $token'
       };
 
-      print('headers');
-      print(headers);
       final result = await http.get(
-        Uri.parse("http://masjid.exportica.in/api/masjids/$id/notice"),
+        Uri.parse("http://admin.azan4salah.com/api/masjids/$id/notice"),
         headers: headers,
       );
 
       if (result.statusCode == 200) {
-        print(result.body);
+        print(" AllNotice ${result.body}");
+
       }
 
       return getAllNoticesFromJson(result.body);
@@ -163,6 +165,8 @@ class _ManageNotificationState extends State<ManageNotification> {
     String? id = await AppPreferences.getIds();
     print(token);
 
+    print("notice Id --> $noticeId");
+
     try {
       var headers = {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -170,10 +174,9 @@ class _ManageNotificationState extends State<ManageNotification> {
         'Authorization': 'Bearer $token'
       };
 
-      print('headers');
-      print(headers);
+
       final result = await http.delete(
-        Uri.parse("http://masjid.exportica.in/api/masjids/$noticeId/notice"),
+        Uri.parse("http://admin.azan4salah.com/api/masjids/$noticeId/notice"),
         headers: headers,
       );
 

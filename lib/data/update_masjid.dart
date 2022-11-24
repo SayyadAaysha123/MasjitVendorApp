@@ -8,7 +8,7 @@ Future<Masjid> updateMasjid(Map<String, dynamic> fileds) async {
   var token = await AppPreferences.getToken();
   var masjidId = await AppPreferences.getIds();
   final http.Response response = await http.put(
-    Uri.parse("http://masjid.exportica.in/api/masjids/$masjidId"),
+    Uri.parse("http://admin.azan4salah.com/api/masjids/$masjidId"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer ${token}'

@@ -61,7 +61,7 @@ class _EditMasjidNameState extends State<EditMasjidName> {
             ),
             TextField(
               controller: _nameEditController,
-              textInputAction: TextInputAction.none,
+              // textInputAction: TextInputAction.none,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter Masjid Name',
