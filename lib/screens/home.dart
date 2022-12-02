@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:masjit_vendor_app/data/model/masjid.dart';
 import 'package:masjit_vendor_app/data/model/trustee.dart';
 import 'package:masjit_vendor_app/data/update_masjid.dart';
+import 'package:masjit_vendor_app/screens/edit_profile.dart';
 import 'package:masjit_vendor_app/screens/exit_dialog.dart';
 import 'package:masjit_vendor_app/screens/login.dart';
 import 'package:masjit_vendor_app/screens/manage_eid.dart';
@@ -178,7 +179,9 @@ class _HomeState extends State<Home> {
         ];
         break;
       case 5:
-        _title = 'Privacy Policy';
+        _title = 'Edit Profile';
+        _widget = const EditProfile();
+        _actions = [];
         break;
       case 6:
         _title = 'Terms & Condition';
@@ -212,10 +215,10 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Image(image: AssetImage("assets/images/white_image.png"),
-                        height: 100,),
+                        height: 120,),
                       ],
                     ),
-                    Row(
+                  /*  Row(
                       children: [
                         Expanded(
                           child: Center(
@@ -257,7 +260,7 @@ class _HomeState extends State<Home> {
                           ],
                         )
                       ],
-                    )
+                    )*/
                   ],
                 ))
           ),
@@ -296,13 +299,13 @@ class _HomeState extends State<Home> {
               Navigator.pop(context);
             },
           ),
-          // ListTile(
-          //   title: const Text('Privacy Policy'),
-          //   onTap: () {
-          //     _pageChange(5);
-          //     Navigator.pop(context);
-          //   },
-          // ),
+          ListTile(
+            title: const Text('Edit Profile'),
+            onTap: () {
+              _pageChange(5);
+              Navigator.pop(context);
+            },
+          ),
           // ListTile(
           //   title: const Text('Terms & Condition'),
           //   onTap: () {

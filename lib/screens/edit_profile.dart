@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:masjit_vendor_app/data/model/SharePreferenceClass.dart';
+import 'package:masjit_vendor_app/data/model/delete_image_response.dart';
 import 'package:masjit_vendor_app/data/model/masjid_profile_response_model.dart';
 import 'package:masjit_vendor_app/data/model/place.dart';
 import 'package:masjit_vendor_app/data/model/update_profile_response.dart';
@@ -399,21 +400,36 @@ class _EditProfileState extends State<EditProfile> {
                             padding: const EdgeInsets.only(left: 0),
                             child: Row(
                               children: [
-                                Container(
+                                imageList.isNotEmpty?  Container(
                                     height: 70,
                                     width: 70,
                                     child: imageList[i].contains('http')
                                         ? Image.network(
                                             imageList[i],
                                           )
-                                        : Image.file(File(imageList[i]))),
+                                        : Image.file(File(imageList[i]))): Container(),
                               ],
                             ),
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
+
+                            /*if(imageList[i].contains('http')){
+                              print(imageList[i].toString().replaceAll("http://admin.azan4salah.com", ""));
+                            }
+                            else{
+                              print(imageList[i].toString().replaceAll("/data/user/0/com.azanforsalah.masjid/cache", ""));
+                            }*/
+
+
+                            print(imageList[i].toString().replaceAll("http://admin.azan4salah.com", ""));
+
+
+                           postDeleteImage(imageList[i].toString().replaceAll("http://admin.azan4salah.com", ""));
+
                             imageList.removeAt(i);
+
                             setState(() {});
                           },
                           child: Container(
@@ -438,7 +454,10 @@ class _EditProfileState extends State<EditProfile> {
                 height: 40,
                 child: ElevatedButton(
                   onPressed: () async {
-                    updateProfile();
+                    imageList.isNotEmpty?
+                    updateProfile():
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Please select one image.")));;
                   },
                   child: const Text(
                     'Update',
@@ -618,4 +637,43 @@ class _EditProfileState extends State<EditProfile> {
       print(e);
     }
   }
+
+
+  Future<List>postDeleteImage(String path) async {
+
+    String? token = await AppPreferences.getToken();
+
+    try {
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
+
+      final result = await http
+          .post(Uri.parse("http://admin.azan4salah.com/api/delete-photo"),
+          headers: headers,
+          body: {
+
+            "key": path.toString(),
+
+
+          });
+
+      print("response body" + result.body);
+
+      if(result.statusCode == 200){
+
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //     content: Text("Request sent Successfully.")));
+
+      }
+
+      return deleteImageResponseFromJson(result.body);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 }
