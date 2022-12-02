@@ -10,6 +10,7 @@ import 'package:masjit_vendor_app/data/model/masjid_profile_response_model.dart'
 import 'package:masjit_vendor_app/data/model/place.dart';
 import 'package:masjit_vendor_app/data/model/update_profile_response.dart';
 import 'package:masjit_vendor_app/screens/get_location.dart';
+import 'package:masjit_vendor_app/screens/home.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -611,6 +612,9 @@ class _EditProfileState extends State<EditProfile> {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Profile Updated Successfully.")));
 
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> Home()));
+
+
         /* if (response.statusCode == 422) {
           Map<String, dynamic> body = jsonDecode(value);
           Map<String, dynamic> error = body['errors'];
@@ -629,6 +633,7 @@ class _EditProfileState extends State<EditProfile> {
         AppPreferences.setIds(json.encode(jsonData["data"]["masjid"]["id"]));*/
 
         AppPreferences.setMasjidName(masjidNameController.text.trim());
+
 
         // print(
         //     "imagesssss ${json.encode(jsonData["data"]["masjid"]["place"]["masjid_name"])}");
